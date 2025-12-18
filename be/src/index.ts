@@ -7,7 +7,6 @@ const PORT = 5000
 const app = express()
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
-app.use(defaultErrorHandler)
 databaseServices.connect()
 
 //  Use user routes
@@ -16,6 +15,9 @@ app.use('/users', usersRouter)
 app.get('/', (req, res) => {
   res.send('Hello, World!')
 })
+
+// Error handler must be registered last
+app.use(defaultErrorHandler)
 
 app.listen(PORT, () => {
   console.log(`Server is running at http://localhost:${PORT}`)
