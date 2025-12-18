@@ -4,12 +4,14 @@ import { RegisterRequestBody } from '~/models/requests/users.requests'
 import { hashPassword } from '~/utils/crypto'
 import { signToken } from '~/utils/jwt'
 import { TokenType } from '~/constants/enums'
+import type { StringValue } from 'ms'
+
 class UsersService {
   private signAccessToken(user_id: string) {
     // Token signing logic
     return signToken({
       payload: { userId: user_id, token_type: TokenType.AccessToken },
-      options: { expiresIn: process.env.ACCESS_TOKEN_EXPIRE_IN as string }
+      options: { expiresIn: process.env.ACCESS_TOKEN_EXPIRE_IN as StringValue }
     })
   }
 
@@ -17,7 +19,7 @@ class UsersService {
     // Token signing logic
     return signToken({
       payload: { userId: user_id, token_type: TokenType.RefreshToken },
-      options: { expiresIn: process.env.REFRESH_TOKEN_EXPIRE_IN as string }
+      options: { expiresIn: process.env.REFRESH_TOKEN_EXPIRE_IN as StringValue }
     })
   }
 
