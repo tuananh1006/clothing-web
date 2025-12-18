@@ -1,23 +1,27 @@
 import { Request, Response } from 'express'
 import usersServices from '~/services/users.services'
-import { ParamsDictionary } from 'express-serve-static-core'
+import { NextFunction, ParamsDictionary } from 'express-serve-static-core'
 import { RegisterRequestBody } from '~/models/requests/users.requests'
+import { error } from 'node:console'
 
-export const loginController = (req: Request, res: Response) => {
+export const loginController = (req: Request, res: Response, next: NextFunction) => {
   const { username, password } = req.body
   if (username === 'admin' && password === 'password') {
     return res.json({ message: 'Login successful' })
   } else {
-    return res.status(401).json({ message: 'Invalid credentials' })
+    next(error)
   }
 }
 
-export const registerController = async (req: Request<ParamsDictionary, any, RegisterRequestBody>, res: Response) => {
+export const registerController = async (
+  req: Request<ParamsDictionary, any, RegisterRequestBody>,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const result = await usersServices.register(req.body)
     return res.status(201).json({ message: 'Register success', result: result })
   } catch (error) {
-    console.log(error)
-    return res.status(500).json({ error: 'Internal server error' })
+    next(error)
   }
 }
