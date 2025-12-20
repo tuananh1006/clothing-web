@@ -2,13 +2,14 @@ import express from 'express'
 import usersRouter from './routes/users.routes'
 import databaseServices from './services/database.services'
 import { defaultErrorHandler } from './middlewares/errors.middleware'
+import { config } from 'dotenv'
 
 const PORT = 5000
 const app = express()
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 databaseServices.connect()
-
+config()
 //  Use user routes
 app.use('/users', usersRouter)
 

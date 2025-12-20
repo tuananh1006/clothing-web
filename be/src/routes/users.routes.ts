@@ -9,7 +9,7 @@ usersRouter.get('/', (req, res) => {
   res.send('User route')
 })
 
-usersRouter.post('/login', loginValidator, loginController)
+usersRouter.post('/login', loginValidator, wrapRequestHandler(loginController))
 /**
  * Description: The login route for user authentication.
  * Path: /login
