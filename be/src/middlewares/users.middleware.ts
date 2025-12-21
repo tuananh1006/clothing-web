@@ -8,6 +8,7 @@ import { config } from 'dotenv'
 import { verifyToken } from '~/utils/jwt'
 import { ErrorWithStatus } from '~/models/Errors'
 import HTTP_STATUS from '~/constants/httpStatus'
+import { ObjectId } from 'mongodb'
 config()
 export const loginValidator = validate(
   checkSchema(
@@ -153,6 +154,135 @@ export const refreshTokenValidator = validate(
                 throw error
               }
               throw new ErrorWithStatus(USERS_MESSAGES.USED_REFRESH_TOKEN_OR_NOT_EXIST, HTTP_STATUS.UNAUTHORIZED)
+            }
+            return true
+          }
+        }
+      }
+    },
+    ['body']
+  )
+)
+
+export const socialLoginValidator = validate(
+  checkSchema(
+    {
+      provider: {
+        in: ['body'],
+        notEmpty: { errorMessage: USERS_MESSAGES.PROVIDER_IS_REQUIRED },
+        isIn: {
+          options: [['google', 'facebook']],
+          errorMessage: 'Provider must be google or facebook'
+        }
+      },
+      token: {
+        in: ['body'],
+        notEmpty: { errorMessage: USERS_MESSAGES.TOKEN_IS_REQUIRED },
+        isString: { errorMessage: 'Token must be string' }
+      },
+      device_name: {
+        in: ['body'],
+        optional: true,
+        isString: { errorMessage: 'Device name must be string' }
+      }
+    },
+    ['body']
+  )
+)
+
+export const forgotPasswordValidator = validate(
+  checkSchema(
+    {
+      email: {
+        in: ['body'],
+        isEmail: { errorMessage: USERS_MESSAGES.INVALID_EMAIL_FORMAT },
+        notEmpty: { errorMessage: USERS_MESSAGES.USERNAME_AND_PASSWORD_REQUIRED }
+      }
+    },
+    ['body']
+  )
+)
+
+export const resetPasswordValidator = validate(
+  checkSchema(
+    {
+      token: {
+        in: ['body'],
+        notEmpty: { errorMessage: USERS_MESSAGES.TOKEN_IS_REQUIRED },
+        isString: { errorMessage: 'Token must be string' },
+        custom: {
+          options: async (value, { req }) => {
+            try {
+              const decoded = await verifyToken({ token: value, secretOrPublicKey: process.env.JWT_SECRET as string })
+              const user = await databaseServices.users.findOne({
+                _id: new ObjectId(decoded.userId),
+                forgot_password_token: value
+              })
+              if (user === null) {
+                throw new ErrorWithStatus(USERS_MESSAGES.INVALID_FORGOT_PASSWORD_TOKEN, HTTP_STATUS.UNAUTHORIZED)
+              }
+              req.decoded_forgot_password_token = decoded
+              req.user = user
+            } catch (error) {
+              if (error instanceof ErrorWithStatus) {
+                throw error
+              }
+              throw new ErrorWithStatus(USERS_MESSAGES.INVALID_FORGOT_PASSWORD_TOKEN, HTTP_STATUS.UNAUTHORIZED)
+            }
+            return true
+          }
+        }
+      },
+      email: {
+        in: ['body'],
+        isEmail: { errorMessage: USERS_MESSAGES.INVALID_EMAIL_FORMAT },
+        notEmpty: { errorMessage: USERS_MESSAGES.USERNAME_AND_PASSWORD_REQUIRED }
+      },
+      password: {
+        in: ['body'],
+        isLength: {
+          options: { min: 6 },
+          errorMessage: USERS_MESSAGES.PASSWORD_MIN_LENGTH
+        },
+        isString: { errorMessage: USERS_MESSAGES.PASSWORD_MUST_BE_STRING }
+      },
+      password_confirmation: {
+        in: ['body'],
+        custom: {
+          options: (value, { req }) => value === req.body.password,
+          errorMessage: USERS_MESSAGES.PASSWORDS_NOT_MATCH
+        }
+      }
+    },
+    ['body']
+  )
+)
+
+export const verifyForgotPasswordTokenValidator = validate(
+  checkSchema(
+    {
+      forgot_password_token: {
+        trim: true,
+        custom: {
+          options: async (value, { req }) => {
+            if (!value) {
+              throw new ErrorWithStatus(USERS_MESSAGES.TOKEN_IS_REQUIRED, HTTP_STATUS.UNAUTHORIZED)
+            }
+            try {
+              const decoded = await verifyToken({ token: value, secretOrPublicKey: process.env.JWT_SECRET as string })
+              const user = await databaseServices.users.findOne({
+                _id: new ObjectId(decoded.userId),
+                forgot_password_token: value
+              })
+              if (user === null) {
+                throw new ErrorWithStatus(USERS_MESSAGES.INVALID_FORGOT_PASSWORD_TOKEN, HTTP_STATUS.UNAUTHORIZED)
+              }
+              req.decoded_forgot_password_token = decoded
+            } catch (error) {
+              if (error instanceof ErrorWithStatus) {
+                throw error
+              }
+              throw new ErrorWithStatus(USERS_MESSAGES.INVALID_FORGOT_PASSWORD_TOKEN, HTTP_STATUS.UNAUTHORIZED)
             }
             return true
           }

@@ -3,9 +3,21 @@ import {
   loginValidator,
   registerValidator,
   accessTokenValidator,
-  refreshTokenValidator
+  refreshTokenValidator,
+  socialLoginValidator,
+  forgotPasswordValidator,
+  resetPasswordValidator,
+  verifyForgotPasswordTokenValidator
 } from '~/middlewares/users.middleware'
-import { loginController, registerController, logoutController } from '~/controllers/users.controller'
+import {
+  loginController,
+  registerController,
+  logoutController,
+  socialLoginController,
+  forgotPasswordController,
+  resetPasswordController,
+  verifyForgotPasswordTokenController
+} from '~/controllers/users.controller'
 import { wrapRequestHandler } from '~/utils/handler'
 
 const usersRouter = Router()
@@ -37,5 +49,14 @@ Path: /logout
 Method: POST
 Request Body: { refresh_token: string }
 **/
+
+usersRouter.post('/social-login', socialLoginValidator, wrapRequestHandler(socialLoginController))
+usersRouter.post('/forgot-password', forgotPasswordValidator, wrapRequestHandler(forgotPasswordController))
+usersRouter.post('/reset-password', resetPasswordValidator, wrapRequestHandler(resetPasswordController))
+usersRouter.post(
+  '/verify-forgot-password',
+  verifyForgotPasswordTokenValidator,
+  wrapRequestHandler(verifyForgotPasswordTokenController)
+)
 
 export default usersRouter

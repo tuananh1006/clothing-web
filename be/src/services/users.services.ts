@@ -1,17 +1,28 @@
 import User from '~/models/schemas/Users.schema'
 import databaseServices from './database.services'
-import { RegisterRequestBody } from '~/models/requests/users.requests'
+import {
+  RegisterRequestBody,
+  SocialLoginRequestBody,
+  ForgotPasswordRequestBody,
+  ResetPasswordRequestBody
+} from '~/models/requests/users.requests'
 import { hashPassword } from '~/utils/crypto'
-import { signToken } from '~/utils/jwt'
-import { TokenType } from '~/constants/enums'
+import { signToken, verifyToken } from '~/utils/jwt'
+import { TokenType, UserVerifyStatus } from '~/constants/enums'
 import type { StringValue } from 'ms'
 import RefreshToken from '~/models/schemas/RefreshToken.schema'
 import { ObjectId } from 'mongodb'
 import { config } from 'dotenv'
+import { randomBytes } from 'crypto'
+import { USERS_MESSAGES } from '~/constants/messages'
+import { ErrorWithStatus } from '~/models/Errors'
+import HTTP_STATUS from '~/constants/httpStatus'
+import { sendEmail } from './email.services'
+
 config()
+
 class UsersService {
   private signAccessToken(user_id: string) {
-    // Token signing logic
     return signToken({
       payload: { userId: user_id, token_type: TokenType.AccessToken },
       secret: process.env.JWT_SECRET,
@@ -20,7 +31,6 @@ class UsersService {
   }
 
   private signRefreshToken(user_id: string) {
-    // Token signing logic
     return signToken({
       payload: { userId: user_id, token_type: TokenType.RefreshToken },
       secret: process.env.JWT_SECRET,
@@ -28,19 +38,14 @@ class UsersService {
     })
   }
 
-  private signEmailVerifyToken(user_id: string) {
-    // Token signing logic
+  private signForgotPasswordToken(user_id: string) {
     return signToken({
-      payload: { userId: user_id, token_type: TokenType.EmailVerifyToken }
+      payload: { userId: user_id, token_type: TokenType.ForgotPasswordToken },
+      secret: process.env.JWT_SECRET,
+      options: { expiresIn: '1h' }
     })
   }
 
-  private signForgotPasswordToken(user_id: string) {
-    // Token signing logic
-    return signToken({
-      payload: { userId: user_id, token_type: TokenType.ForgotPasswordToken }
-    })
-  }
   private signAccessAndRefreshToken(user_id: string) {
     return Promise.all([this.signAccessToken(user_id), this.signRefreshToken(user_id)])
   }
@@ -55,7 +60,7 @@ class UsersService {
       access_token,
       refresh_token,
       token_type: 'Bearer',
-      expires_in: 3600, // Should match ACCESS_TOKEN_EXPIRE_IN
+      expires_in: 3600,
       user: {
         id: user_id,
         name: user?.full_name,
@@ -66,9 +71,7 @@ class UsersService {
     }
   }
 
-  // Service methods here
   async register(payload: RegisterRequestBody) {
-    // Registration logic
     const result = await databaseServices.users.insertOne(
       new User({
         ...payload,
@@ -96,6 +99,63 @@ class UsersService {
 
   async logout(refresh_token: string) {
     await databaseServices.refreshTokens.deleteOne({ token: refresh_token })
+  }
+
+  async socialLogin(payload: SocialLoginRequestBody) {
+    // Mock verification: assume token is valid and contains email/name
+    // In real app, verify with Google/Facebook API
+    const email = `user_${payload.token.substring(0, 5)}@example.com` // Mock email from token
+    const name = `User ${payload.token.substring(0, 5)}` // Mock name
+
+    let user = await databaseServices.users.findOne({ email })
+    if (!user) {
+      const password = randomBytes(16).toString('hex')
+      const result = await databaseServices.users.insertOne(
+        new User({
+          first_name: name,
+          last_name: '',
+          email,
+          password: hashPassword(password),
+          verify: UserVerifyStatus.Verified
+        })
+      )
+      user = await databaseServices.users.findOne({ _id: result.insertedId })
+    }
+
+    return this.login(user!._id.toString())
+  }
+
+  async forgotPassword(payload: ForgotPasswordRequestBody) {
+    const user = await databaseServices.users.findOne({ email: payload.email })
+    if (!user) {
+      // Return success even if email not found for security
+      return
+    }
+    const token = await this.signForgotPasswordToken(user._id.toString())
+    await databaseServices.users.updateOne({ _id: user._id }, { $set: { forgot_password_token: token } })
+
+    const subject = 'Reset Password Request'
+    const html = `
+      <h3>Hello ${user.full_name || user.email},</h3>
+      <p>You requested to reset your password.</p>
+      <p>Your reset token is:</p>
+      <h2>${token}</h2>
+      <p>This token is valid for 1 hour.</p>
+      <p>If you did not request this, please ignore this email.</p>
+    `
+    await sendEmail(payload.email, subject, html)
+  }
+
+  async resetPassword(user_id: string, password: string) {
+    await databaseServices.users.updateOne(
+      { _id: new ObjectId(user_id) },
+      {
+        $set: {
+          password: hashPassword(password),
+          forgot_password_token: ''
+        }
+      }
+    )
   }
 }
 
