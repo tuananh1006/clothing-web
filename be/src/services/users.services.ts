@@ -50,18 +50,43 @@ class UsersService {
     databaseServices.refreshTokens.insertOne(
       new RefreshToken({ user_id: new ObjectId(user_id), token: refresh_token, created_at: new Date() })
     )
-    return { access_token, refresh_token }
+    const user = await databaseServices.users.findOne({ _id: new ObjectId(user_id) })
+    return {
+      access_token,
+      refresh_token,
+      token_type: 'Bearer',
+      expires_in: 3600, // Should match ACCESS_TOKEN_EXPIRE_IN
+      user: {
+        id: user_id,
+        name: user?.full_name,
+        email: user?.email,
+        avatar_url: user?.avatar,
+        role: user?.role
+      }
+    }
   }
 
   // Service methods here
   async register(payload: RegisterRequestBody) {
     // Registration logic
     const result = await databaseServices.users.insertOne(
-      new User({ ...payload, date_of_birth: new Date(payload.date_of_birth), password: hashPassword(payload.password) })
+      new User({
+        ...payload,
+        password: hashPassword(payload.password)
+      })
     )
     const user_id = result.insertedId.toString()
     const [access_token, refresh_token] = await this.signAccessAndRefreshToken(user_id)
-    return { access_token, refresh_token }
+    const user = await databaseServices.users.findOne({ _id: result.insertedId })
+    return {
+      access_token,
+      user: {
+        id: user_id,
+        email: user?.email,
+        full_name: user?.full_name,
+        role: user?.role
+      }
+    }
   }
 
   async checkEmailExists(email: string) {

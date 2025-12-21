@@ -9,10 +9,11 @@ import HTTP_STATUS from '~/constants/httpStatus'
 
 export const loginController = async (req: Request, res: Response, next: NextFunction) => {
   const user_id = (req as any).user._id as string
-  const { access_token, refresh_token } = await usersServices.login(user_id)
-  return res
-    .status(HTTP_STATUS.OK)
-    .json({ message: USERS_MESSAGES.LOGIN_SUCCESS, result: { access_token, refresh_token } })
+  const result = await usersServices.login(user_id)
+  return res.status(HTTP_STATUS.OK).json({
+    message: USERS_MESSAGES.LOGIN_SUCCESS,
+    data: result
+  })
 }
 
 export const registerController = async (
@@ -22,7 +23,10 @@ export const registerController = async (
 ) => {
   try {
     const result = await usersServices.register(req.body)
-    return res.status(HTTP_STATUS.CREATED).json({ message: USERS_MESSAGES.REGISTER_SUCCESS, result: result })
+    return res.status(HTTP_STATUS.CREATED).json({
+      message: USERS_MESSAGES.REGISTER_SUCCESS,
+      data: result
+    })
   } catch (error) {
     next(error)
   }

@@ -1,14 +1,14 @@
 import { ObjectId } from 'mongodb'
-import { UserVerifyStatus } from '~/constants/enums'
+import { UserVerifyStatus, UserRole } from '~/constants/enums'
 
 interface UserType {
   _id?: ObjectId
-  name?: string
-  username: string
+  first_name: string
+  last_name: string
+  full_name?: string
   email: string
-  date_of_birth?: Date
-  phonenumber?: string
   password: string
+  role?: UserRole
   createdAt?: Date
   updatedAt?: Date
   email_verified_token?: string
@@ -16,16 +16,17 @@ interface UserType {
   verify?: UserVerifyStatus
   address?: string
   avatar?: string
+  phonenumber?: string
 }
 
 export default class User {
   _id: ObjectId
-  name: string
-  username: string
+  first_name: string
+  last_name: string
+  full_name: string
   email: string
-  date_of_birth: Date
-  phonenumber: string
   password: string
+  role: UserRole
   createdAt: Date
   updatedAt: Date
   email_verified_token: string
@@ -33,15 +34,16 @@ export default class User {
   verify: UserVerifyStatus
   address: string
   avatar: string
+  phonenumber: string
 
   constructor(user: UserType) {
     this._id = user._id || new ObjectId()
-    this.name = user.name || ''
+    this.first_name = user.first_name
+    this.last_name = user.last_name
+    this.full_name = user.full_name || `${user.first_name} ${user.last_name}`.trim()
     this.email = user.email
-    this.username = user.username
-    this.date_of_birth = user.date_of_birth || new Date()
-    this.phonenumber = user.phonenumber || ''
     this.password = user.password
+    this.role = user.role || UserRole.Customer
     this.createdAt = user.createdAt || new Date()
     this.updatedAt = user.updatedAt || new Date()
     this.email_verified_token = user.email_verified_token || ''
@@ -49,5 +51,6 @@ export default class User {
     this.verify = user.verify || UserVerifyStatus.Unverified
     this.address = user.address || ''
     this.avatar = user.avatar || ''
+    this.phonenumber = user.phonenumber || ''
   }
 }

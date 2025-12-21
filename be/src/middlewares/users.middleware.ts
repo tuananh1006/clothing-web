@@ -38,6 +38,11 @@ export const loginValidator = validate(
           options: { min: 6 },
           errorMessage: USERS_MESSAGES.PASSWORD_MIN_LENGTH
         }
+      },
+      remember_me: {
+        in: ['body'],
+        optional: true,
+        isBoolean: { errorMessage: 'Remember me must be boolean' }
       }
     },
     ['body']
@@ -46,7 +51,13 @@ export const loginValidator = validate(
 export const registerValidator = validate(
   checkSchema(
     {
-      username: {
+      first_name: {
+        in: ['body'],
+        trim: true,
+        isString: { errorMessage: USERS_MESSAGES.USERNAME_MUST_BE_STRING },
+        notEmpty: { errorMessage: USERS_MESSAGES.USERNAME_IS_REQUIRED }
+      },
+      last_name: {
         in: ['body'],
         trim: true,
         isString: { errorMessage: USERS_MESSAGES.USERNAME_MUST_BE_STRING },
@@ -73,19 +84,23 @@ export const registerValidator = validate(
           errorMessage: USERS_MESSAGES.PASSWORD_MIN_LENGTH
         }
       },
-      confirm_password: {
+      password_confirmation: {
         in: ['body'],
         custom: {
           options: (value, { req }) => value === req.body.password,
           errorMessage: USERS_MESSAGES.PASSWORDS_NOT_MATCH
         }
       },
-      date_of_birth: {
+      agree_terms: {
         in: ['body'],
-        optional: true,
-        isISO8601: {
-          options: { strict: true },
-          errorMessage: USERS_MESSAGES.INVALID_DATE_OF_BIRTH
+        isBoolean: { errorMessage: 'Agree terms must be boolean' },
+        custom: {
+          options: (value) => {
+            if (value !== true) {
+              throw new Error('You must agree to the terms and conditions')
+            }
+            return true
+          }
         }
       }
     },

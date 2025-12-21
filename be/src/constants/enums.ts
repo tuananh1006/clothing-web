@@ -10,3 +10,9 @@ export enum TokenType {
   ForgotPasswordToken,
   EmailVerifyToken
 }
+
+export enum UserRole {
+  Admin = 'admin',
+  Staff = 'staff',
+  Customer = 'customer'
+}
