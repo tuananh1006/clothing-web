@@ -18,5 +18,12 @@ export const USERS_MESSAGES = {
   REFRESH_TOKEN_MUST_BE_STRING: 'Refresh token must be a string',
   USED_REFRESH_TOKEN_OR_NOT_EXIST: 'Used refresh token or not exist',
   ACCESS_TOKEN_IS_REQUIRED: 'Access token is required',
-  INVALID_ACCESS_TOKEN: 'Invalid access token'
+  INVALID_ACCESS_TOKEN: 'Invalid access token',
+  FORGOT_PASSWORD_SUCCESS: 'Forgot password email sent',
+  RESET_PASSWORD_SUCCESS: 'Reset password success',
+  INVALID_FORGOT_PASSWORD_TOKEN: 'Invalid forgot password token',
+  VERIFY_FORGOT_PASSWORD_TOKEN_SUCCESS: 'Verify forgot password token success',
+  SOCIAL_LOGIN_SUCCESS: 'Social login success',
+  PROVIDER_IS_REQUIRED: 'Provider is required',
+  TOKEN_IS_REQUIRED: 'Token is required'
 } as const

@@ -12,3 +12,24 @@ export interface LoginRequestBody {
   password: string
   remember_me?: boolean
 }
+
+export interface SocialLoginRequestBody {
+  provider: 'google' | 'facebook'
+  token: string
+  device_name?: string
+}
+
+export interface ForgotPasswordRequestBody {
+  email: string
+}
+
+export interface ResetPasswordRequestBody {
+  token: string
+  email: string
+  password: string
+  password_confirmation: string
+}
+
+export interface VerifyForgotPasswordTokenReqBody {
+  forgot_password_token: string
+}
