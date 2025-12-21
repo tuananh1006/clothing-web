@@ -1,6 +1,7 @@
 import express from 'express'
 import usersRouter from './routes/users.routes'
 import categoriesRouter from './routes/categories.routes'
+import productsRouter from './routes/products.routes'
 import databaseServices from './services/database.services'
 import { defaultErrorHandler } from './middlewares/errors.middleware'
 import { config } from 'dotenv'
@@ -14,6 +15,7 @@ config()
 //  Use user routes
 app.use('/api/v1/auth', usersRouter)
 app.use('/api/v1/categories', categoriesRouter)
+app.use('/api/v1/products', productsRouter)
 
 app.get('/', (req, res) => {
   res.send('Hello, World!')
