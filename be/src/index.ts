@@ -1,5 +1,6 @@
 import express from 'express'
 import usersRouter from './routes/users.routes'
+import categoriesRouter from './routes/categories.routes'
 import databaseServices from './services/database.services'
 import { defaultErrorHandler } from './middlewares/errors.middleware'
 import { config } from 'dotenv'
@@ -12,6 +13,7 @@ databaseServices.connect().catch(console.dir)
 config()
 //  Use user routes
 app.use('/api/v1/auth', usersRouter)
+app.use('/api/v1/categories', categoriesRouter)
 
 app.get('/', (req, res) => {
   res.send('Hello, World!')
