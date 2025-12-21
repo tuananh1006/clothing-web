@@ -2,7 +2,7 @@ import jwt, { SignOptions } from 'jsonwebtoken'
 
 export const signToken = ({
   payload,
-  secret = process.env.JWT_SERCRET!,
+  secret = process.env.JWT_SECRET!,
   options = {
     algorithm: 'HS256'
   }
@@ -21,7 +21,7 @@ export const signToken = ({
 
 export const verifyToken = ({
   token,
-  secretOrPublicKey = process.env.JWT_SERCRET! as string
+  secretOrPublicKey = process.env.JWT_SECRET! as string
 }: {
   token: string
   secretOrPublicKey?: string

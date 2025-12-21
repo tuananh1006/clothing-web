@@ -120,7 +120,7 @@ export const accessTokenValidator = validate(
           }
           const decodedVerifyToken = await verifyToken({
             token: access_token,
-            secretOrPublicKey: process.env.JWT_SECRET_ACCESS_TOKEN
+            secretOrPublicKey: process.env.JWT_SECRET
           })
           req.decoded_authorization = decodedVerifyToken
           return true
@@ -142,7 +142,7 @@ export const refreshTokenValidator = validate(
             }
             try {
               const [decoded_refresh_token, refresh_token] = await Promise.all([
-                verifyToken({ token: value, secretOrPublicKey: process.env.JWT_SECRET_REFRESH_TOKEN as string }),
+                verifyToken({ token: value, secretOrPublicKey: process.env.JWT_SECRET as string }),
                 databaseServices.refreshTokens.findOne({ token: value })
               ])
               if (refresh_token === null) {
