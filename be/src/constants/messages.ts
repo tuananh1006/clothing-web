@@ -2,6 +2,7 @@ export const USERS_MESSAGES = {
   VALIDATION_ERROR: 'Validation error occurred',
   LOGIN_FAILED: 'Invalid username or password',
   LOGIN_SUCCESS: 'Login success',
+  LOGOUT_SUCCESS: 'Logout success',
   REGISTER_SUCCESS: 'Register success',
   USERNAME_IS_REQUIRED: 'Username is required',
   USERNAME_MUST_BE_STRING: 'Username must be a string',
@@ -12,5 +13,10 @@ export const USERS_MESSAGES = {
   PASSWORDS_NOT_MATCH: 'Passwords do not match',
   INVALID_DATE_OF_BIRTH: 'Date of birth must be a valid ISO 8601 date',
   EMAIL_OR_PASSWORD_INCORRECT: 'Email or password incorrect',
-  PASSWORD_MUST_BE_STRING: 'Password must be a string'
+  PASSWORD_MUST_BE_STRING: 'Password must be a string',
+  REFRESH_TOKEN_IS_REQUIRED: 'Refresh token is required',
+  REFRESH_TOKEN_MUST_BE_STRING: 'Refresh token must be a string',
+  USED_REFRESH_TOKEN_OR_NOT_EXIST: 'Used refresh token or not exist',
+  ACCESS_TOKEN_IS_REQUIRED: 'Access token is required',
+  INVALID_ACCESS_TOKEN: 'Invalid access token'
 } as const

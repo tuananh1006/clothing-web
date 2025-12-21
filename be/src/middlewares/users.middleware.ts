@@ -5,78 +5,145 @@ import { USERS_MESSAGES } from '~/constants/messages'
 import databaseServices from '~/services/database.services'
 import { hashPassword } from '~/utils/crypto'
 import { config } from 'dotenv'
+import { verifyToken } from '~/utils/jwt'
+import { ErrorWithStatus } from '~/models/Errors'
+import HTTP_STATUS from '~/constants/httpStatus'
 config()
 export const loginValidator = validate(
-  checkSchema({
-    email: {
-      in: ['body'],
-      isEmail: { errorMessage: USERS_MESSAGES.INVALID_EMAIL_FORMAT },
-      normalizeEmail: true,
-      notEmpty: { errorMessage: USERS_MESSAGES.USERNAME_AND_PASSWORD_REQUIRED },
-      custom: {
-        options: async (value, { req }) => {
-          const user = await databaseServices.users.findOne({ email: value, password: hashPassword(req.body.password) })
-          if (user === null) {
-            throw new Error(USERS_MESSAGES.EMAIL_OR_PASSWORD_INCORRECT)
+  checkSchema(
+    {
+      email: {
+        in: ['body'],
+        isEmail: { errorMessage: USERS_MESSAGES.INVALID_EMAIL_FORMAT },
+        normalizeEmail: true,
+        notEmpty: { errorMessage: USERS_MESSAGES.USERNAME_AND_PASSWORD_REQUIRED },
+        custom: {
+          options: async (value, { req }) => {
+            const user = await databaseServices.users.findOne({
+              email: value,
+              password: hashPassword(req.body.password)
+            })
+            if (user === null) {
+              throw new Error(USERS_MESSAGES.EMAIL_OR_PASSWORD_INCORRECT)
+            }
+            req.user = user
+            return true
           }
-          req.user = user
-          return true
+        }
+      },
+      password: {
+        notEmpty: { errorMessage: USERS_MESSAGES.USERNAME_AND_PASSWORD_REQUIRED },
+        isString: { errorMessage: USERS_MESSAGES.PASSWORD_MUST_BE_STRING },
+        isLength: {
+          options: { min: 6 },
+          errorMessage: USERS_MESSAGES.PASSWORD_MIN_LENGTH
         }
       }
     },
-    password: {
-      notEmpty: { errorMessage: USERS_MESSAGES.USERNAME_AND_PASSWORD_REQUIRED },
-      isString: { errorMessage: USERS_MESSAGES.PASSWORD_MUST_BE_STRING },
-      isLength: {
-        options: { min: 6 },
-        errorMessage: USERS_MESSAGES.PASSWORD_MIN_LENGTH
+    ['body']
+  )
+)
+export const registerValidator = validate(
+  checkSchema(
+    {
+      username: {
+        in: ['body'],
+        trim: true,
+        isString: { errorMessage: USERS_MESSAGES.USERNAME_MUST_BE_STRING },
+        notEmpty: { errorMessage: USERS_MESSAGES.USERNAME_IS_REQUIRED }
+      },
+      email: {
+        in: ['body'],
+        isEmail: { errorMessage: USERS_MESSAGES.INVALID_EMAIL_FORMAT },
+        normalizeEmail: true,
+        custom: {
+          options: async (value) => {
+            const checkEmailExists = await usersServices.checkEmailExists(value)
+            if (checkEmailExists) {
+              throw new Error(USERS_MESSAGES.EMAIL_ALREADY_IN_USE)
+            }
+            return true
+          }
+        }
+      },
+      password: {
+        in: ['body'],
+        isLength: {
+          options: { min: 6 },
+          errorMessage: USERS_MESSAGES.PASSWORD_MIN_LENGTH
+        }
+      },
+      confirm_password: {
+        in: ['body'],
+        custom: {
+          options: (value, { req }) => value === req.body.password,
+          errorMessage: USERS_MESSAGES.PASSWORDS_NOT_MATCH
+        }
+      },
+      date_of_birth: {
+        in: ['body'],
+        optional: true,
+        isISO8601: {
+          options: { strict: true },
+          errorMessage: USERS_MESSAGES.INVALID_DATE_OF_BIRTH
+        }
+      }
+    },
+    ['body']
+  )
+)
+
+export const accessTokenValidator = validate(
+  checkSchema({
+    Authorization: {
+      custom: {
+        options: async (value, { req }) => {
+          const access_token = value.split(' ')[1]
+          if (access_token == '') {
+            throw new ErrorWithStatus(USERS_MESSAGES.ACCESS_TOKEN_IS_REQUIRED, HTTP_STATUS.UNAUTHORIZED)
+          }
+          const decodedVerifyToken = await verifyToken({
+            token: access_token,
+            secretOrPublicKey: process.env.JWT_SECRET_ACCESS_TOKEN
+          })
+          req.decoded_authorization = decodedVerifyToken
+          return true
+        }
       }
     }
   })
 )
-export const registerValidator = validate(
-  checkSchema({
-    username: {
-      in: ['body'],
-      trim: true,
-      isString: { errorMessage: USERS_MESSAGES.USERNAME_MUST_BE_STRING },
-      notEmpty: { errorMessage: USERS_MESSAGES.USERNAME_IS_REQUIRED }
-    },
-    email: {
-      in: ['body'],
-      isEmail: { errorMessage: USERS_MESSAGES.INVALID_EMAIL_FORMAT },
-      normalizeEmail: true,
-      custom: {
-        options: async (value) => {
-          const checkEmailExists = await usersServices.checkEmailExists(value)
-          if (checkEmailExists) {
-            throw new Error(USERS_MESSAGES.EMAIL_ALREADY_IN_USE)
+
+export const refreshTokenValidator = validate(
+  checkSchema(
+    {
+      refresh_token: {
+        trim: true,
+        custom: {
+          options: async (value, { req }) => {
+            if (!value) {
+              throw new ErrorWithStatus(USERS_MESSAGES.REFRESH_TOKEN_IS_REQUIRED, HTTP_STATUS.UNAUTHORIZED)
+            }
+            try {
+              const [decoded_refresh_token, refresh_token] = await Promise.all([
+                verifyToken({ token: value, secretOrPublicKey: process.env.JWT_SECRET_REFRESH_TOKEN as string }),
+                databaseServices.refreshTokens.findOne({ token: value })
+              ])
+              if (refresh_token === null) {
+                throw new ErrorWithStatus(USERS_MESSAGES.USED_REFRESH_TOKEN_OR_NOT_EXIST, HTTP_STATUS.UNAUTHORIZED)
+              }
+              req.decoded_refresh_token = decoded_refresh_token
+            } catch (error) {
+              if (error instanceof ErrorWithStatus) {
+                throw error
+              }
+              throw new ErrorWithStatus(USERS_MESSAGES.USED_REFRESH_TOKEN_OR_NOT_EXIST, HTTP_STATUS.UNAUTHORIZED)
+            }
+            return true
           }
-          return true
         }
       }
     },
-    password: {
-      in: ['body'],
-      isLength: {
-        options: { min: 6 },
-        errorMessage: USERS_MESSAGES.PASSWORD_MIN_LENGTH
-      }
-    },
-    confirm_password: {
-      in: ['body'],
-      custom: {
-        options: (value, { req }) => value === req.body.password,
-        errorMessage: USERS_MESSAGES.PASSWORDS_NOT_MATCH
-      }
-    },
-    date_of_birth: {
-      in: ['body'],
-      optional: true,
-      isISO8601: {
-        options: { strict: true },
-        errorMessage: USERS_MESSAGES.INVALID_DATE_OF_BIRTH
-      }
-    }
-  })
+    ['body']
+  )
 )

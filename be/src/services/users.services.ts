@@ -14,6 +14,7 @@ class UsersService {
     // Token signing logic
     return signToken({
       payload: { userId: user_id, token_type: TokenType.AccessToken },
+      secret: process.env.JWT_SECRET,
       options: { expiresIn: process.env.ACCESS_TOKEN_EXPIRE_IN as StringValue }
     })
   }
@@ -22,6 +23,7 @@ class UsersService {
     // Token signing logic
     return signToken({
       payload: { userId: user_id, token_type: TokenType.RefreshToken },
+      secret: process.env.JWT_SECRET,
       options: { expiresIn: process.env.REFRESH_TOKEN_EXPIRE_IN as StringValue }
     })
   }
@@ -65,6 +67,10 @@ class UsersService {
   async checkEmailExists(email: string) {
     const user = await databaseServices.users.findOne({ email })
     return !!user
+  }
+
+  async logout(refresh_token: string) {
+    await databaseServices.refreshTokens.deleteOne({ token: refresh_token })
   }
 }
 
