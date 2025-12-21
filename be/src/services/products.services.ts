@@ -11,7 +11,8 @@ class ProductsService {
     order,
     price_min,
     price_max,
-    rating_filter
+    rating_filter,
+    is_featured
   }: {
     page?: number
     limit?: number
@@ -22,8 +23,13 @@ class ProductsService {
     price_min?: number
     price_max?: number
     rating_filter?: number
+    is_featured?: boolean
   }) {
     const filter: any = {}
+
+    if (is_featured) {
+      filter.is_featured = true
+    }
 
     if (category_slug) {
       const category = await databaseServices.categories.findOne({ slug: category_slug })
@@ -33,7 +39,7 @@ class ProductsService {
     }
 
     if (name) {
-      filter.$text = { $search: name }
+      filter.name = { $regex: name, $options: 'i' }
     }
 
     if (price_min !== undefined || price_max !== undefined) {
@@ -73,6 +79,21 @@ class ProductsService {
   async getProductDetail(slug: string) {
     const product = await databaseServices.products.findOne({ slug })
     return product
+  }
+
+  async getRelatedProducts(slug: string, limit: number = 4) {
+    const product = await databaseServices.products.findOne({ slug })
+    if (!product) return []
+
+    const relatedProducts = await databaseServices.products
+      .find({
+        category: product.category,
+        slug: { $ne: slug }
+      })
+      .limit(limit)
+      .toArray()
+
+    return relatedProducts
   }
 }
 

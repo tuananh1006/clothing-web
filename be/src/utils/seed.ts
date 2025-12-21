@@ -49,7 +49,8 @@ const products = [
     view: 150,
     rating: 4.8,
     colors: ['White', 'Beige', 'Blue'],
-    sizes: ['S', 'M', 'L', 'XL']
+    sizes: ['S', 'M', 'L', 'XL'],
+    is_featured: true
   },
   {
     name: 'Heavyweight Cotton Tee',
@@ -68,7 +69,8 @@ const products = [
     view: 300,
     rating: 4.5,
     colors: ['White', 'Black', 'Navy', 'Grey'],
-    sizes: ['S', 'M', 'L', 'XL', 'XXL']
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+    is_featured: true
   },
   {
     name: 'Everyday Soft Blazer',
@@ -86,7 +88,8 @@ const products = [
     view: 80,
     rating: 5.0,
     colors: ['Black', 'Navy', 'Charcoal'],
-    sizes: ['46', '48', '50', '52']
+    sizes: ['46', '48', '50', '52'],
+    is_featured: false
   },
   {
     name: 'Washed Denim Shirt',
@@ -105,7 +108,8 @@ const products = [
     view: 120,
     rating: 4.2,
     colors: ['Light Blue', 'Indigo'],
-    sizes: ['S', 'M', 'L', 'XL']
+    sizes: ['S', 'M', 'L', 'XL'],
+    is_featured: true
   },
   {
     name: 'Tech Nylon Bomber',
@@ -123,7 +127,8 @@ const products = [
     view: 90,
     rating: 4.7,
     colors: ['Black', 'Olive', 'Navy'],
-    sizes: ['M', 'L', 'XL']
+    sizes: ['M', 'L', 'XL'],
+    is_featured: false
   },
   {
     name: 'Premium Oxford Shirt',
@@ -141,7 +146,8 @@ const products = [
     view: 200,
     rating: 4.6,
     colors: ['White', 'Blue', 'Pink'],
-    sizes: ['S', 'M', 'L', 'XL']
+    sizes: ['S', 'M', 'L', 'XL'],
+    is_featured: true
   }
 ]
 

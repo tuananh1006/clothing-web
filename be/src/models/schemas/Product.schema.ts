@@ -16,6 +16,7 @@ interface ProductType {
   rating?: number
   colors?: string[]
   sizes?: string[]
+  is_featured?: boolean
   created_at?: Date
   updated_at?: Date
 }
@@ -36,6 +37,7 @@ export default class Product {
   rating: number
   colors: string[]
   sizes: string[]
+  is_featured: boolean
   created_at: Date
   updated_at: Date
 
@@ -55,6 +57,7 @@ export default class Product {
     this.rating = product.rating || 0
     this.colors = product.colors || []
     this.sizes = product.sizes || []
+    this.is_featured = product.is_featured || false
     this.created_at = product.created_at || new Date()
     this.updated_at = product.updated_at || new Date()
   }
