@@ -512,6 +512,159 @@ class AdminService {
 
     return overview
   }
+
+  async getAdminCustomers(params: {
+    page?: number
+    limit?: number
+    keyword?: string
+    status?: 'active' | 'inactive' | 'new'
+    sort_by?: 'created_at' | 'total_spent' | 'order_count'
+    order?: 'asc' | 'desc'
+  }) {
+    const page = params.page && params.page > 0 ? params.page : 1
+    const limit = params.limit && params.limit > 0 ? params.limit : 10
+
+    const match: any = {}
+    if (params.keyword) {
+      const regex = new RegExp(params.keyword, 'i')
+      match.$or = [{ full_name: regex }, { email: regex }, { phonenumber: regex }]
+    }
+
+    // status mapping using verify and createdAt
+    const now = new Date()
+    const newSince = new Date(now)
+    newSince.setDate(newSince.getDate() - 30)
+    if (params.status === 'inactive') {
+      match.verify = 2 // UserVerifyStatus.Banned
+    } else if (params.status === 'new') {
+      match.createdAt = { $gte: newSince }
+    }
+
+    const sortBy = params.sort_by || 'created_at'
+    const order = params.order === 'asc' ? 1 : -1
+
+    // Aggregate users with orders stats
+    const pipeline: any[] = [{ $match: match }]
+    pipeline.push(
+      {
+        $lookup: {
+          from: process.env.DB_ORDERS_COLLECTION as string,
+          localField: '_id',
+          foreignField: 'user_id',
+          as: 'orders'
+        }
+      },
+      {
+        $addFields: {
+          order_count: { $size: { $ifNull: ['$orders', []] } },
+          total_spent: {
+            $sum: {
+              $map: {
+                input: '$orders',
+                as: 'o',
+                in: { $ifNull: ['$$o.cost_summary.total', 0] }
+              }
+            }
+          }
+        }
+      },
+      { $project: { orders: 0 } }
+    )
+
+    // Sorting
+    const sort: any = {}
+    if (sortBy === 'created_at') sort.createdAt = order
+    else if (sortBy === 'total_spent') sort.total_spent = order
+    else if (sortBy === 'order_count') sort.order_count = order
+    else sort.createdAt = -1
+
+    const countPipeline = [...pipeline, { $count: 'total' }]
+    pipeline.push({ $sort: sort }, { $skip: (page - 1) * limit }, { $limit: limit })
+
+    const [rows, totalAgg] = await Promise.all([
+      databaseServices.users.aggregate(pipeline).toArray(),
+      databaseServices.users.aggregate(countPipeline).toArray()
+    ])
+
+    const total = totalAgg[0]?.total || 0
+    const toVn = (n: number) => `${new Intl.NumberFormat('vi-VN').format(n)}đ`
+
+    const items = rows.map((u) => {
+      const isInactive = u.verify === 2 // Banned
+      const isNew = u.createdAt && u.createdAt >= newSince
+      const status = isInactive ? 'inactive' : isNew ? 'new' : 'active'
+      const map: any = {
+        inactive: { label: 'Bị khóa', color: 'red' },
+        new: { label: 'Mới', color: 'blue' },
+        active: { label: 'Hoạt động', color: 'green' }
+      }
+      const s = map[status]
+      const code = `#USR-${u._id?.toString().slice(-6).toUpperCase()}`
+      return {
+        id: u._id,
+        customer_code: code,
+        name: u.full_name,
+        avatar_url: u.avatar || null,
+        email: u.email,
+        phone: u.phonenumber || '',
+        type: 'registered',
+        stats: {
+          order_count: u.order_count || 0,
+          total_spent: u.total_spent || 0,
+          total_spent_display: toVn(u.total_spent || 0)
+        },
+        status,
+        status_label: s.label,
+        status_color: s.color,
+        joined_at: u.createdAt,
+        joined_at_display: u.createdAt ? new Date(u.createdAt).toLocaleDateString('vi-VN') : ''
+      }
+    })
+
+    const startIdx = total === 0 ? 0 : (page - 1) * limit + 1
+    const endIdx = Math.min(page * limit, total)
+    return {
+      items,
+      meta: {
+        total_items: total,
+        total_pages: Math.ceil(total / limit) || 1,
+        current_page: page,
+        limit,
+        showing_text:
+          total === 0
+            ? 'Không có khách hàng nào'
+            : `Hiển thị ${startIdx}-${endIdx} trên ${new Intl.NumberFormat('vi-VN').format(total)} khách hàng`
+      }
+    }
+  }
+
+  async getAdminCustomerDetail(id: string) {
+    const _id = new ObjectId(id)
+    const user = await databaseServices.users.findOne({ _id })
+    if (!user) return null
+    const recent_orders = await databaseServices.orders
+      .find({ user_id: _id }, { projection: { order_code: 1, created_at: 1, status: 1, 'cost_summary.total': 1 } })
+      .sort({ created_at: -1 })
+      .limit(5)
+      .toArray()
+    return {
+      id: user._id,
+      info: {
+        name: user.full_name,
+        email: user.email,
+        phone: user.phonenumber || ''
+      },
+      addresses: user.address ? [{ id: 1, full_address: user.address, is_default: true }] : [],
+      recent_orders
+    }
+  }
+
+  async updateAdminCustomerStatus(id: string, status: 'active' | 'inactive') {
+    const _id = new ObjectId(id)
+    const verify = status === 'inactive' ? 2 : 1 // Banned : Verified
+    await databaseServices.users.updateOne({ _id }, { $set: { verify, updatedAt: new Date() } })
+    return { message: status === 'inactive' ? 'Đã khóa tài khoản khách hàng' : 'Đã mở khóa tài khoản khách hàng' }
+  }
 }
 
 export default new AdminService()

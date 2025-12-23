@@ -11,7 +11,10 @@ import {
   adminUpdateProductController,
   adminDeleteProductController,
   adminOrdersStatsController,
-  adminGetOrdersController
+  adminGetOrdersController,
+  adminGetCustomersController,
+  adminGetCustomerDetailController,
+  adminUpdateCustomerStatusController
 } from '~/controllers/admin.controller'
 import { wrapRequestHandler } from '~/utils/handler'
 
@@ -117,3 +120,35 @@ adminRouter.get('/orders/stats', accessTokenValidator, requireAdmin, wrapRequest
  * Query: { page?, limit?, keyword?, status?, date_from?, date_to?, sort_by?, order? }
  */
 adminRouter.get('/orders', accessTokenValidator, requireAdmin, wrapRequestHandler(adminGetOrdersController))
+
+/**
+ * Description: Admin - List customers
+ * Path: /customers
+ * Method: GET
+ * Query: { page?, limit?, keyword?, status?, sort_by?, order? }
+ */
+adminRouter.get('/customers', accessTokenValidator, requireAdmin, wrapRequestHandler(adminGetCustomersController))
+
+/**
+ * Description: Admin - Customer detail
+ * Path: /customers/:id
+ * Method: GET
+ */
+adminRouter.get(
+  '/customers/:id',
+  accessTokenValidator,
+  requireAdmin,
+  wrapRequestHandler(adminGetCustomerDetailController)
+)
+
+/**
+ * Description: Admin - Update customer status (block/unlock)
+ * Path: /customers/:id/status
+ * Method: PUT
+ */
+adminRouter.put(
+  '/customers/:id/status',
+  accessTokenValidator,
+  requireAdmin,
+  wrapRequestHandler(adminUpdateCustomerStatusController)
+)
