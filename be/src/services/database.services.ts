@@ -59,5 +59,10 @@ class DatabaseService {
   get settings(): Collection<any> {
     return this.db.collection(process.env.DB_SETTINGS_COLLECTION || 'settings')
   }
+
+  // Contacts collection (store contact form submissions)
+  get contacts(): Collection<any> {
+    return this.db.collection(process.env.DB_CONTACTS_COLLECTION || 'contacts')
+  }
 }
 export default new DatabaseService()
