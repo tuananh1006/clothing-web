@@ -1,0 +1,5 @@
+{
+  "paths": {
+    "/api/v1/categories": { "get": { "tags": ["Categories"], "summary": "List categories", "responses": { "200": { "description": "OK" } } } }
+  }
+}

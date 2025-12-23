@@ -1,0 +1,37 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "YORI Fashion API",
+    "version": "1.0.0",
+    "description": "OpenAPI for public and admin endpoints"
+  },
+  "servers": [{ "url": "http://localhost:5000", "description": "Local" }],
+  "tags": [
+    { "name": "Auth" },
+    { "name": "Categories" },
+    { "name": "Products" },
+    { "name": "Banners" },
+    { "name": "Cart" },
+    { "name": "Locations" },
+    { "name": "Checkout" },
+    { "name": "Orders" },
+    { "name": "Contact" },
+    { "name": "Admin - Settings" },
+    { "name": "Admin - Products" },
+    { "name": "Admin - Orders" },
+    { "name": "Admin - Customers" }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": { "type": "http", "scheme": "bearer", "bearerFormat": "JWT" }
+    },
+    "schemas": {
+      "BasicMessage": { "type": "object", "properties": { "message": { "type": "string" } } },
+      "Pagination": {
+        "type": "object",
+        "properties": { "page": { "type": "integer" }, "limit": { "type": "integer" }, "total": { "type": "integer" } }
+      }
+    }
+  },
+  "paths": {}
+}

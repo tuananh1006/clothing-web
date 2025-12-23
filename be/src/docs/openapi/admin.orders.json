@@ -1,0 +1,36 @@
+{
+  "components": {
+    "schemas": {
+      "OrderAdminListItem": {
+        "type": "object",
+        "properties": {
+          "_id": { "type": "string" },
+          "order_code": { "type": "string" },
+          "user": { "type": "object" },
+          "status": { "type": "string" },
+          "total": { "type": "number" }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/api/v1/admin/orders": {
+      "get": {
+        "tags": ["Admin - Orders"],
+        "summary": "List orders (admin)",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          { "in": "query", "name": "page", "schema": { "type": "integer" } },
+          { "in": "query", "name": "limit", "schema": { "type": "integer" } },
+          { "in": "query", "name": "keyword", "schema": { "type": "string" } },
+          { "in": "query", "name": "status", "schema": { "type": "string" } },
+          { "in": "query", "name": "date_from", "schema": { "type": "string", "format": "date" } },
+          { "in": "query", "name": "date_to", "schema": { "type": "string", "format": "date" } },
+          { "in": "query", "name": "sort_by", "schema": { "type": "string" } },
+          { "in": "query", "name": "order", "schema": { "type": "string", "enum": ["asc", "desc"] } }
+        ],
+        "responses": { "200": { "description": "OK" } }
+      }
+    }
+  }
+}

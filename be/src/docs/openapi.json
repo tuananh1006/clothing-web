@@ -1,0 +1,286 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "YORI Fashion API",
+    "version": "1.0.0",
+    "description": "OpenAPI for core public and admin endpoints"
+  },
+  "servers": [
+    { "url": "http://localhost:5000", "description": "Local" }
+  ],
+  "tags": [
+    { "name": "Public" },
+    { "name": "Contact" },
+    { "name": "Admin - Settings" },
+    { "name": "Admin - Products" },
+    { "name": "Admin - Orders" },
+    { "name": "Admin - Customers" }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "BasicMessage": {
+        "type": "object",
+        "properties": { "message": { "type": "string" } }
+      },
+      "Pagination": {
+        "type": "object",
+        "properties": {
+          "page": { "type": "integer" },
+          "limit": { "type": "integer" },
+          "total": { "type": "integer" }
+        }
+      },
+      "ProductAdminListItem": {
+        "type": "object",
+        "properties": {
+          "_id": { "type": "string" },
+          "name": { "type": "string" },
+          "slug": { "type": "string" },
+          "category": { "type": "object" },
+          "price": { "type": "number" },
+          "quantity": { "type": "integer" },
+          "status": { "type": "string" }
+        }
+      },
+      "OrderAdminListItem": {
+        "type": "object",
+        "properties": {
+          "_id": { "type": "string" },
+          "order_code": { "type": "string" },
+          "user": { "type": "object" },
+          "status": { "type": "string" },
+          "total": { "type": "number" }
+        }
+      },
+      "CustomerAdminListItem": {
+        "type": "object",
+        "properties": {
+          "_id": { "type": "string" },
+          "name": { "type": "string" },
+          "email": { "type": "string" },
+          "status": { "type": "string" },
+          "order_count": { "type": "integer" },
+          "total_spent": { "type": "number" }
+        }
+      },
+      "SettingGeneral": {
+        "type": "object",
+        "properties": {
+          "store_name": { "type": "string" },
+          "phone": { "type": "string" },
+          "email": { "type": "string" },
+          "address": { "type": "string" },
+          "logo_url": { "type": "string" }
+        }
+      },
+      "SettingPayment": {
+        "type": "object",
+        "properties": {
+          "cod": { "type": "object", "properties": { "enabled": { "type": "boolean" } } },
+          "bank_transfer": { "type": "object", "properties": { "enabled": { "type": "boolean" } } },
+          "momo": { "type": "object", "properties": { "enabled": { "type": "boolean" } } }
+        }
+      },
+      "SettingShipping": {
+        "type": "object",
+        "properties": {
+          "default_fee": { "type": "number" },
+          "free_shipping_threshold": { "type": "number" },
+          "partners": {
+            "type": "object",
+            "properties": {
+              "ghn": { "type": "object", "properties": { "enabled": { "type": "boolean" } } },
+              "viettel_post": { "type": "object", "properties": { "enabled": { "type": "boolean" } } },
+              "ghtk": { "type": "object", "properties": { "enabled": { "type": "boolean" } } },
+              "jnt": { "type": "object", "properties": { "enabled": { "type": "boolean" } } }
+            }
+          }
+        }
+      },
+      "ContactSubmitRequest": {
+        "type": "object",
+        "required": ["name", "email", "message"],
+        "properties": {
+          "name": { "type": "string" },
+          "email": { "type": "string" },
+          "phone": { "type": "string" },
+          "subject": { "type": "string" },
+          "message": { "type": "string" }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/api/v1/contact/submit": {
+      "post": {
+        "tags": ["Contact"],
+        "summary": "Submit contact form",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ContactSubmitRequest" }
+            }
+          }
+        },
+        "responses": { "200": { "description": "OK", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/BasicMessage" } } } } }
+      }
+    },
+    "/api/v1/admin/settings": {
+      "get": {
+        "tags": ["Admin - Settings"],
+        "summary": "Get settings",
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "general": { "$ref": "#/components/schemas/SettingGeneral" },
+                    "payment": { "$ref": "#/components/schemas/SettingPayment" },
+                    "shipping": { "$ref": "#/components/schemas/SettingShipping" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/settings/general": {
+      "put": {
+        "tags": ["Admin - Settings"],
+        "summary": "Update general settings",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/SettingGeneral" } } } },
+        "responses": { "200": { "description": "OK", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/BasicMessage" } } } } }
+      }
+    },
+    "/api/v1/admin/settings/logo": {
+      "post": {
+        "tags": ["Admin - Settings"],
+        "summary": "Update logo URL",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": { "application/json": { "schema": { "type": "object", "properties": { "logo_url": { "type": "string" } } } } }
+        },
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/v1/admin/settings/payment": {
+      "put": {
+        "tags": ["Admin - Settings"],
+        "summary": "Update payment toggles",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": { "application/json": { "schema": { "type": "object", "properties": { "cod": { "type": "boolean" }, "bank_transfer": { "type": "boolean" }, "momo": { "type": "boolean" } } } } }
+        },
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/v1/admin/settings/shipping": {
+      "put": {
+        "tags": ["Admin - Settings"],
+        "summary": "Update shipping config",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "default_fee": { "type": "number" },
+                  "free_shipping_threshold": { "type": "number" },
+                  "partners": {
+                    "type": "object",
+                    "properties": { "ghn": { "type": "boolean" }, "viettel_post": { "type": "boolean" }, "ghtk": { "type": "boolean" }, "jnt": { "type": "boolean" } }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/v1/admin/products": {
+      "get": {
+        "tags": ["Admin - Products"],
+        "summary": "List products (admin)",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          { "in": "query", "name": "page", "schema": { "type": "integer" } },
+          { "in": "query", "name": "limit", "schema": { "type": "integer" } },
+          { "in": "query", "name": "keyword", "schema": { "type": "string" } },
+          { "in": "query", "name": "category_id", "schema": { "type": "string" } },
+          { "in": "query", "name": "status", "schema": { "type": "string" } },
+          { "in": "query", "name": "sort_by", "schema": { "type": "string" } },
+          { "in": "query", "name": "order", "schema": { "type": "string", "enum": ["asc", "desc"] } }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "items": { "type": "array", "items": { "$ref": "#/components/schemas/ProductAdminListItem" } },
+                    "pagination": { "$ref": "#/components/schemas/Pagination" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/orders": {
+      "get": {
+        "tags": ["Admin - Orders"],
+        "summary": "List orders (admin)",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          { "in": "query", "name": "page", "schema": { "type": "integer" } },
+          { "in": "query", "name": "limit", "schema": { "type": "integer" } },
+          { "in": "query", "name": "keyword", "schema": { "type": "string" } },
+          { "in": "query", "name": "status", "schema": { "type": "string" } },
+          { "in": "query", "name": "date_from", "schema": { "type": "string", "format": "date" } },
+          { "in": "query", "name": "date_to", "schema": { "type": "string", "format": "date" } },
+          { "in": "query", "name": "sort_by", "schema": { "type": "string" } },
+          { "in": "query", "name": "order", "schema": { "type": "string", "enum": ["asc", "desc"] } }
+        ],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/v1/admin/customers": {
+      "get": {
+        "tags": ["Admin - Customers"],
+        "summary": "List customers (admin)",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          { "in": "query", "name": "page", "schema": { "type": "integer" } },
+          { "in": "query", "name": "limit", "schema": { "type": "integer" } },
+          { "in": "query", "name": "keyword", "schema": { "type": "string" } },
+          { "in": "query", "name": "status", "schema": { "type": "string" } },
+          { "in": "query", "name": "sort_by", "schema": { "type": "string" } },
+          { "in": "query", "name": "order", "schema": { "type": "string", "enum": ["asc", "desc"] } }
+        ],
+        "responses": { "200": { "description": "OK" } }
+      }
+    }
+  }
+}

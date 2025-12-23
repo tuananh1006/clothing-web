@@ -1,0 +1,7 @@
+{
+  "paths": {
+    "/api/v1/locations/provinces": { "get": { "tags": ["Locations"], "summary": "List provinces", "responses": { "200": { "description": "OK" } } } },
+    "/api/v1/locations/districts/{province_id}": { "get": { "tags": ["Locations"], "summary": "List districts", "parameters": [{"in":"path","name":"province_id","required":true,"schema":{"type":"string"}}], "responses": { "200": { "description": "OK" } } } },
+    "/api/v1/locations/wards/{district_id}": { "get": { "tags": ["Locations"], "summary": "List wards", "parameters": [{"in":"path","name":"district_id","required":true,"schema":{"type":"string"}}], "responses": { "200": { "description": "OK" } } } }
+  }
+}
