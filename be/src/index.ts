@@ -8,6 +8,7 @@ import locationsRouter from './routes/locations.routes'
 import checkoutRouter from './routes/checkout.routes'
 import ordersRouter from './routes/orders.routes'
 import adminRouter from './routes/admin.routes'
+import contactRouter from './routes/contact.routes'
 import databaseServices from './services/database.services'
 import { defaultErrorHandler } from './middlewares/errors.middleware'
 import { config } from 'dotenv'
@@ -28,6 +29,7 @@ app.use('/api/v1/locations', locationsRouter)
 app.use('/api/v1/checkout', checkoutRouter)
 app.use('/api/v1/orders', ordersRouter)
 app.use('/api/v1/admin', adminRouter)
+app.use('/api/v1/contact', contactRouter)
 
 app.get('/', (req, res) => {
   res.send('Hello, World!')
