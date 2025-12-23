@@ -665,6 +665,94 @@ class AdminService {
     await databaseServices.users.updateOne({ _id }, { $set: { verify, updatedAt: new Date() } })
     return { message: status === 'inactive' ? 'Đã khóa tài khoản khách hàng' : 'Đã mở khóa tài khoản khách hàng' }
   }
+
+  // ========== SETTINGS ==========
+  private async getOrInitSettings() {
+    let doc = await databaseServices.settings.findOne({ key: 'system' })
+    if (!doc) {
+      doc = {
+        key: 'system',
+        general: {
+          store_name: 'YORI Fashion',
+          phone: '',
+          email: '',
+          address: '',
+          logo_url: ''
+        },
+        payment: {
+          cod: { enabled: true, label: 'Thanh toán khi nhận hàng (COD)' },
+          bank_transfer: { enabled: true, label: 'Chuyển khoản ngân hàng', config_needed: false },
+          momo: { enabled: false, label: 'Ví điện tử Momo', config_needed: true }
+        },
+        shipping: {
+          default_fee: 30000,
+          free_shipping_threshold: 500000,
+          partners: {
+            ghn: { enabled: true, label: 'Giao Hàng Nhanh (GHN)' },
+            viettel_post: { enabled: true, label: 'Viettel Post' },
+            ghtk: { enabled: false, label: 'Giao Hàng Tiết Kiệm (GHTK)' },
+            jnt: { enabled: false, label: 'J&T Express' }
+          }
+        },
+        updated_at: new Date()
+      }
+      await databaseServices.settings.insertOne(doc)
+    }
+    return doc
+  }
+
+  async getAdminSettings() {
+    const doc = await this.getOrInitSettings()
+    return { general: doc.general, payment: doc.payment, shipping: doc.shipping }
+  }
+
+  async updateAdminSettingsGeneral(payload: { store_name?: string; phone?: string; email?: string; address?: string }) {
+    const doc = await this.getOrInitSettings()
+    const general = { ...doc.general, ...payload }
+    await databaseServices.settings.updateOne({ key: 'system' }, { $set: { general, updated_at: new Date() } })
+    return { message: 'Cập nhật thông tin cửa hàng thành công' }
+  }
+
+  async updateAdminSettingsLogo(payload: { logo_url: string }) {
+    if (!payload.logo_url) return { message: 'Thiếu logo_url' }
+    const doc = await this.getOrInitSettings()
+    const general = { ...doc.general, logo_url: payload.logo_url }
+    await databaseServices.settings.updateOne({ key: 'system' }, { $set: { general, updated_at: new Date() } })
+    return { message: 'Logo đã được cập nhật', data: { logo_url: payload.logo_url } }
+  }
+
+  async updateAdminSettingsPayment(payload: { cod?: boolean; bank_transfer?: boolean; momo?: boolean }) {
+    const doc = await this.getOrInitSettings()
+    const payment = { ...doc.payment }
+    if (typeof payload.cod === 'boolean') payment.cod.enabled = payload.cod
+    if (typeof payload.bank_transfer === 'boolean') payment.bank_transfer.enabled = payload.bank_transfer
+    if (typeof payload.momo === 'boolean') payment.momo.enabled = payload.momo
+    await databaseServices.settings.updateOne({ key: 'system' }, { $set: { payment, updated_at: new Date() } })
+    return { message: 'Đã cập nhật cấu hình thanh toán' }
+  }
+
+  async updateAdminSettingsShipping(payload: {
+    default_fee?: number
+    free_shipping_threshold?: number
+    partners?: { ghn?: boolean; viettel_post?: boolean; ghtk?: boolean; jnt?: boolean }
+  }) {
+    const doc = await this.getOrInitSettings()
+    const shipping = { ...doc.shipping }
+    if (typeof payload.default_fee === 'number') {
+      shipping.default_fee = payload.default_fee
+    }
+    if (typeof payload.free_shipping_threshold === 'number') {
+      shipping.free_shipping_threshold = payload.free_shipping_threshold
+    }
+    if (payload.partners) {
+      shipping.partners.ghn.enabled = payload.partners.ghn ?? shipping.partners.ghn.enabled
+      shipping.partners.viettel_post.enabled = payload.partners.viettel_post ?? shipping.partners.viettel_post.enabled
+      shipping.partners.ghtk.enabled = payload.partners.ghtk ?? shipping.partners.ghtk.enabled
+      shipping.partners.jnt.enabled = payload.partners.jnt ?? shipping.partners.jnt.enabled
+    }
+    await databaseServices.settings.updateOne({ key: 'system' }, { $set: { shipping, updated_at: new Date() } })
+    return { message: 'Đã cập nhật cấu hình vận chuyển' }
+  }
 }
 
 export default new AdminService()

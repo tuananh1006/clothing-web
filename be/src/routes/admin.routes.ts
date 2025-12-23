@@ -14,8 +14,15 @@ import {
   adminGetOrdersController,
   adminGetCustomersController,
   adminGetCustomerDetailController,
-  adminUpdateCustomerStatusController
+  adminUpdateCustomerStatusController,
+  adminGetSettingsController,
+  adminUpdateSettingsGeneralController,
+  adminUpdateSettingsLogoController,
+  adminUpdateSettingsPaymentController,
+  adminUpdateSettingsShippingController
 } from '~/controllers/admin.controller'
+
+// Settings routes are appended after customer routes
 import { wrapRequestHandler } from '~/utils/handler'
 
 const adminRouter = Router()
@@ -151,4 +158,31 @@ adminRouter.put(
   accessTokenValidator,
   requireAdmin,
   wrapRequestHandler(adminUpdateCustomerStatusController)
+)
+
+// Settings
+adminRouter.get('/settings', accessTokenValidator, requireAdmin, wrapRequestHandler(adminGetSettingsController))
+adminRouter.put(
+  '/settings/general',
+  accessTokenValidator,
+  requireAdmin,
+  wrapRequestHandler(adminUpdateSettingsGeneralController)
+)
+adminRouter.post(
+  '/settings/logo',
+  accessTokenValidator,
+  requireAdmin,
+  wrapRequestHandler(adminUpdateSettingsLogoController)
+)
+adminRouter.put(
+  '/settings/payment',
+  accessTokenValidator,
+  requireAdmin,
+  wrapRequestHandler(adminUpdateSettingsPaymentController)
+)
+adminRouter.put(
+  '/settings/shipping',
+  accessTokenValidator,
+  requireAdmin,
+  wrapRequestHandler(adminUpdateSettingsShippingController)
 )
