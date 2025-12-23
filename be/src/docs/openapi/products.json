@@ -1,0 +1,7 @@
+{
+  "paths": {
+    "/api/v1/products": { "get": { "tags": ["Products"], "summary": "List products", "responses": { "200": { "description": "OK" } } } },
+    "/api/v1/products/{slug}": { "get": { "tags": ["Products"], "summary": "Product detail", "parameters": [{"in":"path","name":"slug","required":true,"schema":{"type":"string"}}], "responses": { "200": { "description": "OK" } } } },
+    "/api/v1/products/{slug}/related": { "get": { "tags": ["Products"], "summary": "Related products", "parameters": [{"in":"path","name":"slug","required":true,"schema":{"type":"string"}}], "responses": { "200": { "description": "OK" } } } }
+  }
+}

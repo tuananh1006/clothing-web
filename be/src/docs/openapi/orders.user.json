@@ -1,0 +1,6 @@
+{
+  "paths": {
+    "/api/v1/orders": { "get": { "tags": ["Orders"], "summary": "My orders", "responses": { "200": { "description": "OK" } } } },
+    "/api/v1/orders/{order_id}": { "get": { "tags": ["Orders"], "summary": "Order detail", "parameters": [{"in":"path","name":"order_id","required":true,"schema":{"type":"string"}}], "responses": { "200": { "description": "OK" } } } }
+  }
+}

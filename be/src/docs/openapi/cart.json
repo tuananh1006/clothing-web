@@ -1,0 +1,12 @@
+{
+  "paths": {
+    "/api/v1/cart": { "get": { "tags": ["Cart"], "summary": "Get my cart", "responses": { "200": { "description": "OK" } } } },
+    "/api/v1/cart/items": {
+      "post": { "tags": ["Cart"], "summary": "Add item", "responses": { "200": { "description": "OK" } } }
+    },
+    "/api/v1/cart/items/{item_id}": {
+      "put": { "tags": ["Cart"], "summary": "Update item", "parameters": [{"in":"path","name":"item_id","required":true,"schema":{"type":"string"}}], "responses": { "200": { "description": "OK" } } },
+      "delete": { "tags": ["Cart"], "summary": "Remove item", "parameters": [{"in":"path","name":"item_id","required":true,"schema":{"type":"string"}}], "responses": { "200": { "description": "OK" } } }
+    }
+  }
+}

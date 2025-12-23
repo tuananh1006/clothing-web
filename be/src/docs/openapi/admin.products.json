@@ -1,0 +1,37 @@
+{
+  "components": {
+    "schemas": {
+      "ProductAdminListItem": {
+        "type": "object",
+        "properties": {
+          "_id": { "type": "string" },
+          "name": { "type": "string" },
+          "slug": { "type": "string" },
+          "category": { "type": "object" },
+          "price": { "type": "number" },
+          "quantity": { "type": "integer" },
+          "status": { "type": "string" }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/api/v1/admin/products": {
+      "get": {
+        "tags": ["Admin - Products"],
+        "summary": "List products (admin)",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          { "in": "query", "name": "page", "schema": { "type": "integer" } },
+          { "in": "query", "name": "limit", "schema": { "type": "integer" } },
+          { "in": "query", "name": "keyword", "schema": { "type": "string" } },
+          { "in": "query", "name": "category_id", "schema": { "type": "string" } },
+          { "in": "query", "name": "status", "schema": { "type": "string" } },
+          { "in": "query", "name": "sort_by", "schema": { "type": "string" } },
+          { "in": "query", "name": "order", "schema": { "type": "string", "enum": ["asc", "desc"] } }
+        ],
+        "responses": { "200": { "description": "OK" } }
+      }
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "paths": {
+    "/api/v1/checkout/init": { "get": { "tags": ["Checkout"], "summary": "Init checkout", "responses": { "200": { "description": "OK" } } } },
+    "/api/v1/checkout/validate-shipping": { "post": { "tags": ["Checkout"], "summary": "Validate shipping", "responses": { "200": { "description": "OK" } } } },
+    "/api/v1/checkout/payment-info": { "get": { "tags": ["Checkout"], "summary": "Get payment info", "responses": { "200": { "description": "OK" } } } },
+    "/api/v1/checkout/place-order": { "post": { "tags": ["Checkout"], "summary": "Place order", "responses": { "200": { "description": "OK" } } } }
+  }
+}

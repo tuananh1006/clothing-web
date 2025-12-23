@@ -1,0 +1,5 @@
+{
+  "paths": {
+    "/api/v1/banners": { "get": { "tags": ["Banners"], "summary": "List banners", "responses": { "200": { "description": "OK" } } } }
+  }
+}
