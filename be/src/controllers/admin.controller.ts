@@ -116,3 +116,42 @@ export const adminUpdateCustomerStatusController = async (req: Request, res: Res
   const data = await adminService.updateAdminCustomerStatus(id, status)
   return res.json({ message: data.message })
 }
+
+// ========== SETTINGS ==========
+export const adminGetSettingsController = async (_req: Request, res: Response) => {
+  const result = await adminService.getAdminSettings()
+  return res.json(result)
+}
+
+export const adminUpdateSettingsGeneralController = async (req: Request, res: Response) => {
+  const { store_name, phone, email, address } = req.body as {
+    store_name?: string
+    phone?: string
+    email?: string
+    address?: string
+  }
+  const result = await adminService.updateAdminSettingsGeneral({ store_name, phone, email, address })
+  return res.json(result)
+}
+
+export const adminUpdateSettingsLogoController = async (req: Request, res: Response) => {
+  const { logo_url } = req.body as { logo_url: string }
+  const result = await adminService.updateAdminSettingsLogo({ logo_url })
+  return res.json(result)
+}
+
+export const adminUpdateSettingsPaymentController = async (req: Request, res: Response) => {
+  const { cod, bank_transfer, momo } = req.body as { cod?: boolean; bank_transfer?: boolean; momo?: boolean }
+  const result = await adminService.updateAdminSettingsPayment({ cod, bank_transfer, momo })
+  return res.json(result)
+}
+
+export const adminUpdateSettingsShippingController = async (req: Request, res: Response) => {
+  const { default_fee, free_shipping_threshold, partners } = req.body as {
+    default_fee?: number
+    free_shipping_threshold?: number
+    partners?: { ghn?: boolean; viettel_post?: boolean; ghtk?: boolean; jnt?: boolean }
+  }
+  const result = await adminService.updateAdminSettingsShipping({ default_fee, free_shipping_threshold, partners })
+  return res.json(result)
+}

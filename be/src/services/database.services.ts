@@ -54,5 +54,10 @@ class DatabaseService {
   get orders(): Collection<Order> {
     return this.db.collection(process.env.DB_ORDERS_COLLECTION as string)
   }
+
+  // Settings collection (singleton document)
+  get settings(): Collection<any> {
+    return this.db.collection(process.env.DB_SETTINGS_COLLECTION || 'settings')
+  }
 }
 export default new DatabaseService()
