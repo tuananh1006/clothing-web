@@ -33,9 +33,12 @@ api.interceptors.response.use(
     // Handle 401 Unauthorized - Token hết hạn hoặc không hợp lệ
     if (error.response?.status === 401) {
       removeToken()
-      // Redirect to login page
-      if (window.location.pathname !== '/login') {
-        window.location.href = '/login'
+      // Clear user from localStorage
+      localStorage.removeItem('user')
+      // Redirect to login page (chỉ khi không đang ở login page)
+      const currentPath = window.location.pathname
+      if (currentPath !== '/login' && currentPath !== '/signup') {
+        window.location.href = `/login?returnUrl=${encodeURIComponent(currentPath)}`
       }
     }
 
@@ -43,6 +46,10 @@ api.interceptors.response.use(
     if (error.response?.status === 403) {
       // Có thể redirect hoặc hiển thị thông báo
       console.error('Access denied')
+      // Redirect to home nếu không phải admin
+      if (window.location.pathname.startsWith('/admin')) {
+        window.location.href = '/'
+      }
     }
 
     // Handle network errors

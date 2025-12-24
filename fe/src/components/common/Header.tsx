@@ -1,11 +1,33 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { ROUTES } from '@/utils/constants'
+import { useAuth } from '@/hooks/useAuth'
+import { UserRole } from '@/types'
 
 const Header = () => {
+  const { isAuthenticated, user, logout } = useAuth()
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isSearchOpen, setIsSearchOpen] = useState(false)
+  const [showUserMenu, setShowUserMenu] = useState(false)
+  const userMenuRef = useRef<HTMLDivElement>(null)
   const navigate = useNavigate()
+
+  // Close user menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (userMenuRef.current && !userMenuRef.current.contains(event.target as Node)) {
+        setShowUserMenu(false)
+      }
+    }
+
+    if (showUserMenu) {
+      document.addEventListener('mousedown', handleClickOutside)
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [showUserMenu])
 
   const handleToggleDarkMode = () => {
     const html = document.documentElement
@@ -90,14 +112,70 @@ const Header = () => {
           <span className="material-symbols-outlined">search</span>
         </button>
 
-        {/* User */}
-        <Link
-          to={ROUTES.LOGIN}
-          className="flex items-center justify-center rounded-lg size-10 hover:bg-gray-100 dark:hover:bg-gray-700 text-text-main dark:text-gray-200 transition-colors"
-          aria-label="Account"
-        >
-          <span className="material-symbols-outlined">account_circle</span>
-        </Link>
+        {/* User Menu */}
+        <div className="relative" ref={userMenuRef}>
+          {isAuthenticated ? (
+            <button
+              onClick={() => setShowUserMenu(!showUserMenu)}
+              className="flex items-center justify-center rounded-lg size-10 hover:bg-gray-100 dark:hover:bg-gray-700 text-text-main dark:text-gray-200 transition-colors"
+              aria-label="Account menu"
+            >
+              <span className="material-symbols-outlined">account_circle</span>
+            </button>
+          ) : (
+            <Link
+              to={ROUTES.LOGIN}
+              className="flex items-center justify-center rounded-lg size-10 hover:bg-gray-100 dark:hover:bg-gray-700 text-text-main dark:text-gray-200 transition-colors"
+              aria-label="Account"
+            >
+              <span className="material-symbols-outlined">account_circle</span>
+            </Link>
+          )}
+
+          {/* User Dropdown Menu */}
+          {showUserMenu && isAuthenticated && (
+            <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-[#1a2c32] rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-2 z-50">
+              <div className="px-4 py-2 border-b border-gray-200 dark:border-gray-700">
+                <p className="text-sm font-medium text-text-main dark:text-white">
+                  {user?.full_name || user?.email}
+                </p>
+                <p className="text-xs text-text-sub dark:text-gray-400">{user?.email}</p>
+              </div>
+              <Link
+                to={ROUTES.PROFILE}
+                onClick={() => setShowUserMenu(false)}
+                className="block px-4 py-2 text-sm text-text-main dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+              >
+                Thông tin tài khoản
+              </Link>
+              <Link
+                to={ROUTES.ORDERS}
+                onClick={() => setShowUserMenu(false)}
+                className="block px-4 py-2 text-sm text-text-main dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+              >
+                Đơn hàng của tôi
+              </Link>
+              {user?.role === UserRole.Admin && (
+                <Link
+                  to={ROUTES.ADMIN}
+                  onClick={() => setShowUserMenu(false)}
+                  className="block px-4 py-2 text-sm text-text-main dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+                >
+                  Quản trị
+                </Link>
+              )}
+              <button
+                onClick={async () => {
+                  setShowUserMenu(false)
+                  await logout()
+                }}
+                className="w-full text-left px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-gray-700"
+              >
+                Đăng xuất
+              </button>
+            </div>
+          )}
+        </div>
 
         {/* Cart */}
         <Link

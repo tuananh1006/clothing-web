@@ -8,7 +8,8 @@ import Footer from '@/components/common/Footer'
 import Input from '@/components/common/Input'
 import Button from '@/components/common/Button'
 import { ROUTES } from '@/utils/constants'
-import { register, socialLogin } from '@/services/auth.service'
+import { useAuth } from '@/hooks/useAuth'
+import { socialLogin } from '@/services/auth.service'
 import type { RegisterRequest, SocialLoginRequest } from '@/types'
 import { isValidPassword } from '@/utils/validators'
 
@@ -39,6 +40,7 @@ type SignupFormData = z.infer<typeof signupSchema>
 
 const Signup = () => {
   const navigate = useNavigate()
+  const { register: registerUser } = useAuth()
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [showPassword, setShowPassword] = useState(false)
@@ -69,7 +71,7 @@ const Signup = () => {
         agree_terms: data.agree_terms,
       }
 
-      await register(registerData)
+      await registerUser(registerData)
 
       // Redirect về trang chủ sau khi đăng ký thành công
       navigate(ROUTES.HOME)

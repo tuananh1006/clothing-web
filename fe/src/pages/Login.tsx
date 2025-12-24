@@ -8,7 +8,8 @@ import Footer from '@/components/common/Footer'
 import Input from '@/components/common/Input'
 import Button from '@/components/common/Button'
 import { ROUTES } from '@/utils/constants'
-import { login, socialLogin } from '@/services/auth.service'
+import { useAuth } from '@/hooks/useAuth'
+import { socialLogin } from '@/services/auth.service'
 import type { LoginRequest, SocialLoginRequest } from '@/types'
 
 // Validation schema với Zod
@@ -22,6 +23,7 @@ type LoginFormData = z.infer<typeof loginSchema>
 
 const Login = () => {
   const navigate = useNavigate()
+  const { login } = useAuth()
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 

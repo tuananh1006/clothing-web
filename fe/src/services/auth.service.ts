@@ -19,11 +19,26 @@ import type { ApiError } from '@/types/api.types'
  */
 export const login = async (data: LoginRequest): Promise<LoginResponse> => {
   try {
-    const response = await api.post<ApiResponse<LoginResponse>>(
+    const response = await api.post<ApiResponse<any>>(
       API_ENDPOINTS.AUTH.LOGIN,
       data
     )
-    const { access_token, refresh_token, user } = response.data.data
+    const { access_token, refresh_token, user: backendUser } = response.data.data
+
+    // Map user data từ backend response (backend trả về { id, name, email, avatar_url, role })
+    const user: LoginResponse['user'] = {
+      _id: backendUser.id || backendUser._id || '',
+      first_name: backendUser.first_name || backendUser.name?.split(' ')[0] || '',
+      last_name: backendUser.last_name || backendUser.name?.split(' ').slice(1).join(' ') || '',
+      full_name: backendUser.full_name || backendUser.name || '',
+      email: backendUser.email,
+      role: backendUser.role || 'customer',
+      avatar: backendUser.avatar || backendUser.avatar_url,
+      address: backendUser.address,
+      phonenumber: backendUser.phonenumber,
+      createdAt: backendUser.createdAt,
+      updatedAt: backendUser.updatedAt,
+    }
 
     // Lưu tokens vào localStorage
     setTokens(access_token, refresh_token)
@@ -40,11 +55,26 @@ export const login = async (data: LoginRequest): Promise<LoginResponse> => {
 export const register = async (
   data: RegisterRequest
 ): Promise<RegisterResponse> => {
-  const response = await api.post<ApiResponse<RegisterResponse>>(
+  const response = await api.post<ApiResponse<any>>(
     API_ENDPOINTS.AUTH.REGISTER,
     data
   )
-  const { access_token, refresh_token, user } = response.data.data
+  const { access_token, refresh_token, user: backendUser } = response.data.data
+
+  // Map user data từ backend response (backend trả về { id, email, full_name, role })
+  const user: RegisterResponse['user'] = {
+    _id: backendUser.id || backendUser._id || '',
+    first_name: backendUser.first_name || data.first_name,
+    last_name: backendUser.last_name || data.last_name,
+    full_name: backendUser.full_name || `${data.first_name} ${data.last_name}`,
+    email: backendUser.email || data.email,
+    role: backendUser.role || 'customer',
+    avatar: backendUser.avatar || backendUser.avatar_url,
+    address: backendUser.address,
+    phonenumber: backendUser.phonenumber,
+    createdAt: backendUser.createdAt,
+    updatedAt: backendUser.updatedAt,
+  }
 
   // Lưu tokens vào localStorage
   setTokens(access_token, refresh_token)
@@ -72,11 +102,26 @@ export const logout = async (): Promise<void> => {
 export const socialLogin = async (
   data: SocialLoginRequest
 ): Promise<LoginResponse> => {
-  const response = await api.post<ApiResponse<LoginResponse>>(
+  const response = await api.post<ApiResponse<any>>(
     API_ENDPOINTS.AUTH.SOCIAL_LOGIN,
     data
   )
-  const { access_token, refresh_token, user } = response.data.data
+  const { access_token, refresh_token, user: backendUser } = response.data.data
+
+  // Map user data từ backend response
+  const user: LoginResponse['user'] = {
+    _id: backendUser.id || backendUser._id || '',
+    first_name: backendUser.first_name || backendUser.name?.split(' ')[0] || '',
+    last_name: backendUser.last_name || backendUser.name?.split(' ').slice(1).join(' ') || '',
+    full_name: backendUser.full_name || backendUser.name || '',
+    email: backendUser.email,
+    role: backendUser.role || 'customer',
+    avatar: backendUser.avatar || backendUser.avatar_url,
+    address: backendUser.address,
+    phonenumber: backendUser.phonenumber,
+    createdAt: backendUser.createdAt,
+    updatedAt: backendUser.updatedAt,
+  }
 
   // Lưu tokens vào localStorage
   setTokens(access_token, refresh_token)

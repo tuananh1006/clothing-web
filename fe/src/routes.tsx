@@ -1,5 +1,7 @@
 import { lazy } from 'react'
 import { RouteObject } from 'react-router-dom'
+import PrivateRoute from '@/components/common/PrivateRoute'
+import AdminRoute from '@/components/common/AdminRoute'
 
 // Lazy load pages
 const Home = lazy(() => import('@/pages/Home'))
@@ -89,69 +91,108 @@ export const routes: RouteObject[] = [
   // Protected routes (cần authentication)
   {
     path: '/cart',
-    element: <Cart />,
-    // TODO: Wrap with PrivateRoute
+    element: (
+      <PrivateRoute>
+        <Cart />
+      </PrivateRoute>
+    ),
   },
   {
     path: '/checkout',
-    element: <Checkout />,
-    // TODO: Wrap with PrivateRoute
+    element: (
+      <PrivateRoute>
+        <Checkout />
+      </PrivateRoute>
+    ),
   },
   {
     path: '/checkout/payment',
-    element: <Payment />,
-    // TODO: Wrap with PrivateRoute
+    element: (
+      <PrivateRoute>
+        <Payment />
+      </PrivateRoute>
+    ),
   },
   {
     path: '/orders',
-    element: <Orders />,
-    // TODO: Wrap with PrivateRoute
+    element: (
+      <PrivateRoute>
+        <Orders />
+      </PrivateRoute>
+    ),
   },
   {
     path: '/orders/:orderId',
-    element: <OrderDetail />,
-    // TODO: Wrap with PrivateRoute
+    element: (
+      <PrivateRoute>
+        <OrderDetail />
+      </PrivateRoute>
+    ),
   },
   {
     path: '/orders/:orderId/success',
-    element: <OrderSuccess />,
-    // TODO: Wrap with PrivateRoute
+    element: (
+      <PrivateRoute>
+        <OrderSuccess />
+      </PrivateRoute>
+    ),
   },
   {
     path: '/profile',
-    element: <Profile />,
-    // TODO: Wrap with PrivateRoute
+    element: (
+      <PrivateRoute>
+        <Profile />
+      </PrivateRoute>
+    ),
   },
   // Admin routes (cần authentication + admin role)
   {
     path: '/admin',
-    element: <AdminDashboard />,
-    // TODO: Wrap with AdminRoute
+    element: (
+      <AdminRoute>
+        <AdminDashboard />
+      </AdminRoute>
+    ),
   },
   {
     path: '/admin/dashboard',
-    element: <AdminDashboard />,
-    // TODO: Wrap with AdminRoute
+    element: (
+      <AdminRoute>
+        <AdminDashboard />
+      </AdminRoute>
+    ),
   },
   {
     path: '/admin/products',
-    element: <AdminProducts />,
-    // TODO: Wrap with AdminRoute
+    element: (
+      <AdminRoute>
+        <AdminProducts />
+      </AdminRoute>
+    ),
   },
   {
     path: '/admin/orders',
-    element: <AdminOrders />,
-    // TODO: Wrap with AdminRoute
+    element: (
+      <AdminRoute>
+        <AdminOrders />
+      </AdminRoute>
+    ),
   },
   {
     path: '/admin/customers',
-    element: <AdminCustomers />,
-    // TODO: Wrap with AdminRoute
+    element: (
+      <AdminRoute>
+        <AdminCustomers />
+      </AdminRoute>
+    ),
   },
   {
     path: '/admin/settings',
-    element: <AdminSettings />,
-    // TODO: Wrap with AdminRoute
+    element: (
+      <AdminRoute>
+        <AdminSettings />
+      </AdminRoute>
+    ),
   },
   // 404 Not Found
   {
