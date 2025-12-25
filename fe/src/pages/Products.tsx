@@ -20,7 +20,11 @@ const Products = () => {
   // State
   const [products, setProducts] = useState<Product[]>([])
   const [categories, setCategories] = useState<Category[]>([])
-  const [pagination, setPagination] = useState({
+  const [pagination, setPagination] = useState<{
+    page: number
+    limit: number
+    total_page: number
+  }>({
     page: 1,
     limit: PAGINATION.DEFAULT_LIMIT,
     total_page: 1,

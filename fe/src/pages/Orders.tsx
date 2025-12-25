@@ -19,11 +19,16 @@ const Orders = () => {
   const [searchParams, setSearchParams] = useSearchParams()
   const [orders, setOrders] = useState<Order[]>([])
   const [loading, setLoading] = useState(true)
-  const [pagination, setPagination] = useState({
+  const [pagination, setPagination] = useState<{
+    page: number
+    limit: number
+    total_page: number
+    total: number
+  }>({
     page: 1,
     limit: PAGINATION.DEFAULT_LIMIT,
-    total_pages: 1,
-    total_records: 0,
+    total_page: 1,
+    total: 0,
   })
   const [statusFilter, setStatusFilter] = useState<OrderStatus | ''>(
     (searchParams.get('status') as OrderStatus) || ''
