@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { ROUTES } from '@/utils/constants'
 import { useAuth } from '@/hooks/useAuth'
 import { useCart } from '@/hooks/useCart'
