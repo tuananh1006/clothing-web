@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html class="light" lang="vi"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Trang Dashboard Admin - YORI</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#19b3e6",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#111d21",
+                        "text-main": "#0e181b",
+                        "text-sub": "#4e8597",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Manrope', sans-serif;
+        }.no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }.no-scrollbar {
+            -ms-overflow-style: none;scrollbar-width: none;}
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-text-main dark:text-white transition-colors duration-200 font-display overflow-hidden">
+<div class="flex h-screen">
+<aside class="w-64 bg-white dark:bg-[#1a2c32] border-r border-gray-200 dark:border-gray-800 flex flex-col transition-colors duration-200 flex-shrink-0 z-20">
+<div class="h-16 flex items-center px-6 border-b border-gray-100 dark:border-gray-800 flex-shrink-0">
+<div class="size-8 text-primary mr-3">
+<svg fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M42.1739 20.1739L27.8261 5.82609C29.1366 7.13663 28.3989 10.1876 26.2002 13.7654C24.8538 15.9564 22.9595 18.3449 20.6522 20.6522C18.3449 22.9595 15.9564 24.8538 13.7654 26.2002C10.1876 28.3989 7.13663 29.1366 5.82609 27.8261L20.1739 42.1739C21.4845 43.4845 24.5355 42.7467 28.1133 40.548C30.3042 39.2016 32.6927 37.3073 35 35C37.3073 32.6927 39.2016 30.3042 40.548 28.1133C42.7467 24.5355 43.4845 21.4845 42.1739 20.1739Z" fill="currentColor"></path>
+</svg>
+</div>
+<h1 class="text-xl font-bold tracking-tight">YORI Admin</h1>
+</div>
+<nav class="flex-1 overflow-y-auto py-4">
+<ul class="space-y-1 px-3">
+<li>
+<a class="flex items-center gap-3 px-3 py-2.5 bg-primary/10 text-primary rounded-lg font-medium" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+                        Tổng quan
+                    </a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-3 py-2.5 text-text-sub dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700/50 hover:text-text-main dark:hover:text-white rounded-lg font-medium transition-colors" href="#">
+<span class="material-symbols-outlined">shopping_bag</span>
+                        Sản phẩm
+                    </a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-3 py-2.5 text-text-sub dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700/50 hover:text-text-main dark:hover:text-white rounded-lg font-medium transition-colors" href="#">
+<span class="material-symbols-outlined">receipt_long</span>
+                        Đơn hàng
+                    </a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-3 py-2.5 text-text-sub dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700/50 hover:text-text-main dark:hover:text-white rounded-lg font-medium transition-colors" href="#">
+<span class="material-symbols-outlined">group</span>
+                        Khách hàng
+                    </a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-3 py-2.5 text-text-sub dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700/50 hover:text-text-main dark:hover:text-white rounded-lg font-medium transition-colors" href="#">
+<span class="material-symbols-outlined">bar_chart</span>
+                        Thống kê
+                    </a>
+</li>
+</ul>
+<div class="mt-8 px-6 text-xs font-semibold text-text-sub uppercase tracking-wider mb-2">Hệ thống</div>
+<ul class="space-y-1 px-3">
+<li>
+<a class="flex items-center gap-3 px-3 py-2.5 text-text-sub dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700/50 hover:text-text-main dark:hover:text-white rounded-lg font-medium transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+                        Cài đặt
+                    </a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-3 py-2.5 text-text-sub dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700/50 hover:text-text-main dark:hover:text-white rounded-lg font-medium transition-colors" href="#">
+<span class="material-symbols-outlined">logout</span>
+                        Đăng xuất
+                    </a>
+</li>
+</ul>
+</nav>
+<div class="p-4 border-t border-gray-100 dark:border-gray-800 flex-shrink-0">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
+<img alt="Admin" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAc2YzVREqpDYcuzZGtXl88g7MuI-S9UYgOjAvMabc87p8mAR9w4yqqDXh_bccA2TlufKCs_TTSiY368tZeIogueak1CgmZHpJouw1ImAjQAI8pSo4mijyiCv9ceQfuIJ7J_VWuyMZvup3KmcXNxDIBPihFkZVNvZktIcroj-05IaDQmBr0alU2pULt95RKcKT1TD3ZQdXBwNjUqDnWtBY8y0ZzeXcTv1SHhdMtwmEvPTry4hB2ezp5UwHQqcfJErictLyD2f9J0I8"/>
+</div>
+<div class="flex flex-col">
+<span class="text-sm font-bold text-text-main dark:text-white">Admin Yori</span>
+<span class="text-xs text-text-sub">Quản trị viên</span>
+</div>
+</div>
+</div>
+</aside>
+<div class="flex-1 flex flex-col h-full overflow-hidden relative">
+<header class="h-16 bg-white dark:bg-[#1a2c32] border-b border-gray-200 dark:border-gray-800 flex items-center justify-between px-8 z-10 flex-shrink-0">
+<div class="relative w-96">
+<span class="material-symbols-outlined absolute left-3 top-2.5 text-gray-400 text-[20px]">search</span>
+<input class="w-full pl-10 pr-4 py-2 rounded-lg bg-gray-100 dark:bg-gray-800 border-none text-sm text-text-main dark:text-white focus:ring-2 focus:ring-primary/50 placeholder-gray-400" placeholder="Tìm kiếm đơn hàng, sản phẩm..." type="text"/>
+</div>
+<div class="flex items-center gap-4">
+<button class="relative p-2 text-text-sub hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 size-2 bg-red-500 rounded-full border border-white dark:border-[#1a2c32]"></span>
+</button>
+</div>
+</header>
+<main class="flex-1 overflow-y-auto p-8">
+<div class="max-w-[1600px] mx-auto">
+<div class="flex items-center justify-between mb-8">
+<h2 class="text-2xl font-bold text-text-main dark:text-white">Tổng quan hoạt động</h2>
+<div class="flex gap-2">
+<span class="text-sm text-text-sub dark:text-gray-400 self-center">Cập nhật lúc: 10:30 AM, 25/10/2024</span>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+<div class="bg-white dark:bg-[#1a2c32] p-6 rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm flex flex-col justify-between h-32">
+<div class="flex justify-between items-start">
+<div>
+<p class="text-sm font-medium text-text-sub dark:text-gray-400 mb-1">Tổng doanh thu</p>
+<h3 class="text-2xl font-bold text-text-main dark:text-white">125.400.000đ</h3>
+</div>
+<div class="p-2 bg-blue-50 dark:bg-blue-900/20 text-primary rounded-lg">
+<span class="material-symbols-outlined text-[20px]">attach_money</span>
+</div>
+</div>
+<div class="flex items-center gap-1 text-xs font-medium text-green-500">
+<span class="material-symbols-outlined text-[16px]">trending_up</span>
+<span>+12.5% so với tháng trước</span>
+</div>
+</div>
+<div class="bg-white dark:bg-[#1a2c32] p-6 rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm flex flex-col justify-between h-32">
+<div class="flex justify-between items-start">
+<div>
+<p class="text-sm font-medium text-text-sub dark:text-gray-400 mb-1">Đơn hàng mới</p>
+<h3 class="text-2xl font-bold text-text-main dark:text-white">1,245</h3>
+</div>
+<div class="p-2 bg-purple-50 dark:bg-purple-900/20 text-purple-600 rounded-lg">
+<span class="material-symbols-outlined text-[20px]">shopping_cart</span>
+</div>
+</div>
+<div class="flex items-center gap-1 text-xs font-medium text-green-500">
+<span class="material-symbols-outlined text-[16px]">trending_up</span>
+<span>+5.2% so với tháng trước</span>
+</div>
+</div>
+<div class="bg-white dark:bg-[#1a2c32] p-6 rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm flex flex-col justify-between h-32">
+<div class="flex justify-between items-start">
+<div>
+<p class="text-sm font-medium text-text-sub dark:text-gray-400 mb-1">Sản phẩm</p>
+<h3 class="text-2xl font-bold text-text-main dark:text-white">86</h3>
+</div>
+<div class="p-2 bg-orange-50 dark:bg-orange-900/20 text-orange-600 rounded-lg">
+<span class="material-symbols-outlined text-[20px]">inventory_2</span>
+</div>
+</div>
+<div class="flex items-center gap-1 text-xs font-medium text-text-sub">
+<span>4 sản phẩm sắp hết hàng</span>
+</div>
+</div>
+<div class="bg-white dark:bg-[#1a2c32] p-6 rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm flex flex-col justify-between h-32">
+<div class="flex justify-between items-start">
+<div>
+<p class="text-sm font-medium text-text-sub dark:text-gray-400 mb-1">Khách hàng</p>
+<h3 class="text-2xl font-bold text-text-main dark:text-white">3,890</h3>
+</div>
+<div class="p-2 bg-green-50 dark:bg-green-900/20 text-green-600 rounded-lg">
+<span class="material-symbols-outlined text-[20px]">person</span>
+</div>
+</div>
+<div class="flex items-center gap-1 text-xs font-medium text-green-500">
+<span class="material-symbols-outlined text-[16px]">trending_up</span>
+<span>+18% khách hàng mới</span>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+<div class="lg:col-span-2 bg-white dark:bg-[#1a2c32] rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm p-6">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-bold text-lg text-text-main dark:text-white">Biểu đồ doanh thu</h3>
+<select class="text-sm border-gray-200 rounded-md py-1 px-2 text-text-sub focus:ring-primary focus:border-primary dark:bg-gray-800 dark:border-gray-700">
+<option>Tuần này</option>
+<option>Tháng này</option>
+<option>Năm này</option>
+</select>
+</div>
+<div class="h-64 flex items-end justify-between gap-2 md:gap-4 mt-4">
+<div class="flex flex-col items-center gap-2 flex-1 group">
+<div class="w-full bg-blue-50 dark:bg-gray-800 rounded-t-sm h-full relative flex items-end overflow-hidden">
+<div class="w-full bg-primary/80 group-hover:bg-primary transition-all duration-500 h-[40%] rounded-t-sm"></div>
+</div>
+<span class="text-xs text-text-sub">T2</span>
+</div>
+<div class="flex flex-col items-center gap-2 flex-1 group">
+<div class="w-full bg-blue-50 dark:bg-gray-800 rounded-t-sm h-full relative flex items-end overflow-hidden">
+<div class="w-full bg-primary/80 group-hover:bg-primary transition-all duration-500 h-[65%] rounded-t-sm"></div>
+</div>
+<span class="text-xs text-text-sub">T3</span>
+</div>
+<div class="flex flex-col items-center gap-2 flex-1 group">
+<div class="w-full bg-blue-50 dark:bg-gray-800 rounded-t-sm h-full relative flex items-end overflow-hidden">
+<div class="w-full bg-primary/80 group-hover:bg-primary transition-all duration-500 h-[35%] rounded-t-sm"></div>
+</div>
+<span class="text-xs text-text-sub">T4</span>
+</div>
+<div class="flex flex-col items-center gap-2 flex-1 group">
+<div class="w-full bg-blue-50 dark:bg-gray-800 rounded-t-sm h-full relative flex items-end overflow-hidden">
+<div class="w-full bg-primary/80 group-hover:bg-primary transition-all duration-500 h-[85%] rounded-t-sm"></div>
+</div>
+<span class="text-xs text-text-sub">T5</span>
+</div>
+<div class="flex flex-col items-center gap-2 flex-1 group">
+<div class="w-full bg-blue-50 dark:bg-gray-800 rounded-t-sm h-full relative flex items-end overflow-hidden">
+<div class="w-full bg-primary/80 group-hover:bg-primary transition-all duration-500 h-[60%] rounded-t-sm"></div>
+</div>
+<span class="text-xs text-text-sub">T6</span>
+</div>
+<div class="flex flex-col items-center gap-2 flex-1 group">
+<div class="w-full bg-blue-50 dark:bg-gray-800 rounded-t-sm h-full relative flex items-end overflow-hidden">
+<div class="w-full bg-primary/80 group-hover:bg-primary transition-all duration-500 h-[95%] rounded-t-sm"></div>
+</div>
+<span class="text-xs text-text-sub">T7</span>
+</div>
+<div class="flex flex-col items-center gap-2 flex-1 group">
+<div class="w-full bg-blue-50 dark:bg-gray-800 rounded-t-sm h-full relative flex items-end overflow-hidden">
+<div class="w-full bg-primary/80 group-hover:bg-primary transition-all duration-500 h-[50%] rounded-t-sm"></div>
+</div>
+<span class="text-xs text-text-sub">CN</span>
+</div>
+</div>
+</div>
+<div class="bg-white dark:bg-[#1a2c32] rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm p-6 flex flex-col">
+<h3 class="font-bold text-lg text-text-main dark:text-white mb-6">Sản phẩm bán chạy</h3>
+<div class="flex flex-col gap-5 overflow-y-auto">
+<div class="flex items-center gap-4">
+<div class="size-12 rounded-lg bg-gray-100 flex-shrink-0 bg-cover bg-center" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAFMqAqtNTQKSUSwn4wix2mVgoVRd0H24ZEL8mc-KahVYugPMwUyyO7acy5iv4EzQ-tvQ9OUyoMz8mnKcphyFVmXhpB2n8cUNNIHfTI9MysQheU-VIkaDS5U-Phv4-Z5sW6jNi5i8rYAgeqUqd0kbeW0PHieIBS6Y4E6p2grqtReh3Ck1wG3mR6KXZbqzgPF4rd1AwDEvnZD63roPHKp61vx0vu8PBDVH2gFx3hDuJlBuxMhkDT_iYDbq4wxnxhlxxC8umoelfUetA")'></div>
+<div class="flex-1 min-w-0">
+<h4 class="text-sm font-bold text-text-main dark:text-white truncate">Áo khoác Blazer Kaki</h4>
+<p class="text-xs text-text-sub">Đã bán: 120</p>
+</div>
+<span class="text-sm font-bold text-primary">114tr</span>
+</div>
+<div class="flex items-center gap-4">
+<div class="size-12 rounded-lg bg-gray-100 flex-shrink-0 bg-cover bg-center" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAiwItxtH0JJmLvWVXoODE6wkscbDzatT8b7Il1L-9P1I_JN9BrXw07qzumYONf9AaFPf-aIm_XKp6HhXRDc1XhH3h4p6FVwyTZawOIDiQpz-PR82_h6U3lKf_yyrDMVVNhK1clksKb9njYud52BSQIR7lL4juvVL5fRJGYlU76AxEdTFXOUrCRPHjsRY0hrXLYqVmp6msDdop_Y2P0onTTa7s3mpbyyNgyKJvEw_FnFWz2NidUhik3odMMaRWkB1dsP9bH0CC6o6I")'></div>
+<div class="flex-1 min-w-0">
+<h4 class="text-sm font-bold text-text-main dark:text-white truncate">Sơ mi lụa Muji</h4>
+<p class="text-xs text-text-sub">Đã bán: 98</p>
+</div>
+<span class="text-sm font-bold text-primary">70tr</span>
+</div>
+<div class="flex items-center gap-4">
+<div class="size-12 rounded-lg bg-gray-100 flex-shrink-0 bg-cover bg-center" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAIp8PONZrBzQJOTWmY-NR225RYmAOK5k-NuTw1DkF9YflRcECoy9QTLF9tDWsbKuO0M6dn3f6kkCG8x3Eg9Z_AkYbSIFWHVMQJ9I88yE1Qx65IzrOt6NPEKNY0tmXrZ77e5tOydYA-UNib7qGTtgTWAv-kkXdauSKorOGVUInTQfqXHXueB5YuwLoFzIZMPUdoz2ckNdZvRYa3ek-zlmZX-mCoJQF2Q13sCey7qXtLm7C6A3jDPRB5MwVpyLdfcrHAd2O11jfgkA8")'></div>
+<div class="flex-1 min-w-0">
+<h4 class="text-sm font-bold text-text-main dark:text-white truncate">Quần Tây Chinos</h4>
+<p class="text-xs text-text-sub">Đã bán: 85</p>
+</div>
+<span class="text-sm font-bold text-primary">57tr</span>
+</div>
+<div class="flex items-center gap-4">
+<div class="size-12 rounded-lg bg-gray-100 flex-shrink-0 bg-cover bg-center" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBoFyER9pdtDnuaC0PscjJSKfsUyEntOiNej1YkSDM4vBrl78GdLlpo7eaYzyNckVwkHXny9bgTnwEAaekW8GK8OVM_gbqMYK5011a6LiM02ksL6OJLwJc8_Hg33UpUrppxwT5tJbmjURSsZksQKlKvNdQJ4rKkUJaEE57-JzQw7vtFr0LWLsIhgcitjsi-P_dtHjYorVU1w2uMeDICutBJON1fpuFr63edw4YvaQ3-Vrj_j6PTJ2NxDYxBjdyi0ZfaxRIs1bvm-VY")'></div>
+<div class="flex-1 min-w-0">
+<h4 class="text-sm font-bold text-text-main dark:text-white truncate">Áo sơ mi Linen</h4>
+<p class="text-xs text-text-sub">Đã bán: 64</p>
+</div>
+<span class="text-sm font-bold text-primary">54tr</span>
+</div>
+</div>
+<button class="mt-auto pt-4 text-sm text-center text-primary font-medium hover:underline">Xem tất cả báo cáo</button>
+</div>
+</div>
+<div class="bg-white dark:bg-[#1a2c32] rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm p-6">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-bold text-lg text-text-main dark:text-white">Đơn hàng mới nhất</h3>
+<a class="text-sm text-primary font-medium hover:underline" href="#">Xem tất cả</a>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="text-xs text-text-sub border-b border-gray-100 dark:border-gray-700">
+<th class="font-semibold py-3 px-4 uppercase tracking-wider">Mã đơn</th>
+<th class="font-semibold py-3 px-4 uppercase tracking-wider">Khách hàng</th>
+<th class="font-semibold py-3 px-4 uppercase tracking-wider">Sản phẩm</th>
+<th class="font-semibold py-3 px-4 uppercase tracking-wider">Ngày đặt</th>
+<th class="font-semibold py-3 px-4 uppercase tracking-wider text-right">Tổng tiền</th>
+<th class="font-semibold py-3 px-4 uppercase tracking-wider text-center">Trạng thái</th>
+</tr>
+</thead>
+<tbody class="text-sm">
+<tr class="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors border-b border-gray-50 dark:border-gray-800/50">
+<td class="py-4 px-4 font-medium text-text-main dark:text-white">#ORD-0891</td>
+<td class="py-4 px-4">
+<div class="flex items-center gap-2">
+<div class="size-8 rounded-full bg-gray-200 overflow-hidden">
+<img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDI5xpVrRHj6xfiOYIi73vzT-kGJ07mR2i0xrDq8J-GJTKIVoI9v_R-zzDlbpqZ83-b6bfQtKoTp_q_KkNo52Yrr5KMmhEWH2k-YAuUdIuVQ2gu8rz4qu5wwQeQJyAHTIVUu4a2Yca_ASswCtqs9cVqTSBwcjzI0F68eVDpemrSpqcTM2DyjS-21rtNtS2DGlTQbE7Im4xb40wCWghioh88h9_zq6ubkHQIaP15wM8MgEPNpRgQjHggxkaEls6yJ16MobCxUabLfac"/>
+</div>
+<span class="text-text-main dark:text-gray-300">Nguyễn Văn A</span>
+</div>
+</td>
+<td class="py-4 px-4 text-text-sub">Áo sơ mi Linen (x2)</td>
+<td class="py-4 px-4 text-text-sub">25/10/2024</td>
+<td class="py-4 px-4 text-right font-medium text-text-main dark:text-white">1.700.000đ</td>
+<td class="py-4 px-4 text-center">
+<span class="inline-block px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-500">Chờ xử lý</span>
+</td>
+</tr>
+<tr class="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors border-b border-gray-50 dark:border-gray-800/50">
+<td class="py-4 px-4 font-medium text-text-main dark:text-white">#ORD-0890</td>
+<td class="py-4 px-4">
+<div class="flex items-center gap-2">
+<div class="size-8 rounded-full bg-gray-200 overflow-hidden">
+<img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB6_VyKCKvZ93E-o9h288KD3o-fUE0iuwLR1JM7B7ctDTTO2yIgq0-HoxXVtpE44nhnyEKeUi7P_xmoEhPMyGR3wUEJF3l0lnFWVWtapGZGW6ktYUZUeslJ9uQI4Eh4JFdJ926Wp6NqVYLCqyc9K4mX4LLAIETzUBs_vJ0Mriik4YTfY2lz05OyTLP6mUggVm48SHDBYgiRlSTl-5nRpIuMrTPZRkEC5Xxf1hdvWYKdc2aNzXU6kKn0nADaUlV1s9SL2prFzEh7MIQ"/>
+</div>
+<span class="text-text-main dark:text-gray-300">Trần Thị B</span>
+</div>
+</td>
+<td class="py-4 px-4 text-text-sub">Váy suông Sumi</td>
+<td class="py-4 px-4 text-text-sub">24/10/2024</td>
+<td class="py-4 px-4 text-right font-medium text-text-main dark:text-white">790.000đ</td>
+<td class="py-4 px-4 text-center">
+<span class="inline-block px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-500">Hoàn thành</span>
+</td>
+</tr>
+<tr class="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors border-b border-gray-50 dark:border-gray-800/50">
+<td class="py-4 px-4 font-medium text-text-main dark:text-white">#ORD-0889</td>
+<td class="py-4 px-4">
+<div class="flex items-center gap-2">
+<div class="size-8 rounded-full bg-gray-200 overflow-hidden">
+<img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCkz_LM0ayQeB3-1b8StP8M6PCq2vWyymFTrX6wgJGPGnae04yl2cCAmQCM_tAzYVUgsjVfVt4qwWFSasXpvjdIb0pzhzCNBeBm1PmsV_I6fQx8Arzju5y36GppCHXDrsGJ9tz78_W0PaQ7bsvmvYXqdEwgrHHnTKuYY1fuQeCM1fqRuqZzKDMMQQZsB31KCLQisV8-Dyn-AL0BP1uLAerwPcreXvoqkjmFXp01Y1JdZ0L5SrDB1A905Gi2spV7RYHblFz8XzyFA8s"/>
+</div>
+<span class="text-text-main dark:text-gray-300">Lê Hoàng</span>
+</div>
+</td>
+<td class="py-4 px-4 text-text-sub">Quần ống rộng Taki</td>
+<td class="py-4 px-4 text-text-sub">24/10/2024</td>
+<td class="py-4 px-4 text-right font-medium text-text-main dark:text-white">650.000đ</td>
+<td class="py-4 px-4 text-center">
+<span class="inline-block px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-500">Đang giao</span>
+</td>
+</tr>
+<tr class="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
+<td class="py-4 px-4 font-medium text-text-main dark:text-white">#ORD-0888</td>
+<td class="py-4 px-4">
+<div class="flex items-center gap-2">
+<div class="size-8 rounded-full bg-gray-200 overflow-hidden">
+<img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDs2Z8Pbgk--IdFnk-YYr816cyB6T-oDTgep0E2eDJmbXhMEIQA4lRb9T7vCuyO_Tm0tL-Tu9gsBYjS0W1CcBCEf_n3It63teAJpFGScgJ8XeTN6v0nGEcaCmGD-FxP3bEOXhJcsCWugU4Oze77EvJH5XYdr4u2Pu6QHSBPGkE28gN-aklRqPKpli625-PkAto6fQEUWwTNH86kTja8c_Gh-nahd2FxL-adBqlG50s6oHjKBMExTsmg1oUeYDfDmh3HcXM_zfFRTQs"/>
+</div>
+<span class="text-text-main dark:text-gray-300">Phạm Minh</span>
+</div>
+</td>
+<td class="py-4 px-4 text-text-sub">Áo thun Cotton Basic (x3)</td>
+<td class="py-4 px-4 text-text-sub">23/10/2024</td>
+<td class="py-4 px-4 text-right font-medium text-text-main dark:text-white">1.050.000đ</td>
+<td class="py-4 px-4 text-center">
+<span class="inline-block px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-500">Hoàn thành</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</main>
+</div>
+</div>
+</body></html>

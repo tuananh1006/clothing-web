@@ -9,6 +9,7 @@ import Input from '@/components/common/Input'
 import Button from '@/components/common/Button'
 import { ROUTES } from '@/utils/constants'
 import { useAuth } from '@/hooks/useAuth'
+import { useToast } from '@/contexts/ToastContext'
 import { socialLogin } from '@/services/auth.service'
 import type { LoginRequest, SocialLoginRequest } from '@/types'
 
@@ -24,6 +25,7 @@ type LoginFormData = z.infer<typeof loginSchema>
 const Login = () => {
   const navigate = useNavigate()
   const { login } = useAuth()
+  const { showError, showSuccess } = useToast()
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -43,20 +45,40 @@ const Login = () => {
     setError(null)
 
     try {
+      // Normalize data trước khi gửi
       const loginData: LoginRequest = {
-        email: data.email,
+        email: data.email.trim().toLowerCase(),
         password: data.password,
+        remember_me: data.remember_me || false,
       }
 
+      console.log('[Login] Login data:', { ...loginData, password: '***' })
+
       await login(loginData)
+
+      // Hiển thị toast success
+      showSuccess('Đăng nhập thành công!')
 
       // Redirect về trang chủ hoặc trang trước đó
       const returnUrl = new URLSearchParams(window.location.search).get('returnUrl')
       navigate(returnUrl || ROUTES.HOME)
     } catch (err: any) {
-      setError(
-        err.response?.data?.message || 'Đăng nhập thất bại. Vui lòng thử lại.'
-      )
+      console.error('Login error:', err.response?.data)
+      
+      // Lấy error message
+      let errorMessage = 'Đăng nhập thất bại. Vui lòng thử lại.'
+      
+      if (err.response?.data?.errors && Array.isArray(err.response.data.errors)) {
+        errorMessage = err.response.data.errors.map((e: any) => e.message || e.msg).join(', ')
+      } else if (err.response?.data?.message) {
+        errorMessage = err.response.data.message
+      }
+      
+      // Hiển thị toast error
+      showError(errorMessage)
+      
+      // Cũng set error state để hiển thị trong form (nếu cần)
+      setError(errorMessage)
     } finally {
       setIsLoading(false)
     }
@@ -78,10 +100,10 @@ const Login = () => {
       await socialLogin(socialData)
       navigate(ROUTES.HOME)
     } catch (err: any) {
-      setError(
-        err.response?.data?.message ||
-          `Đăng nhập bằng ${provider === 'google' ? 'Google' : 'Facebook'} thất bại.`
-      )
+      const errorMessage = err.response?.data?.message ||
+        `Đăng nhập bằng ${provider === 'google' ? 'Google' : 'Facebook'} thất bại.`
+      showError(errorMessage)
+      setError(errorMessage)
     } finally {
       setIsLoading(false)
     }

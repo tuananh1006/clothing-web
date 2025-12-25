@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+
+<html class="light" lang="vi"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>YORI - Tìm kiếm</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#19b3e6",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#111d21",
+                        "text-main": "#0e181b",
+                        "text-secondary": "#4e8597",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+</head>
+<body class="font-display bg-background-light dark:bg-background-dark text-text-main dark:text-white transition-colors duration-200">
+<div class="relative flex h-auto min-h-screen w-full flex-col overflow-x-hidden">
+<!-- Header -->
+<header class="sticky top-0 z-50 w-full bg-white/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-[#e7f0f3] dark:border-gray-800">
+<div class="layout-container flex justify-center w-full">
+<div class="flex max-w-[1280px] w-full items-center justify-between px-4 py-3 md:px-10">
+<!-- Logo Section -->
+<div class="flex items-center gap-4 text-text-main dark:text-white">
+<div class="size-8 text-primary">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_6_543)">
+<path d="M42.1739 20.1739L27.8261 5.82609C29.1366 7.13663 28.3989 10.1876 26.2002 13.7654C24.8538 15.9564 22.9595 18.3449 20.6522 20.6522C18.3449 22.9595 15.9564 24.8538 13.7654 26.2002C10.1876 28.3989 7.13663 29.1366 5.82609 27.8261L20.1739 42.1739C21.4845 43.4845 24.5355 42.7467 28.1133 40.548C30.3042 39.2016 32.6927 37.3073 35 35C37.3073 32.6927 39.2016 30.3042 40.548 28.1133C42.7467 24.5355 43.4845 21.4845 42.1739 20.1739Z" fill="currentColor"></path>
+<path clip-rule="evenodd" d="M7.24189 26.4066C7.31369 26.4411 7.64204 26.5637 8.52504 26.3738C9.59462 26.1438 11.0343 25.5311 12.7183 24.4963C14.7583 23.2426 17.0256 21.4503 19.238 19.238C21.4503 17.0256 23.2426 14.7583 24.4963 12.7183C25.5311 11.0343 26.1438 9.59463 26.3738 8.52504C26.5637 7.64204 26.4411 7.31369 26.4066 7.24189C26.345 7.21246 26.143 7.14535 25.6664 7.1918C24.9745 7.25925 23.9954 7.5498 22.7699 8.14278C20.3369 9.32007 17.3369 11.4915 14.4142 14.4142C11.4915 17.3369 9.32007 20.3369 8.14278 22.7699C7.5498 23.9954 7.25925 24.9745 7.1918 25.6664C7.14534 26.143 7.21246 26.345 7.24189 26.4066ZM29.9001 10.7285C29.4519 12.0322 28.7617 13.4172 27.9042 14.8126C26.465 17.1544 24.4686 19.6641 22.0664 22.0664C19.6641 24.4686 17.1544 26.465 14.8126 27.9042C13.4172 28.7617 12.0322 29.4519 10.7285 29.9001L21.5754 40.747C21.6001 40.7606 21.8995 40.931 22.8729 40.7217C23.9424 40.4916 25.3821 39.879 27.0661 38.8441C29.1062 37.5904 31.3734 35.7982 33.5858 33.5858C35.7982 31.3734 37.5904 29.1062 38.8441 27.0661C39.879 25.3821 40.4916 23.9425 40.7216 22.8729C40.931 21.8995 40.7606 21.6001 40.747 21.5754L29.9001 10.7285ZM29.2403 4.41187L43.5881 18.7597C44.9757 20.1473 44.9743 22.1235 44.6322 23.7139C44.2714 25.3919 43.4158 27.2666 42.252 29.1604C40.8128 31.5022 38.8165 34.012 36.4142 36.4142C34.012 38.8165 31.5022 40.8128 29.1604 42.252C27.2666 43.4158 25.3919 44.2714 23.7139 44.6322C22.1235 44.9743 20.1473 44.9757 18.7597 43.5881L4.41187 29.2403C3.29027 28.1187 3.08209 26.5973 3.21067 25.2783C3.34099 23.9415 3.8369 22.4852 4.54214 21.0277C5.96129 18.0948 8.43335 14.7382 11.5858 11.5858C14.7382 8.43335 18.0948 5.9613 21.0277 4.54214C22.4852 3.8369 23.9415 3.34099 25.2783 3.21067C26.5973 3.08209 28.1187 3.29028 29.2403 4.41187Z" fill="currentColor" fill-rule="evenodd"></path>
+</g>
+<defs>
+<clippath id="clip0_6_543"><rect fill="white" height="48" width="48"></rect></clippath>
+</defs>
+</svg>
+</div>
+<h2 class="text-xl font-bold leading-tight tracking-[-0.015em]">YORI</h2>
+</div>
+<!-- Desktop Nav -->
+<div class="hidden md:flex flex-1 justify-center gap-8">
+<div class="flex items-center gap-9">
+<a class="text-text-main dark:text-gray-300 text-sm font-bold leading-normal hover:text-primary transition-colors" href="#">Nam</a>
+<a class="text-text-main dark:text-gray-300 text-sm font-bold leading-normal hover:text-primary transition-colors" href="#">Nữ</a>
+<a class="text-text-main dark:text-gray-300 text-sm font-bold leading-normal hover:text-primary transition-colors" href="#">Phụ kiện</a>
+<a class="text-text-main dark:text-gray-300 text-sm font-bold leading-normal hover:text-primary transition-colors" href="#">Bộ sưu tập</a>
+</div>
+</div>
+<!-- Icons -->
+<div class="flex justify-end gap-2">
+<button class="group flex cursor-pointer items-center justify-center overflow-hidden rounded-lg size-10 hover:bg-primary/10 transition-colors">
+<span class="material-symbols-outlined text-text-main dark:text-white group-hover:text-primary" style="font-size: 24px;">person</span>
+</button>
+<button class="group flex cursor-pointer items-center justify-center overflow-hidden rounded-lg size-10 hover:bg-primary/10 transition-colors relative">
+<span class="material-symbols-outlined text-text-main dark:text-white group-hover:text-primary" style="font-size: 24px;">shopping_bag</span>
+<div class="absolute top-2 right-2 size-2 bg-primary rounded-full"></div>
+</button>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="flex-1 w-full flex flex-col items-center pt-8 pb-20">
+<div class="w-full max-w-[1280px] px-4 md:px-10 flex flex-col gap-8">
+<!-- Breadcrumbs -->
+<div class="flex flex-wrap gap-2 text-sm">
+<a class="text-text-secondary hover:text-primary transition-colors" href="#">Trang chủ</a>
+<span class="text-text-secondary">/</span>
+<span class="text-text-main dark:text-white font-medium">Tìm kiếm</span>
+</div>
+<!-- Hero Search Section -->
+<div class="flex flex-col items-center gap-6 py-6 w-full max-w-3xl mx-auto">
+<h1 class="text-3xl md:text-4xl font-bold text-center tracking-tight text-text-main dark:text-white">
+                        Tìm kiếm phong cách của bạn
+                    </h1>
+<div class="relative w-full group">
+<div class="absolute inset-y-0 left-4 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-gray-400 group-focus-within:text-primary transition-colors">search</span>
+</div>
+<input class="w-full h-14 pl-12 pr-4 rounded-xl border-none ring-1 ring-gray-200 dark:ring-gray-700 bg-white dark:bg-gray-800 shadow-sm focus:ring-2 focus:ring-primary focus:shadow-md transition-all text-base placeholder:text-gray-400 dark:text-white" placeholder="Tìm kiếm sản phẩm (ví dụ: Áo khoác, Linen)..." type="text" value="Áo sơ mi"/>
+<div class="absolute inset-y-0 right-2 flex items-center">
+<button class="bg-primary text-white p-2 rounded-lg hover:bg-opacity-90 transition-opacity">
+<span class="material-symbols-outlined text-[20px] leading-none">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Search Tags -->
+<div class="flex flex-wrap justify-center gap-3">
+<span class="text-sm text-text-secondary dark:text-gray-400">Từ khóa phổ biến:</span>
+<a class="px-3 py-1 bg-white dark:bg-gray-800 rounded-full border border-gray-200 dark:border-gray-700 text-sm text-text-main dark:text-gray-300 hover:border-primary hover:text-primary transition-colors" href="#">Linen</a>
+<a class="px-3 py-1 bg-white dark:bg-gray-800 rounded-full border border-gray-200 dark:border-gray-700 text-sm text-text-main dark:text-gray-300 hover:border-primary hover:text-primary transition-colors" href="#">Quần ống rộng</a>
+<a class="px-3 py-1 bg-white dark:bg-gray-800 rounded-full border border-gray-200 dark:border-gray-700 text-sm text-text-main dark:text-gray-300 hover:border-primary hover:text-primary transition-colors" href="#">Phụ kiện</a>
+</div>
+</div>
+<!-- Divider -->
+<div class="w-full h-px bg-gray-200 dark:bg-gray-800"></div>
+<!-- Results Toolbar -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+<h3 class="text-lg font-semibold text-text-main dark:text-white">
+                        Kết quả cho "Áo sơ mi" <span class="font-normal text-text-secondary dark:text-gray-400 text-base ml-1">(12 sản phẩm)</span>
+</h3>
+<div class="flex gap-3">
+<button class="flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm font-medium hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors text-text-main dark:text-white">
+<span class="material-symbols-outlined text-[18px]">tune</span>
+                            Bộ lọc
+                        </button>
+<div class="relative group/sort">
+<button class="flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm font-medium hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors text-text-main dark:text-white min-w-[180px] justify-between">
+<span>Mới nhất</span>
+<span class="material-symbols-outlined text-[18px]">expand_more</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Product Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-10">
+<!-- Product Card 1 -->
+<div class="group flex flex-col gap-3 cursor-pointer">
+<div class="relative aspect-[3/4] w-full overflow-hidden rounded-xl bg-gray-100 dark:bg-gray-800">
+<img alt="Áo sơ mi Linen" class="h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-105" data-alt="Light blue linen shirt hanging on a white wall" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-pJq1qRG_HNvJX_3dD6ZdesPMg69Ii9Vf_ewV1I76k01R5YajnOkPCuP97pcqAUpC76GdD6k9jHuOfktJSW2m3iMn-RhNZtH4zwsLnCcX3cVBG50QPbpGmaZSle-87ApU_8Tfb47-_juBTwPQ17Wgp213h8mj0U4TUTKVngFRPAlZvvcHmMoqKlJl_wL0PRW5c8xD6cScRptpk3lvt-7LKmGkj4RMRc-1W6dUAjbvWcAryVIAIy_g1wKdhKVz7CmnB0FkxoJh2Yc"/>
+<div class="absolute bottom-3 right-3 translate-y-4 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+<button class="flex h-10 w-10 items-center justify-center rounded-full bg-white text-text-main shadow-md hover:bg-primary hover:text-white transition-colors">
+<span class="material-symbols-outlined text-[20px]">add_shopping_cart</span>
+</button>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<h4 class="text-base font-medium text-text-main dark:text-white group-hover:text-primary transition-colors">Áo Sơ Mi Linen Cổ Tàu</h4>
+<p class="text-sm font-bold text-primary">590.000₫</p>
+<div class="flex gap-1 mt-1">
+<span class="block size-3 rounded-full bg-[#AEC6CF] ring-1 ring-gray-200"></span>
+<span class="block size-3 rounded-full bg-[#F5F5DC] ring-1 ring-gray-200"></span>
+</div>
+</div>
+</div>
+<!-- Product Card 2 -->
+<div class="group flex flex-col gap-3 cursor-pointer">
+<div class="relative aspect-[3/4] w-full overflow-hidden rounded-xl bg-gray-100 dark:bg-gray-800">
+<img alt="Sơ mi Oxford Trắng" class="h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-105" data-alt="Man wearing a casual white button-down shirt outdoors" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDLL7lGvAm29aK_6KMV-VM8QxjcUAuFzaYEjJF-K7v5UuE1qPxMx8oXCQgKGWy6sokz8tBeomfFciv26nyRsB_9XsmKn0MpPjfXY33F1n1BabeXWilEgg4UPQhVre50XoNoN0c0UP8CJlQ-3IR081UJPiqhTdcdS2AFM4Q82ETH9fT1BBM5Ol3VVeej1CI6jK8UZ0iLBzob6t_XAndSB6Cao9trSVW1Xsgh8csrjY1aLDjMVzqm-tBP-Y5ewcQ6VFxAH5Aa1VVRYOo"/>
+<div class="absolute bottom-3 right-3 translate-y-4 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+<button class="flex h-10 w-10 items-center justify-center rounded-full bg-white text-text-main shadow-md hover:bg-primary hover:text-white transition-colors">
+<span class="material-symbols-outlined text-[20px]">add_shopping_cart</span>
+</button>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<h4 class="text-base font-medium text-text-main dark:text-white group-hover:text-primary transition-colors">Sơ mi Oxford Classic</h4>
+<p class="text-sm font-bold text-primary">650.000₫</p>
+<div class="flex gap-1 mt-1">
+<span class="block size-3 rounded-full bg-white ring-1 ring-gray-200"></span>
+<span class="block size-3 rounded-full bg-[#111d21] ring-1 ring-gray-200"></span>
+</div>
+</div>
+</div>
+<!-- Product Card 3 -->
+<div class="group flex flex-col gap-3 cursor-pointer">
+<div class="relative aspect-[3/4] w-full overflow-hidden rounded-xl bg-gray-100 dark:bg-gray-800">
+<div class="absolute top-3 left-3 px-2 py-1 bg-primary text-white text-xs font-bold rounded">Mới</div>
+<img alt="Áo kiểu oversize" class="h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-105" data-alt="Loose fit patterned shirt on hanger" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAFypamImwE2mjxtLF7tTuja_g4rUuc8_h336S5heL2Pa0dWNeR1m6uPCXtrAj19zMWziNlLsl27BwqrRwaWB-7d2jNezzUUUbWkNEBXRFh0QWLVQGqHrclheoIRlwostAu0G7u_MH2yA1XJyHcwoFI-P-mpP7i2KuSHKF4LyXL29eb9mSYJUA-85KcaeOGRAouSrbIar9-lgUuWjeHuYTHhbUNHBeSUpa4V1_rIX1g7x52vss_HhXccn1BNkFeJz1yWIjfHhJA-2g"/>
+<div class="absolute bottom-3 right-3 translate-y-4 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+<button class="flex h-10 w-10 items-center justify-center rounded-full bg-white text-text-main shadow-md hover:bg-primary hover:text-white transition-colors">
+<span class="material-symbols-outlined text-[20px]">add_shopping_cart</span>
+</button>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<h4 class="text-base font-medium text-text-main dark:text-white group-hover:text-primary transition-colors">Áo Kiểu Oversize Họa Tiết</h4>
+<p class="text-sm font-bold text-primary">720.000₫</p>
+<div class="flex gap-1 mt-1">
+<span class="block size-3 rounded-full bg-[#36454F] ring-1 ring-gray-200"></span>
+</div>
+</div>
+</div>
+<!-- Product Card 4 -->
+<div class="group flex flex-col gap-3 cursor-pointer">
+<div class="relative aspect-[3/4] w-full overflow-hidden rounded-xl bg-gray-100 dark:bg-gray-800">
+<img alt="Sơ mi Cotton Nhật" class="h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-105" data-alt="Woman wearing a comfortable beige cotton shirt" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCBqh27WDtVjkp1K_dUom-wN7NcspvkbTi3QP2bpikbFKee5JIBvB5-wQJasG0zm012AE1DYemONXysZSPtO3BsX5ZOtcxuFJsatqU7FYLzZKtCU-Vn-KtYZ_PEIsIFlTXNm5P8ogCCvfj4wD8uv3UmWIxxWLI8y_dv1s6MgeVouzjzOeqmTcLQnGIPSfxFpYy05-DJJL3OUyUdwwqFQotqkfJO2i8ssP1bxNC3hNmF8RsJE7iOJBKmtIwwv6lNNsJ_CTMTNX0PKyU"/>
+<div class="absolute bottom-3 right-3 translate-y-4 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+<button class="flex h-10 w-10 items-center justify-center rounded-full bg-white text-text-main shadow-md hover:bg-primary hover:text-white transition-colors">
+<span class="material-symbols-outlined text-[20px]">add_shopping_cart</span>
+</button>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<h4 class="text-base font-medium text-text-main dark:text-white group-hover:text-primary transition-colors">Sơ mi Cotton Nhật Bản</h4>
+<p class="text-sm font-bold text-primary">890.000₫</p>
+<div class="flex gap-1 mt-1">
+<span class="block size-3 rounded-full bg-[#D2B48C] ring-1 ring-gray-200"></span>
+<span class="block size-3 rounded-full bg-white ring-1 ring-gray-200"></span>
+</div>
+</div>
+</div>
+</div>
+<div class="w-full h-12"></div> <!-- Spacing -->
+<!-- DEMO SECTION: EMPTY STATE -->
+<!-- Ideally this would replace the grid above when results == 0 -->
+<div class="w-full flex flex-col gap-6 py-10 border-t border-dashed border-gray-300 dark:border-gray-700">
+<p class="text-xs font-mono uppercase text-gray-400 text-center tracking-widest">[Demo Component: Empty State]</p>
+<div class="flex flex-col items-center justify-center py-10 bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 w-full max-w-2xl mx-auto px-6 text-center">
+<div class="size-20 bg-gray-50 dark:bg-gray-700 rounded-full flex items-center justify-center mb-6 text-gray-300 dark:text-gray-500">
+<span class="material-symbols-outlined text-[40px]">search_off</span>
+</div>
+<h3 class="text-xl font-bold text-text-main dark:text-white mb-2">Không tìm thấy kết quả nào</h3>
+<p class="text-text-secondary dark:text-gray-400 max-w-md mb-6 leading-relaxed">
+                            Rất tiếc, chúng tôi không tìm thấy sản phẩm phù hợp với từ khóa "xyz". Hãy thử kiểm tra lại chính tả hoặc sử dụng từ khóa chung chung hơn.
+                        </p>
+<button class="px-6 py-2.5 bg-primary/10 text-primary font-bold rounded-lg hover:bg-primary hover:text-white transition-all">
+                            Xem tất cả sản phẩm
+                        </button>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-white dark:bg-background-dark border-t border-[#e7f0f3] dark:border-gray-800 py-10">
+<div class="flex flex-col items-center justify-center gap-4 text-center">
+<h2 class="text-lg font-bold text-text-main dark:text-white">YORI</h2>
+<div class="flex gap-6 text-sm text-text-secondary">
+<a class="hover:text-primary transition-colors" href="#">Về chúng tôi</a>
+<a class="hover:text-primary transition-colors" href="#">Chính sách</a>
+<a class="hover:text-primary transition-colors" href="#">Liên hệ</a>
+</div>
+<p class="text-xs text-gray-400 mt-4">© 2023 YORI Studio. All rights reserved.</p>
+</div>
+</footer>
+</div>
+</body></html>

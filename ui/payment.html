@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+
+<html class="light" lang="vi"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>YORI - Thanh toán</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#19b3e6",
+                        "primary-hover": "#16a0ce",
+                        "background-light": "#f8fbfc",
+                        "background-dark": "#111d21",
+                        "surface-light": "#ffffff",
+                        "surface-dark": "#1a2c32",
+                        "border-light": "#e7f0f3",
+                        "border-dark": "#2a3f47",
+                        "text-main-light": "#0e181b",
+                        "text-main-dark": "#f0f4f6",
+                        "text-sub-light": "#4e8597",
+                        "text-sub-dark": "#8faeb9",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "Noto Sans", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+<style>/* Custom radio styles for the dot */
+input[type="radio"]:checked {
+    background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuAchvXTylpgXIC-owWB-4Ik40hR9EO8EaZ2QlEsNoNPHGW9cADd46kcWbEIQfEi2DuOcLzc_WkBF9zvVX-ZRC5DTAc-1TInWEh9zbWTFC7m1NHyZJXPAODijlbC4KSragMfpAHFlGdHTQrGd57uNuB0F87fPBzVWV-A0y183JLHZP1yFzzgZBFJPkvAakJLtiH2JhTPtaO1y7o9nhvM0DV1LgSUnLLRoth2QSv6GLJaUDncHxMydOQKszWTikAxNmQlr9Va4YMDZc4);
+    background-color: #19b3e6;
+    border-color: #19b3e6
+    }</style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-text-main-light dark:text-text-main-dark font-display min-h-screen flex flex-col antialiased selection:bg-primary/20">
+<!-- Header -->
+<header class="sticky top-0 z-50 w-full bg-surface-light dark:bg-surface-dark border-b border-border-light dark:border-border-dark shadow-sm">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex items-center justify-between h-16">
+<!-- Logo -->
+<div class="flex items-center gap-2 cursor-pointer group">
+<div class="size-8 text-primary">
+<svg class="w-full h-full text-current" fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M42.1739 20.1739L27.8261 5.82609C29.1366 7.13663 28.3989 10.1876 26.2002 13.7654C24.8538 15.9564 22.9595 18.3449 20.6522 20.6522C18.3449 22.9595 15.9564 24.8538 13.7654 26.2002C10.1876 28.3989 7.13663 29.1366 5.82609 27.8261L20.1739 42.1739C21.4845 43.4845 24.5355 42.7467 28.1133 40.548C30.3042 39.2016 32.6927 37.3073 35 35C37.3073 32.6927 39.2016 30.3042 40.548 28.1133C42.7467 24.5355 43.4845 21.4845 42.1739 20.1739Z" fill="currentColor"></path>
+<path clip-rule="evenodd" d="M7.24189 26.4066C7.31369 26.4411 7.64204 26.5637 8.52504 26.3738C9.59462 26.1438 11.0343 25.5311 12.7183 24.4963C14.7583 23.2426 17.0256 21.4503 19.238 19.238C21.4503 17.0256 23.2426 14.7583 24.4963 12.7183C25.5311 11.0343 26.1438 9.59463 26.3738 8.52504C26.5637 7.64204 26.4411 7.31369 26.4066 7.24189C26.345 7.21246 26.143 7.14535 25.6664 7.1918C24.9745 7.25925 23.9954 7.5498 22.7699 8.14278C20.3369 9.32007 17.3369 11.4915 14.4142 14.4142C11.4915 17.3369 9.32007 20.3369 8.14278 22.7699C7.5498 23.9954 7.25925 24.9745 7.1918 25.6664C7.14534 26.143 7.21246 26.345 7.24189 26.4066ZM29.9001 10.7285C29.4519 12.0322 28.7617 13.4172 27.9042 14.8126C26.465 17.1544 24.4686 19.6641 22.0664 22.0664C19.6641 24.4686 17.1544 26.465 14.8126 27.9042C13.4172 28.7617 12.0322 29.4519 10.7285 29.9001L21.5754 40.747C21.6001 40.7606 21.8995 40.931 22.8729 40.7217C23.9424 40.4916 25.3821 39.879 27.0661 38.8441C29.1062 37.5904 31.3734 35.7982 33.5858 33.5858C35.7982 31.3734 37.5904 29.1062 38.8441 27.0661C39.879 25.3821 40.4916 23.9425 40.7216 22.8729C40.931 21.8995 40.7606 21.6001 40.747 21.5754L29.9001 10.7285ZM29.2403 4.41187L43.5881 18.7597C44.9757 20.1473 44.9743 22.1235 44.6322 23.7139C44.2714 25.3919 43.4158 27.2666 42.252 29.1604C40.8128 31.5022 38.8165 34.012 36.4142 36.4142C34.012 38.8165 31.5022 40.8128 29.1604 42.252C27.2666 43.4158 25.3919 44.2714 23.7139 44.6322C22.1235 44.9743 20.1473 44.9757 18.7597 43.5881L4.41187 29.2403C3.29027 28.1187 3.08209 26.5973 3.21067 25.2783C3.34099 23.9415 3.8369 22.4852 4.54214 21.0277C5.96129 18.0948 8.43335 14.7382 11.5858 11.5858C14.7382 8.43335 18.0948 5.9613 21.0277 4.54214C22.4852 3.8369 23.9415 3.34099 25.2783 3.21067C26.5973 3.08209 28.1187 3.29028 29.2403 4.41187Z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+</div>
+<h2 class="text-text-main-light dark:text-text-main-dark text-xl font-bold tracking-tight">YORI</h2>
+</div>
+<!-- Steps (Desktop) -->
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-text-sub-light dark:text-text-sub-dark text-sm font-medium hover:text-primary transition-colors flex items-center gap-1" href="#">
+<span class="material-symbols-outlined text-lg">shopping_cart</span> Giỏ hàng
+                    </a>
+<div class="h-px w-6 bg-border-light dark:bg-border-dark"></div>
+<a class="text-text-sub-light dark:text-text-sub-dark text-sm font-medium hover:text-primary transition-colors flex items-center gap-1" href="#">
+<span class="material-symbols-outlined text-lg">local_shipping</span> Vận chuyển
+                    </a>
+<div class="h-px w-6 bg-border-light dark:bg-border-dark"></div>
+<a class="text-primary text-sm font-bold flex items-center gap-1" href="#">
+<span class="material-symbols-outlined text-lg fill-current">credit_card</span> Thanh toán
+                    </a>
+<div class="h-px w-6 bg-border-light dark:bg-border-dark"></div>
+<a class="text-text-sub-light dark:text-text-sub-dark text-sm font-medium opacity-60 cursor-not-allowed" href="#">Hoàn tất</a>
+</nav>
+<!-- User Action -->
+<div class="flex items-center gap-4">
+<button class="hidden sm:flex items-center gap-2 text-text-sub-light dark:text-text-sub-dark hover:text-primary transition-colors text-sm font-medium">
+<span class="material-symbols-outlined">help</span> Trợ giúp
+                    </button>
+<div class="size-8 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">person</span>
+</div>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="flex-grow w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 xl:gap-12">
+<!-- LEFT COLUMN: Payment Method -->
+<div class="lg:col-span-8 space-y-8">
+<!-- Page Heading -->
+<div class="space-y-2">
+<h1 class="text-3xl md:text-4xl font-bold tracking-tight text-text-main-light dark:text-text-main-dark">Thanh toán</h1>
+<p class="text-text-sub-light dark:text-text-sub-dark">Vui lòng chọn phương thức thanh toán an toàn và tiện lợi.</p>
+</div>
+<!-- Progress Bar (Mobile only visible) -->
+<div class="block md:hidden">
+<div class="flex justify-between items-center mb-2">
+<span class="text-sm font-medium text-text-main-light dark:text-text-main-dark">Bước 3/4</span>
+<span class="text-xs text-text-sub-light dark:text-text-sub-dark">75%</span>
+</div>
+<div class="h-1.5 w-full bg-border-light dark:bg-border-dark rounded-full overflow-hidden">
+<div class="h-full bg-primary w-3/4 rounded-full"></div>
+</div>
+</div>
+<!-- Payment Options Form -->
+<form class="space-y-6">
+<!-- Credit Card (Selected State) -->
+<div class="relative rounded-xl border-2 border-primary bg-surface-light dark:bg-surface-dark p-6 shadow-sm transition-all">
+<div class="flex items-start gap-4">
+<div class="flex items-center h-6">
+<input checked="" class="h-5 w-5 border-gray-300 text-primary focus:ring-primary" id="payment-cc" name="payment-method" type="radio"/>
+</div>
+<div class="flex-1">
+<label class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 cursor-pointer" for="payment-cc">
+<span class="block text-base font-semibold text-text-main-light dark:text-text-main-dark">Thẻ tín dụng / Ghi nợ quốc tế</span>
+<div class="flex gap-2">
+<div class="h-6 w-10 rounded bg-gray-100 dark:bg-gray-700 flex items-center justify-center overflow-hidden" title="Visa">
+<img alt="Visa Logo" class="h-full object-contain p-1" data-alt="Visa Logo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA-POfPDX00S5qwv85eWbzcvCldE03u-pQNo8wpuxchprnueApsNhe-PlaqSf4tLJUzJdNPudagJDJGYl8jSy21A814WgflFfoJuL9U5aD7zk1Ofc3bZNJA4BUVjOp91VPg-JbmEFFQh3R4fZkyer67wyk8tevDV-1QxhkMgT8jt8xJuz2k74fXWi7Lgu2TdeUI4wCb24tfAFnHBOjHt57AKlXpnQ_qprczBah8IeuesThd5RcyGmptoVihv8nYozLnq1qoHY-1dmA"/>
+</div>
+<div class="h-6 w-10 rounded bg-gray-100 dark:bg-gray-700 flex items-center justify-center overflow-hidden" title="Mastercard">
+<img alt="Mastercard Logo" class="h-full object-contain p-1" data-alt="Mastercard Logo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC_cIEsREBmVNIg7jqUt7mK8lQMg4EgubEMJXf2LF95d44QE5dGhVNhCHnxgDpN42gvi92vJMFxR-dwCv1qogPogE5k2I8CEWPXyXD7NIPNOXXPJi8q-Ib0MmeLOxuirMwtZ-KxqMEriPJk51i9i_IjZ5s-uJmZzfBY162fYUMEz-KJb1-e3jul3U2O9u1yJ0q7dEx8-pe1zXtyacT59xpMocFIi1ISt8HUyXOdd8DMjUtX9kTZpmHckZuKGbq3glFX96KIMCyrwLw"/>
+</div>
+</div>
+</label>
+<p class="text-sm text-text-sub-light dark:text-text-sub-dark mt-1">Thanh toán an toàn qua cổng thanh toán bảo mật.</p>
+<!-- Inner Form for CC -->
+<div class="mt-6 pt-6 border-t border-border-light dark:border-border-dark grid grid-cols-1 md:grid-cols-2 gap-6 animate-in fade-in slide-in-from-top-2 duration-300">
+<div class="md:col-span-2">
+<label class="block text-sm font-medium text-text-main-light dark:text-text-main-dark mb-2">Số thẻ</label>
+<div class="relative">
+<input class="block w-full rounded-lg border-border-light dark:border-border-dark bg-background-light dark:bg-background-dark text-text-main-light dark:text-text-main-dark shadow-sm focus:border-primary focus:ring-primary sm:text-base py-3 pl-4 pr-10" placeholder="0000 0000 0000 0000" type="text"/>
+<span class="absolute right-3 top-1/2 -translate-y-1/2 text-text-sub-light dark:text-text-sub-dark material-symbols-outlined">credit_card</span>
+</div>
+</div>
+<div>
+<label class="block text-sm font-medium text-text-main-light dark:text-text-main-dark mb-2">Họ và tên chủ thẻ</label>
+<input class="block w-full rounded-lg border-border-light dark:border-border-dark bg-background-light dark:bg-background-dark text-text-main-light dark:text-text-main-dark shadow-sm focus:border-primary focus:ring-primary sm:text-base py-3 px-4 uppercase" placeholder="NGUYEN VAN A" type="text"/>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div>
+<label class="block text-sm font-medium text-text-main-light dark:text-text-main-dark mb-2">Ngày hết hạn</label>
+<input class="block w-full rounded-lg border-border-light dark:border-border-dark bg-background-light dark:bg-background-dark text-text-main-light dark:text-text-main-dark shadow-sm focus:border-primary focus:ring-primary sm:text-base py-3 px-4" placeholder="MM/YY" type="text"/>
+</div>
+<div>
+<label class="block text-sm font-medium text-text-main-light dark:text-text-main-dark mb-2">CVV</label>
+<div class="relative">
+<input class="block w-full rounded-lg border-border-light dark:border-border-dark bg-background-light dark:bg-background-dark text-text-main-light dark:text-text-main-dark shadow-sm focus:border-primary focus:ring-primary sm:text-base py-3 px-4" placeholder="123" type="text"/>
+<span class="absolute right-3 top-1/2 -translate-y-1/2 text-text-sub-light dark:text-text-sub-dark material-symbols-outlined text-lg cursor-help" title="3 số cuối mặt sau thẻ">help</span>
+</div>
+</div>
+</div>
+<!-- Save card checkbox -->
+<div class="md:col-span-2 flex items-center gap-2 mt-2">
+<input class="rounded border-gray-300 text-primary focus:ring-primary" id="save-card" type="checkbox"/>
+<label class="text-sm text-text-sub-light dark:text-text-sub-dark" for="save-card">Lưu thông tin thẻ cho lần thanh toán sau</label>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- COD Option -->
+<div class="relative rounded-xl border border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark p-6 shadow-sm hover:border-primary/50 transition-colors cursor-pointer group">
+<div class="flex items-center gap-4">
+<div class="flex items-center h-6">
+<input class="h-5 w-5 border-gray-300 text-primary focus:ring-primary" id="payment-cod" name="payment-method" type="radio"/>
+</div>
+<div class="flex-1">
+<label class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 cursor-pointer" for="payment-cod">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-text-sub-light dark:text-text-sub-dark">payments</span>
+<span class="block text-base font-semibold text-text-main-light dark:text-text-main-dark">Thanh toán khi nhận hàng (COD)</span>
+</div>
+</label>
+<p class="text-sm text-text-sub-light dark:text-text-sub-dark mt-1 ml-9">Bạn chỉ phải thanh toán khi đã nhận được hàng.</p>
+</div>
+</div>
+</div>
+<!-- E-Wallet Option -->
+<div class="relative rounded-xl border border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark p-6 shadow-sm hover:border-primary/50 transition-colors cursor-pointer">
+<div class="flex items-center gap-4">
+<div class="flex items-center h-6">
+<input class="h-5 w-5 border-gray-300 text-primary focus:ring-primary" id="payment-ewallet" name="payment-method" type="radio"/>
+</div>
+<div class="flex-1">
+<label class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 cursor-pointer" for="payment-ewallet">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-text-sub-light dark:text-text-sub-dark">qr_code_scanner</span>
+<span class="block text-base font-semibold text-text-main-light dark:text-text-main-dark">Ví điện tử (MoMo / ZaloPay)</span>
+</div>
+<div class="flex gap-2">
+<!-- Simple placeholder logos using text/colors -->
+<span class="text-xs font-bold text-pink-600 bg-pink-100 px-2 py-1 rounded">MoMo</span>
+<span class="text-xs font-bold text-blue-600 bg-blue-100 px-2 py-1 rounded">ZaloPay</span>
+</div>
+</label>
+<p class="text-sm text-text-sub-light dark:text-text-sub-dark mt-1 ml-9">Quét mã QR để thanh toán nhanh chóng.</p>
+</div>
+</div>
+</div>
+<!-- Bank Transfer Option -->
+<div class="relative rounded-xl border border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark p-6 shadow-sm hover:border-primary/50 transition-colors cursor-pointer">
+<div class="flex items-center gap-4">
+<div class="flex items-center h-6">
+<input class="h-5 w-5 border-gray-300 text-primary focus:ring-primary" id="payment-bank" name="payment-method" type="radio"/>
+</div>
+<div class="flex-1">
+<label class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 cursor-pointer" for="payment-bank">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-text-sub-light dark:text-text-sub-dark">account_balance</span>
+<span class="block text-base font-semibold text-text-main-light dark:text-text-main-dark">Chuyển khoản ngân hàng</span>
+</div>
+</label>
+<p class="text-sm text-text-sub-light dark:text-text-sub-dark mt-1 ml-9">Chuyển khoản trực tiếp 24/7.</p>
+</div>
+</div>
+</div>
+<!-- Billing Address Checkbox -->
+<div class="flex items-center gap-3 py-2">
+<input checked="" class="rounded border-gray-300 text-primary focus:ring-primary h-5 w-5" id="billing-address" type="checkbox"/>
+<label class="text-sm font-medium text-text-main-light dark:text-text-main-dark cursor-pointer" for="billing-address">Địa chỉ thanh toán giống địa chỉ giao hàng</label>
+</div>
+<!-- Action Buttons -->
+<div class="flex flex-col-reverse sm:flex-row items-center justify-between gap-4 pt-6">
+<button class="w-full sm:w-auto text-text-sub-light dark:text-text-sub-dark hover:text-primary font-medium text-sm flex items-center justify-center gap-2 px-4 py-3 transition-colors" type="button">
+<span class="material-symbols-outlined text-lg">arrow_back</span>
+                            Quay lại vận chuyển
+                        </button>
+<button class="w-full sm:w-auto bg-primary hover:bg-primary-hover text-surface-light font-bold text-base rounded-lg px-8 py-3.5 shadow-lg shadow-primary/20 transition-all flex items-center justify-center gap-2" type="button">
+                            Thanh toán ngay <span class="material-symbols-outlined text-lg">arrow_forward</span>
+</button>
+</div>
+</form>
+</div>
+<!-- RIGHT COLUMN: Order Summary (Sticky) -->
+<div class="lg:col-span-4">
+<div class="sticky top-24 space-y-6">
+<!-- Summary Card -->
+<div class="bg-surface-light dark:bg-surface-dark rounded-xl border border-border-light dark:border-border-dark shadow-sm overflow-hidden">
+<div class="p-6 border-b border-border-light dark:border-border-dark bg-gray-50/50 dark:bg-white/5">
+<h3 class="text-lg font-bold text-text-main-light dark:text-text-main-dark">Đơn hàng của bạn (2)</h3>
+</div>
+<!-- Product List -->
+<div class="p-6 space-y-6 max-h-[400px] overflow-y-auto">
+<!-- Item 1 -->
+<div class="flex gap-4">
+<div class="relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-lg border border-border-light dark:border-border-dark bg-background-light dark:bg-background-dark">
+<img alt="White basic t-shirt" class="h-full w-full object-cover object-center" data-alt="White basic t-shirt" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCV7ZmPvaeMM3BrBnQ33gy_8wKLscE1xaA27qV__eKiWEYIp0sZ-lvjAV-ljaj3Xz5k0avOYyTLNJBJrOLHfDbDm9ebUKGs66sP6b1jjIXZrebpJBFyambiMiEpweoMmRe2DwOyRIIc7jOzU3nGdiJbGUTuvYiTwKUkKwUGxdzmEVtYGUse_XzJhscnIlxsrZr1ewji2Ra3dOZgKrHLdD5r__GfXoqlkFO5pir5hdZG8zwpctBF5fg4hJOAFWtSVMnERDhy7jB-EiU"/>
+<span class="absolute -right-2 -top-2 h-6 w-6 rounded-full bg-primary text-xs font-bold text-white flex items-center justify-center border-2 border-white dark:border-surface-dark">1</span>
+</div>
+<div class="flex flex-1 flex-col justify-between">
+<div>
+<h4 class="text-sm font-bold text-text-main-light dark:text-text-main-dark line-clamp-2">Áo Thun Basic Premium - Trắng</h4>
+<p class="mt-1 text-xs text-text-sub-light dark:text-text-sub-dark">Size: L</p>
+</div>
+<p class="text-sm font-medium text-text-main-light dark:text-text-main-dark">350.000đ</p>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="flex gap-4">
+<div class="relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-lg border border-border-light dark:border-border-dark bg-background-light dark:bg-background-dark">
+<img alt="Navy blue shirt" class="h-full w-full object-cover object-center" data-alt="Navy blue shirt" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAkYkm2DBR0TSJgQpxRU7xnss9_pQyuxzRU24p3I2joDGKFMmQk0U7ZQQ3VBPNHUklSn-smDjNJOz7ZdUiTg4kvdimMUPYSI1xbDgge6U9MX_iBZMWfV5MMKhsKXYIb05CUzZ_Sggrk9bcoXlWACCasQAzyBIT_FgOlksHYxAYiPIfOjZyIEiB2bvDjoSXAdKSFRpNihr86HVHbrWcWZj412J-0qfmHOeIbvFlJqfk8nlk-kSsUp48YJgnHU-m4-lpkYSGAvtVDHoM"/>
+<span class="absolute -right-2 -top-2 h-6 w-6 rounded-full bg-primary text-xs font-bold text-white flex items-center justify-center border-2 border-white dark:border-surface-dark">1</span>
+</div>
+<div class="flex flex-1 flex-col justify-between">
+<div>
+<h4 class="text-sm font-bold text-text-main-light dark:text-text-main-dark line-clamp-2">Áo Sơ Mi Linen - Xanh Navy</h4>
+<p class="mt-1 text-xs text-text-sub-light dark:text-text-sub-dark">Size: XL</p>
+</div>
+<p class="text-sm font-medium text-text-main-light dark:text-text-main-dark">550.000đ</p>
+</div>
+</div>
+</div>
+<!-- Divider -->
+<div class="h-px bg-border-light dark:bg-border-dark mx-6"></div>
+<!-- Discount Code -->
+<div class="p-6">
+<div class="flex gap-2">
+<input class="flex-1 rounded-lg border-border-light dark:border-border-dark bg-background-light dark:bg-background-dark text-sm px-3 py-2.5 focus:border-primary focus:ring-primary" placeholder="Mã giảm giá" type="text"/>
+<button class="rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 px-4 py-2.5 text-sm font-semibold text-text-main-light dark:text-text-main-dark transition-colors">Áp dụng</button>
+</div>
+</div>
+<!-- Pricing Breakdown -->
+<div class="bg-gray-50/50 dark:bg-white/5 p-6 space-y-3">
+<div class="flex justify-between text-sm text-text-sub-light dark:text-text-sub-dark">
+<span>Tạm tính</span>
+<span class="font-medium text-text-main-light dark:text-text-main-dark">900.000đ</span>
+</div>
+<div class="flex justify-between text-sm text-text-sub-light dark:text-text-sub-dark">
+<span>Phí vận chuyển</span>
+<span class="font-medium text-text-main-light dark:text-text-main-dark">30.000đ</span>
+</div>
+<div class="flex justify-between text-sm text-green-600 dark:text-green-400">
+<span>Giảm giá</span>
+<span class="font-medium">-0đ</span>
+</div>
+<div class="pt-3 border-t border-border-light dark:border-border-dark flex justify-between items-end">
+<span class="text-base font-bold text-text-main-light dark:text-text-main-dark">Tổng cộng</span>
+<div class="text-right">
+<span class="block text-2xl font-bold text-primary">930.000đ</span>
+<span class="text-xs text-text-sub-light dark:text-text-sub-dark">(Đã bao gồm VAT)</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Trust Signals -->
+<div class="flex items-center justify-center gap-4 text-text-sub-light dark:text-text-sub-dark opacity-70">
+<span class="flex items-center gap-1 text-xs">
+<span class="material-symbols-outlined text-sm">lock</span> SSL Secure
+                        </span>
+<div class="h-3 w-px bg-border-dark/20 dark:bg-border-light/20"></div>
+<span class="flex items-center gap-1 text-xs">
+<span class="material-symbols-outlined text-sm">verified_user</span> Bảo mật 100%
+                        </span>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Simple Footer -->
+<footer class="mt-auto border-t border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark py-8">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-text-sub-light dark:text-text-sub-dark">
+<p>© 2023 YORI Vietnam. All rights reserved.</p>
+<div class="flex gap-6">
+<a class="hover:text-primary" href="#">Chính sách bảo mật</a>
+<a class="hover:text-primary" href="#">Điều khoản dịch vụ</a>
+<a class="hover:text-primary" href="#">Chính sách hoàn trả</a>
+</div>
+</div>
+</footer>
+</body></html>

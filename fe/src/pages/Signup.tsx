@@ -9,6 +9,7 @@ import Input from '@/components/common/Input'
 import Button from '@/components/common/Button'
 import { ROUTES } from '@/utils/constants'
 import { useAuth } from '@/hooks/useAuth'
+import { useToast } from '@/contexts/ToastContext'
 import { socialLogin } from '@/services/auth.service'
 import type { RegisterRequest, SocialLoginRequest } from '@/types'
 import { isValidPassword } from '@/utils/validators'
@@ -41,6 +42,7 @@ type SignupFormData = z.infer<typeof signupSchema>
 const Signup = () => {
   const navigate = useNavigate()
   const { register: registerUser } = useAuth()
+  const { showError, showSuccess } = useToast()
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [showPassword, setShowPassword] = useState(false)
@@ -62,23 +64,50 @@ const Signup = () => {
     setError(null)
 
     try {
-      const registerData: RegisterRequest = {
-        first_name: data.first_name,
-        last_name: data.last_name,
-        email: data.email,
-        password: data.password,
-        password_confirmation: data.password_confirmation,
-        agree_terms: data.agree_terms,
+      // Đảm bảo agree_terms là boolean true
+      if (!data.agree_terms) {
+        const errorMsg = 'Bạn phải đồng ý với điều khoản sử dụng'
+        showError(errorMsg)
+        setError(errorMsg)
+        setIsLoading(false)
+        return
       }
 
+      const registerData: RegisterRequest = {
+        first_name: data.first_name.trim(),
+        last_name: data.last_name.trim(),
+        email: data.email.trim().toLowerCase(),
+        password: data.password,
+        password_confirmation: data.password_confirmation,
+        agree_terms: true, // Đảm bảo luôn là true
+      }
+
+      console.log('[Signup] Register data:', { ...registerData, password: '***', password_confirmation: '***' })
+
       await registerUser(registerData)
+
+      // Hiển thị toast success
+      showSuccess('Đăng ký thành công! Chào mừng bạn đến với YORI!')
 
       // Redirect về trang chủ sau khi đăng ký thành công
       navigate(ROUTES.HOME)
     } catch (err: any) {
-      setError(
-        err.response?.data?.message || 'Đăng ký thất bại. Vui lòng thử lại.'
-      )
+      console.error('Register error:', err.response?.data)
+      
+      // Lấy error message
+      let errorMessage = 'Đăng ký thất bại. Vui lòng thử lại.'
+      
+      if (err.response?.data?.errors && Array.isArray(err.response.data.errors)) {
+        errorMessage = err.response.data.errors.map((e: any) => e.message || e.msg).join(', ')
+      } else if (err.response?.data?.message) {
+        errorMessage = err.response.data.message
+      }
+      
+      // Hiển thị toast error
+      showError(errorMessage)
+      
+      // Cũng set error state để hiển thị trong form (nếu cần)
+      setError(errorMessage)
     } finally {
       setIsLoading(false)
     }
@@ -99,10 +128,10 @@ const Signup = () => {
       await socialLogin(socialData)
       navigate(ROUTES.HOME)
     } catch (err: any) {
-      setError(
-        err.response?.data?.message ||
-          `Đăng ký bằng ${provider === 'google' ? 'Google' : 'Facebook'} thất bại.`
-      )
+      const errorMessage = err.response?.data?.message ||
+        `Đăng ký bằng ${provider === 'google' ? 'Google' : 'Facebook'} thất bại.`
+      showError(errorMessage)
+      setError(errorMessage)
     } finally {
       setIsLoading(false)
     }

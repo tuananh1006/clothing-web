@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>YORI - Danh mục Sản phẩm</title>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts: Manrope -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings:
+      'FILL' 0,
+      'wght' 400,
+      'GRAD' 0,
+      'opsz' 24
+    }
+  </style>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#19b3e6",
+            "background-light": "#f8fbfc",
+            "background-dark": "#111d21",
+            "text-main": "#0e181b",
+            "text-sub": "#4e8597",
+            "card-bg": "#ffffff",
+          },
+          fontFamily: {
+            "display": ["Manrope", "sans-serif"]
+          },
+          borderRadius: {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "2xl": "1rem",
+            "full": "9999px"
+          },
+        },
+      },
+    }
+  </script>
+</head>
+<body class="font-display bg-background-light dark:bg-background-dark text-text-main antialiased min-h-screen flex flex-col">
+<!-- Navigation -->
+<header class="sticky top-0 z-50 w-full bg-background-light/90 dark:bg-background-dark/90 backdrop-blur-sm border-b border-[#e7f0f3] dark:border-gray-800">
+<div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex items-center justify-between h-16">
+<!-- Logo -->
+<div class="flex items-center gap-2">
+<div class="text-primary">
+<svg class="size-8" fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M42.1739 20.1739L27.8261 5.82609C29.1366 7.13663 28.3989 10.1876 26.2002 13.7654C24.8538 15.9564 22.9595 18.3449 20.6522 20.6522C18.3449 22.9595 15.9564 24.8538 13.7654 26.2002C10.1876 28.3989 7.13663 29.1366 5.82609 27.8261L20.1739 42.1739C21.4845 43.4845 24.5355 42.7467 28.1133 40.548C30.3042 39.2016 32.6927 37.3073 35 35C37.3073 32.6927 39.2016 30.3042 40.548 28.1133C42.7467 24.5355 43.4845 21.4845 42.1739 20.1739Z" fill="currentColor"></path>
+<path clip-rule="evenodd" d="M7.24189 26.4066C7.31369 26.4411 7.64204 26.5637 8.52504 26.3738C9.59462 26.1438 11.0343 25.5311 12.7183 24.4963C14.7583 23.2426 17.0256 21.4503 19.238 19.238C21.4503 17.0256 23.2426 14.7583 24.4963 12.7183C25.5311 11.0343 26.1438 9.59463 26.3738 8.52504C26.5637 7.64204 26.4411 7.31369 26.4066 7.24189C26.345 7.21246 26.143 7.14535 25.6664 7.1918C24.9745 7.25925 23.9954 7.5498 22.7699 8.14278C20.3369 9.32007 17.3369 11.4915 14.4142 14.4142C11.4915 17.3369 9.32007 20.3369 8.14278 22.7699C7.5498 23.9954 7.25925 24.9745 7.1918 25.6664C7.14534 26.143 7.21246 26.345 7.24189 26.4066ZM29.9001 10.7285C29.4519 12.0322 28.7617 13.4172 27.9042 14.8126C26.465 17.1544 24.4686 19.6641 22.0664 22.0664C19.6641 24.4686 17.1544 26.465 14.8126 27.9042C13.4172 28.7617 12.0322 29.4519 10.7285 29.9001L21.5754 40.747C21.6001 40.7606 21.8995 40.931 22.8729 40.7217C23.9424 40.4916 25.3821 39.879 27.0661 38.8441C29.1062 37.5904 31.3734 35.7982 33.5858 33.5858C35.7982 31.3734 37.5904 29.1062 38.8441 27.0661C39.879 25.3821 40.4916 23.9425 40.7216 22.8729C40.931 21.8995 40.7606 21.6001 40.747 21.5754L29.9001 10.7285ZM29.2403 4.41187L43.5881 18.7597C44.9757 20.1473 44.9743 22.1235 44.6322 23.7139C44.2714 25.3919 43.4158 27.2666 42.252 29.1604C40.8128 31.5022 38.8165 34.012 36.4142 36.4142C34.012 38.8165 31.5022 40.8128 29.1604 42.252C27.2666 43.4158 25.3919 44.2714 23.7139 44.6322C22.1235 44.9743 20.1473 44.9757 18.7597 43.5881L4.41187 29.2403C3.29027 28.1187 3.08209 26.5973 3.21067 25.2783C3.34099 23.9415 3.8369 22.4852 4.54214 21.0277C5.96129 18.0948 8.43335 14.7382 11.5858 11.5858C14.7382 8.43335 18.0948 5.9613 21.0277 4.54214C22.4852 3.8369 23.9415 3.34099 25.2783 3.21067C26.5973 3.08209 28.1187 3.29028 29.2403 4.41187Z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+</div>
+<h2 class="text-text-main text-xl font-bold tracking-tight">YORI</h2>
+</div>
+<!-- Links -->
+<div class="hidden md:flex items-center gap-8">
+<a class="text-text-main hover:text-primary transition-colors text-sm font-medium" href="#">Nam</a>
+<a class="text-text-main hover:text-primary transition-colors text-sm font-medium" href="#">Nữ</a>
+<a class="text-text-main hover:text-primary transition-colors text-sm font-medium" href="#">Bộ sưu tập</a>
+<a class="text-text-main hover:text-primary transition-colors text-sm font-medium" href="#">Về YORI</a>
+</div>
+<!-- Icons -->
+<div class="flex items-center gap-3">
+<button class="p-2 text-text-main hover:text-primary hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-all">
+<span class="material-symbols-outlined">search</span>
+</button>
+<button class="p-2 text-text-main hover:text-primary hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-all">
+<span class="material-symbols-outlined">shopping_bag</span>
+</button>
+<button class="p-2 text-text-main hover:text-primary hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-all">
+<span class="material-symbols-outlined">person</span>
+</button>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="flex-grow">
+<!-- Hero / Intro -->
+<section class="w-full px-4 sm:px-6 lg:px-8 pt-12 pb-8 flex justify-center">
+<div class="w-full max-w-[1280px]">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-8">
+<div class="max-w-2xl">
+<h1 class="text-text-main text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-[1.1] mb-4">
+              Simplifying your <br class="hidden sm:block"/> wardrobe.
+            </h1>
+<p class="text-text-sub text-lg sm:text-xl font-normal max-w-lg">
+              Quality essentials designed in Tokyo. Timeless pieces for your everyday life.
+            </p>
+</div>
+<!-- Chips Filters -->
+<div class="flex flex-wrap gap-2 pb-1">
+<button class="flex h-10 items-center justify-center px-5 rounded-full bg-text-main text-background-light text-sm font-medium hover:opacity-90 transition-opacity">
+              All Items
+            </button>
+<button class="flex h-10 items-center justify-center px-5 rounded-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-text-main text-sm font-medium hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+              New Arrivals
+            </button>
+<button class="flex h-10 items-center justify-center px-5 rounded-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-text-main text-sm font-medium hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+              Best Sellers
+            </button>
+<button class="flex h-10 items-center justify-center px-5 rounded-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-text-main text-sm font-medium hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+              Essentials
+            </button>
+</div>
+</div>
+</div>
+</section>
+<!-- Category Grid -->
+<section class="w-full px-4 sm:px-6 lg:px-8 pb-20 flex justify-center">
+<div class="w-full max-w-[1280px]">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+<!-- Category 1: Shirts -->
+<a class="group block relative overflow-hidden rounded-2xl bg-white dark:bg-gray-800 shadow-sm hover:shadow-xl transition-all duration-300" href="#">
+<div class="aspect-[3/4] w-full overflow-hidden bg-gray-200">
+<div class="w-full h-full bg-center bg-cover bg-no-repeat transition-transform duration-700 group-hover:scale-105" data-alt="Clean white cotton shirt on a hanger against a minimal wall" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuD32BwQOKSMpvyvvDstxM5q9o58VWBO4M7-MFry-5svPJM5ZywFlScSUVb_hbpWOxCiI97XcbD0XPbISq721SmN8aRYESZuWOqdOKyxb-eNZd1GsSSSrMJmtIa4hIjWHBquuS0q8zc2ztRwHoZpls2qiL4H0CnBIv5xuYiWb8FKrl4-nwcVQQQUBooKv-m2LXv6ZcFVcoZMIHrmBBPyOW5Jf0R5KdgAvQQWF4KOovFg0gQOBTBklznNwSv18fqJ6wbYKGySGHaxH-g');">
+</div>
+</div>
+<div class="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/60 to-transparent pt-20">
+<div class="flex items-end justify-between">
+<div>
+<h3 class="text-white text-2xl font-bold tracking-tight mb-1">ÁO</h3>
+<p class="text-white/90 text-sm font-medium">Cotton thoáng mát cho mọi ngày</p>
+</div>
+<div class="bg-white/20 backdrop-blur-md rounded-full p-2 text-white group-hover:bg-primary group-hover:text-white transition-colors duration-300">
+<span class="material-symbols-outlined !text-[20px]">arrow_forward</span>
+</div>
+</div>
+</div>
+</a>
+<!-- Category 2: Pants -->
+<a class="group block relative overflow-hidden rounded-2xl bg-white dark:bg-gray-800 shadow-sm hover:shadow-xl transition-all duration-300" href="#">
+<div class="aspect-[3/4] w-full overflow-hidden bg-gray-200">
+<div class="w-full h-full bg-center bg-cover bg-no-repeat transition-transform duration-700 group-hover:scale-105" data-alt="Beige linen trousers folded neatly on a wooden surface" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBkPLHK_HNG4jCTkVYqsVwfjJoCL8-UvRUo5hAqFf94fMAcyvVtoottzeQFlNn485V6UNWtIxbZSx4kDQnpbKm11jqjWA5fxYiAWqMF42ZGjQX5H8aCer6BoT-wPfrai2pJlNJiRIx9ZMsmVh5jFgwxlTLb-tEuh0RwJtjt_N7JgWvc8PYeShbCwNxMFcEr9t08LojGLBlPe_6vXxyPZkF4hpIwWH50TLMAkwG2ICx60yvRkmS3KsjnUHEjgQT0kvTaJy2JY7M_4A4');">
+</div>
+</div>
+<div class="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/60 to-transparent pt-20">
+<div class="flex items-end justify-between">
+<div>
+<h3 class="text-white text-2xl font-bold tracking-tight mb-1">QUẦN</h3>
+<p class="text-white/90 text-sm font-medium">Kiểu dáng vừa vặn, tối giản</p>
+</div>
+<div class="bg-white/20 backdrop-blur-md rounded-full p-2 text-white group-hover:bg-primary group-hover:text-white transition-colors duration-300">
+<span class="material-symbols-outlined !text-[20px]">arrow_forward</span>
+</div>
+</div>
+</div>
+</a>
+<!-- Category 3: Jackets -->
+<a class="group block relative overflow-hidden rounded-2xl bg-white dark:bg-gray-800 shadow-sm hover:shadow-xl transition-all duration-300" href="#">
+<div class="aspect-[3/4] w-full overflow-hidden bg-gray-200">
+<div class="w-full h-full bg-center bg-cover bg-no-repeat transition-transform duration-700 group-hover:scale-105" data-alt="Modern lightweight jacket hanging in a studio setting" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAIvlHRsF7TPQg_OSUOj-WKFR6qpr7ELfxG8maqgSz7MNvTTjVVR17m-Jk3Axts_c_PxN4_VNvvQg-fYC1ugKsUPUOGPZV2NxNv9-UY_hWp_436KXYy9QDkEx2jWID6xqLhEMLP6B0B4lK_IBIsAk4u9kPgVz1cWqDA8iYlOsPnXkYz9OkcZNaXcu94QAPG6ukqfyn2bIT699lLvBvViGtBDSzw_kkf2zuuVWEcdt7VoryzLiW1I7qwqT0DAgSv5YLhm55C_PLZ16I');">
+</div>
+</div>
+<div class="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/60 to-transparent pt-20">
+<div class="flex items-end justify-between">
+<div>
+<h3 class="text-white text-2xl font-bold tracking-tight mb-1">ÁO KHOÁC</h3>
+<p class="text-white/90 text-sm font-medium">Lớp bảo vệ phong cách</p>
+</div>
+<div class="bg-white/20 backdrop-blur-md rounded-full p-2 text-white group-hover:bg-primary group-hover:text-white transition-colors duration-300">
+<span class="material-symbols-outlined !text-[20px]">arrow_forward</span>
+</div>
+</div>
+</div>
+</a>
+</div>
+</div>
+</section>
+<!-- Featured Collection (Mini grid below categories for balance) -->
+<section class="w-full px-4 sm:px-6 lg:px-8 pb-20 flex justify-center bg-white dark:bg-[#152329]">
+<div class="w-full max-w-[1280px] py-16">
+<div class="flex justify-between items-end mb-8">
+<h2 class="text-text-main text-2xl font-bold">New Arrivals</h2>
+<a class="text-primary font-medium text-sm flex items-center gap-1 hover:gap-2 transition-all" href="#">
+            View all <span class="material-symbols-outlined !text-[16px]">arrow_forward</span>
+</a>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+<!-- Product 1 -->
+<div class="flex flex-col gap-3 group cursor-pointer">
+<div class="relative overflow-hidden rounded-xl bg-gray-100 aspect-[3/4]">
+<div class="w-full h-full bg-center bg-cover transition-transform duration-500 group-hover:scale-110" data-alt="Person wearing a minimal grey oversized tee" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuByswNDi1QDKLCOe1PKAwbRMR2PFufN_9dSk1-VMeL08lL9o7ka6K0pDsZW1HMdIh2Lyr94hSx5EYBxx-pvRAdobmmwjaeyfZLBWhkdNwcUK-T13cRn_ORkqClLUNMr978ubqPeSji0O-wwPGowij8DvqAPG20LPAc3YnkbST1y9YpSz-BtZ8Dex4ei3PpdkRxP3nFh7Ux_r1jj2iFwLqWLWcMiTYhRMu8Oehj35PsJC8oUCsDH4580zfGjJSJg-5Iay8TVdY2aQ08');"></div>
+<div class="absolute top-3 left-3 bg-white/90 backdrop-blur px-2 py-1 text-xs font-bold uppercase tracking-wider text-text-main rounded-sm">New</div>
+</div>
+<div>
+<h4 class="text-text-main font-bold text-sm">Oversized Tee</h4>
+<p class="text-text-sub text-xs">Soft Cotton Blend</p>
+<p class="text-text-main font-bold text-sm mt-1">450.000₫</p>
+</div>
+</div>
+<!-- Product 2 -->
+<div class="flex flex-col gap-3 group cursor-pointer">
+<div class="relative overflow-hidden rounded-xl bg-gray-100 aspect-[3/4]">
+<div class="w-full h-full bg-center bg-cover transition-transform duration-500 group-hover:scale-110" data-alt="Person wearing casual beige shorts walking" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBmV37GiZXc0fle8UGBZ294tuMZ3R6Q-_HxM_IHlagD0p9rIkJJrAgdrZCla3bOfjg535k5LJbfd4tYqmDP7p8adGRWQd426mZ8WAYFfhVOVTkgovhjN36Je8QGvaOTLqpWHJ0V50l3oRjI7pkq9ZezifzkUadFIvvSCSRVwZjdW-8gQy6UP_y24y3e_8RIVde_AioDX8F1ejzvC9SFEJ3TOX7nQ1E_RYs1HJe7hBAsjh9s5QS4EDCzZDTOAP2KQBpQ4wS5thkwq6E');"></div>
+</div>
+<div>
+<h4 class="text-text-main font-bold text-sm">Casual Shorts</h4>
+<p class="text-text-sub text-xs">Breathable Fabric</p>
+<p class="text-text-main font-bold text-sm mt-1">380.000₫</p>
+</div>
+</div>
+<!-- Product 3 -->
+<div class="flex flex-col gap-3 group cursor-pointer">
+<div class="relative overflow-hidden rounded-xl bg-gray-100 aspect-[3/4]">
+<div class="w-full h-full bg-center bg-cover transition-transform duration-500 group-hover:scale-110" data-alt="Close up of a denim jacket texture" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCAuphSJZW0nfjT43xE6zZ3I4DfscZLbH9FleQ-9TMcyVEieco0EbS5IErzipbesA5FIuyyuQvErI0OMOnD0s5JpLdPNXnLCvVGdpMnuTx2MyGeHBYArh3ZbqZKWDL1tHZMC0ngzvm165L4Xbyi4JY7nvZYBXKFZlEfYbyzcf3_c7wvAbNOAjjXo_0A_YF-8IIO1YlHxSy2If3GyrLRX0qLw3u3M1fSHM2JOZnHeG3QyPeTv3zYcqq_kvWONdA1Y2pgYhNhq0nfmiA');"></div>
+</div>
+<div>
+<h4 class="text-text-main font-bold text-sm">Denim Jacket</h4>
+<p class="text-text-sub text-xs">Classic Blue Wash</p>
+<p class="text-text-main font-bold text-sm mt-1">890.000₫</p>
+</div>
+</div>
+<!-- Product 4 -->
+<div class="flex flex-col gap-3 group cursor-pointer">
+<div class="relative overflow-hidden rounded-xl bg-gray-100 aspect-[3/4]">
+<div class="w-full h-full bg-center bg-cover transition-transform duration-500 group-hover:scale-110" data-alt="Man wearing a black polo shirt looking to the side" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDURkvJEv5Tgt5R84kVlpcuu1Jb06gjb55-JggWm14L6oAg3pp1zk87LSDNIlAQLX3klF-0Ndco_cCoxcuWS2srVsUamH5j4MMSAd6S2OM-YiI0Xld7ACyQEKm-5D9E9WjN94jPwPZhJh6FODogV0voRcA8jecVeHGX2ELRBVH_WYUQ_ZwaFfCluxxI6jLkIRFWUlYE8b27sB1BRVYKqB6Ogb_RN8IQIO0cJaaNGmNc5955BbJAybQsveSqjKyCUC99opUZOn5IqJI');"></div>
+<div class="absolute top-3 left-3 bg-primary/90 backdrop-blur px-2 py-1 text-xs font-bold uppercase tracking-wider text-white rounded-sm">Best Seller</div>
+</div>
+<div>
+<h4 class="text-text-main font-bold text-sm">Modern Polo</h4>
+<p class="text-text-sub text-xs">Slim Fit</p>
+<p class="text-text-main font-bold text-sm mt-1">520.000₫</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Newsletter CTA -->
+<section class="w-full flex justify-center py-16 bg-background-light dark:bg-background-dark border-t border-[#e7f0f3] dark:border-gray-800">
+<div class="w-full max-w-[960px] px-4">
+<div class="flex flex-col items-center text-center gap-6">
+<div class="flex flex-col gap-2">
+<h2 class="text-text-main text-3xl font-extrabold tracking-tight">
+              Join our newsletter
+            </h2>
+<p class="text-text-sub text-base max-w-md mx-auto">
+              Receive updates on new arrivals and special offers. 
+              Minimal emails, maximum value.
+            </p>
+</div>
+<form class="w-full max-w-md flex flex-col sm:flex-row gap-3">
+<input class="flex-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg px-4 py-3 text-text-main focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-shadow" placeholder="Enter your email address" required="" type="email"/>
+<button class="bg-primary text-white font-bold py-3 px-6 rounded-lg hover:bg-opacity-90 transition-opacity" type="submit">
+               Subscribe
+             </button>
+</form>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-white dark:bg-[#0b1417] border-t border-[#e7f0f3] dark:border-gray-800 pt-16 pb-8">
+<div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
+<div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
+<div class="col-span-2 md:col-span-1">
+<div class="flex items-center gap-2 mb-4 text-text-main">
+<svg class="size-6 text-primary" fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M42.1739 20.1739L27.8261 5.82609C29.1366 7.13663 28.3989 10.1876 26.2002 13.7654C24.8538 15.9564 22.9595 18.3449 20.6522 20.6522C18.3449 22.9595 15.9564 24.8538 13.7654 26.2002C10.1876 28.3989 7.13663 29.1366 5.82609 27.8261L20.1739 42.1739C21.4845 43.4845 24.5355 42.7467 28.1133 40.548C30.3042 39.2016 32.6927 37.3073 35 35C37.3073 32.6927 39.2016 30.3042 40.548 28.1133C42.7467 24.5355 43.4845 21.4845 42.1739 20.1739Z" fill="currentColor"></path>
+</svg>
+<span class="font-bold text-lg tracking-tight">YORI</span>
+</div>
+<p class="text-text-sub text-sm">
+            Japanese minimalist fashion for the modern individual. Designed in Tokyo, worn worldwide.
+          </p>
+</div>
+<div>
+<h4 class="text-text-main font-bold mb-4">Shop</h4>
+<ul class="flex flex-col gap-2 text-sm text-text-sub">
+<li><a class="hover:text-primary transition-colors" href="#">Nam</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Nữ</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Phụ kiện</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">New Arrivals</a></li>
+</ul>
+</div>
+<div>
+<h4 class="text-text-main font-bold mb-4">Support</h4>
+<ul class="flex flex-col gap-2 text-sm text-text-sub">
+<li><a class="hover:text-primary transition-colors" href="#">Contact Us</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Shipping</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Returns</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">FAQ</a></li>
+</ul>
+</div>
+<div>
+<h4 class="text-text-main font-bold mb-4">Social</h4>
+<div class="flex gap-4">
+<a class="text-text-sub hover:text-primary transition-colors" href="#"><span class="material-symbols-outlined">public</span></a>
+<a class="text-text-sub hover:text-primary transition-colors" href="#"><span class="material-symbols-outlined">photo_camera</span></a>
+<a class="text-text-sub hover:text-primary transition-colors" href="#"><span class="material-symbols-outlined">alternate_email</span></a>
+</div>
+</div>
+</div>
+<div class="border-t border-[#e7f0f3] dark:border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+<p class="text-text-sub text-xs">© 2024 YORI Inc. All rights reserved.</p>
+<div class="flex gap-6 text-xs text-text-sub">
+<a class="hover:text-text-main" href="#">Privacy Policy</a>
+<a class="hover:text-text-main" href="#">Terms of Service</a>
+</div>
+</div>
+</div>
+</footer>
+</body></html>

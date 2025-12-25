@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>YORI - Men's Collection</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#19b3e6",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#111d21",
+                        "surface-light": "#ffffff",
+                        "surface-dark": "#1a2c32",
+                        "text-primary-light": "#0e181b",
+                        "text-primary-dark": "#e7f0f3",
+                        "text-secondary-light": "#4e8597",
+                        "text-secondary-dark": "#88aab5",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar for clean look */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #d0e1e7; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4e8597; 
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-text-primary-light dark:text-text-primary-dark antialiased transition-colors duration-200">
+<div class="flex min-h-screen flex-col">
+<!-- Header -->
+<header class="sticky top-0 z-50 flex items-center justify-between whitespace-nowrap border-b border-solid border-[#e7f0f3] dark:border-gray-800 bg-surface-light/90 dark:bg-surface-dark/90 backdrop-blur-md px-10 py-3 transition-colors">
+<div class="flex items-center gap-4 text-text-primary-light dark:text-text-primary-dark">
+<div class="size-8 text-primary">
+<!-- Logo Icon: Using a simple geometric shape to match Japanese minimalism -->
+<svg fill="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 2L2 22H22L12 2ZM12 6L17 18H7L12 6Z"></path>
+</svg>
+</div>
+<h2 class="text-2xl font-bold leading-tight tracking-[-0.015em]">YORI</h2>
+</div>
+<nav class="hidden md:flex flex-1 justify-center gap-12">
+<a class="text-text-primary-light dark:text-text-primary-dark text-sm font-bold border-b-2 border-primary leading-normal" href="#">Men</a>
+<a class="text-text-secondary-light dark:text-text-secondary-dark hover:text-primary dark:hover:text-primary transition-colors text-sm font-medium leading-normal" href="#">Women</a>
+<a class="text-text-secondary-light dark:text-text-secondary-dark hover:text-primary dark:hover:text-primary transition-colors text-sm font-medium leading-normal" href="#">Accessories</a>
+<a class="text-text-secondary-light dark:text-text-secondary-dark hover:text-primary dark:hover:text-primary transition-colors text-sm font-medium leading-normal" href="#">Journal</a>
+</nav>
+<div class="flex flex-1 justify-end gap-2">
+<button class="flex size-10 items-center justify-center rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors text-text-primary-light dark:text-text-primary-dark">
+<span class="material-symbols-outlined text-[20px]">search</span>
+</button>
+<button class="flex size-10 items-center justify-center rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors text-text-primary-light dark:text-text-primary-dark relative">
+<span class="material-symbols-outlined text-[20px]">shopping_bag</span>
+<span class="absolute top-2 right-2 size-2 bg-primary rounded-full border border-white dark:border-surface-dark"></span>
+</button>
+<button class="flex size-10 items-center justify-center rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors text-text-primary-light dark:text-text-primary-dark">
+<span class="material-symbols-outlined text-[20px]">person</span>
+</button>
+</div>
+</header>
+<main class="flex-1 w-full max-w-[1440px] mx-auto px-4 md:px-10 py-6">
+<!-- Breadcrumbs -->
+<div class="flex flex-wrap gap-2 py-4 text-sm">
+<a class="text-text-secondary-light dark:text-text-secondary-dark hover:text-primary dark:hover:text-primary transition-colors" href="#">Home</a>
+<span class="text-text-secondary-light dark:text-text-secondary-dark">/</span>
+<a class="text-text-secondary-light dark:text-text-secondary-dark hover:text-primary dark:hover:text-primary transition-colors" href="#">Men</a>
+<span class="text-text-secondary-light dark:text-text-secondary-dark">/</span>
+<span class="text-text-primary-light dark:text-text-primary-dark font-medium">New Arrivals</span>
+</div>
+<!-- Page Heading & Controls -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-8 border-b border-[#e7f0f3] dark:border-gray-800 mb-8">
+<div class="flex flex-col gap-2">
+<h1 class="text-4xl md:text-5xl font-black tracking-[-0.033em] text-text-primary-light dark:text-text-primary-dark">Men's Collection</h1>
+<p class="text-text-secondary-light dark:text-text-secondary-dark text-lg max-w-2xl">Timeless minimalist essentials designed for everyday comfort and simplicity.</p>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative group">
+<select class="appearance-none bg-surface-light dark:bg-surface-dark border border-[#d0e1e7] dark:border-gray-700 text-text-primary-light dark:text-text-primary-dark rounded-lg py-3 pl-4 pr-10 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary cursor-pointer text-sm font-medium transition-shadow hover:shadow-sm">
+<option>Sort by: Newest</option>
+<option>Price: Low to High</option>
+<option>Price: High to Low</option>
+<option>Best Selling</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-text-secondary-light pointer-events-none text-lg">expand_more</span>
+</div>
+</div>
+</div>
+<!-- Main Content Layout -->
+<div class="flex flex-col lg:flex-row gap-10">
+<!-- Sidebar Filters -->
+<aside class="w-full lg:w-64 flex-shrink-0 space-y-6">
+<div class="flex items-center justify-between lg:hidden mb-4">
+<button class="flex items-center gap-2 text-sm font-bold bg-gray-100 dark:bg-surface-dark px-4 py-2 rounded-lg">
+<span class="material-symbols-outlined text-[18px]">filter_list</span>
+                            Filters
+                        </button>
+</div>
+<div class="hidden lg:flex flex-col gap-6">
+<!-- Category Filter -->
+<div class="border-b border-gray-100 dark:border-gray-800 pb-6">
+<h3 class="font-bold text-sm uppercase tracking-wider text-text-primary-light dark:text-text-primary-dark mb-4">Categories</h3>
+<ul class="space-y-3">
+<li>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="size-4 rounded border-gray-300 text-primary focus:ring-primary bg-transparent" type="checkbox"/>
+<span class="text-text-secondary-light dark:text-text-secondary-dark group-hover:text-primary transition-colors">Outerwear</span>
+</label>
+</li>
+<li>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input checked="" class="size-4 rounded border-gray-300 text-primary focus:ring-primary bg-transparent" type="checkbox"/>
+<span class="text-text-primary-light dark:text-text-primary-dark font-medium">Tops &amp; Shirts</span>
+</label>
+</li>
+<li>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="size-4 rounded border-gray-300 text-primary focus:ring-primary bg-transparent" type="checkbox"/>
+<span class="text-text-secondary-light dark:text-text-secondary-dark group-hover:text-primary transition-colors">Pants &amp; Bottoms</span>
+</label>
+</li>
+<li>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="size-4 rounded border-gray-300 text-primary focus:ring-primary bg-transparent" type="checkbox"/>
+<span class="text-text-secondary-light dark:text-text-secondary-dark group-hover:text-primary transition-colors">Accessories</span>
+</label>
+</li>
+</ul>
+</div>
+<!-- Size Filter -->
+<div class="border-b border-gray-100 dark:border-gray-800 pb-6">
+<h3 class="font-bold text-sm uppercase tracking-wider text-text-primary-light dark:text-text-primary-dark mb-4">Size</h3>
+<div class="grid grid-cols-4 gap-2">
+<button class="h-10 w-full rounded border border-gray-200 dark:border-gray-700 text-sm font-medium hover:border-primary hover:text-primary transition-colors bg-surface-light dark:bg-surface-dark text-text-secondary-light">XS</button>
+<button class="h-10 w-full rounded border border-primary bg-primary/10 text-primary text-sm font-bold transition-colors">S</button>
+<button class="h-10 w-full rounded border border-gray-200 dark:border-gray-700 text-sm font-medium hover:border-primary hover:text-primary transition-colors bg-surface-light dark:bg-surface-dark text-text-secondary-light">M</button>
+<button class="h-10 w-full rounded border border-gray-200 dark:border-gray-700 text-sm font-medium hover:border-primary hover:text-primary transition-colors bg-surface-light dark:bg-surface-dark text-text-secondary-light">L</button>
+<button class="h-10 w-full rounded border border-gray-200 dark:border-gray-700 text-sm font-medium hover:border-primary hover:text-primary transition-colors bg-surface-light dark:bg-surface-dark text-text-secondary-light">XL</button>
+</div>
+</div>
+<!-- Color Filter -->
+<div class="border-b border-gray-100 dark:border-gray-800 pb-6">
+<h3 class="font-bold text-sm uppercase tracking-wider text-text-primary-light dark:text-text-primary-dark mb-4">Color</h3>
+<div class="flex flex-wrap gap-3">
+<button aria-label="Black" class="size-8 rounded-full bg-[#111d21] border border-transparent hover:scale-110 transition-transform ring-2 ring-offset-2 ring-transparent ring-offset-background-light dark:ring-offset-background-dark focus:ring-gray-300"></button>
+<button aria-label="Navy" class="size-8 rounded-full bg-[#3b4d61] border border-transparent hover:scale-110 transition-transform ring-2 ring-offset-2 ring-transparent ring-offset-background-light dark:ring-offset-background-dark focus:ring-gray-300"></button>
+<button aria-label="Beige" class="size-8 rounded-full bg-[#e5e0d5] border border-gray-300 dark:border-transparent hover:scale-110 transition-transform ring-2 ring-offset-2 ring-transparent ring-offset-background-light dark:ring-offset-background-dark focus:ring-gray-300"></button>
+<button aria-label="White" class="size-8 rounded-full bg-[#ffffff] border border-gray-300 hover:scale-110 transition-transform ring-2 ring-offset-2 ring-transparent ring-offset-background-light dark:ring-offset-background-dark focus:ring-gray-300"></button>
+<button aria-label="Sage" class="size-8 rounded-full bg-[#8f9b8c] border border-transparent hover:scale-110 transition-transform ring-2 ring-offset-2 ring-transparent ring-offset-background-light dark:ring-offset-background-dark focus:ring-gray-300"></button>
+</div>
+</div>
+<!-- Price Range -->
+<div class="pb-6">
+<h3 class="font-bold text-sm uppercase tracking-wider text-text-primary-light dark:text-text-primary-dark mb-4">Price</h3>
+<div class="flex items-center justify-between gap-4 text-sm">
+<div class="relative flex-1">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary-light">₫</span>
+<input class="w-full rounded-md border-gray-200 dark:border-gray-700 bg-surface-light dark:bg-surface-dark py-2 pl-7 pr-2 text-right focus:border-primary focus:ring-primary text-text-primary-light dark:text-text-primary-dark" type="text" value="0"/>
+</div>
+<span class="text-text-secondary-light">-</span>
+<div class="relative flex-1">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary-light">₫</span>
+<input class="w-full rounded-md border-gray-200 dark:border-gray-700 bg-surface-light dark:bg-surface-dark py-2 pl-7 pr-2 text-right focus:border-primary focus:ring-primary text-text-primary-light dark:text-text-primary-dark" type="text" value="2.000k"/>
+</div>
+</div>
+<input class="w-full mt-4 h-1 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-primary" max="100" min="0" type="range"/>
+</div>
+</div>
+</aside>
+<!-- Product Grid -->
+<div class="flex-1">
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-12">
+<!-- Product Card 1 -->
+<div class="group flex flex-col gap-3">
+<div class="relative aspect-[3/4] overflow-hidden rounded-xl bg-gray-100 dark:bg-surface-dark">
+<div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors z-10"></div>
+<img alt="Linen Shirt" class="h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-105" data-alt="Man wearing a minimalist beige linen shirt standing against a concrete wall" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA2SbPWcG_w9ynyXiqBt_-u8xL-eXcKWk-lsg2FwvYH9_5_XRTJz-UnRd8weKvTeMJvCeOm_2Dp8JKe0uxy4ONRGcOqwdS0-NevMl4W0YRj-QlxJV0PKM7DDbLvO_DL1Oo2Pb622mT6qo0r5qn62ZA2VYi4_5m9HDoJKDRqKGBreXsFqXCYmVbWD3XZhk1z1d868dXZ6Il3hn8KyAJLudFv-Y2xUfbXaPktavITMjD4Hb710BpTWpBIEDU8CZaUMkj1RTYdB4w0Z-4"/>
+<button class="absolute bottom-4 right-4 z-20 translate-y-4 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 flex size-10 items-center justify-center rounded-full bg-surface-light text-text-primary-light shadow-lg hover:bg-primary hover:text-white dark:bg-surface-dark dark:text-text-primary-dark dark:hover:bg-primary">
+<span class="material-symbols-outlined text-[20px]">add_shopping_cart</span>
+</button>
+<div class="absolute top-3 left-3 bg-white/90 dark:bg-surface-dark/90 text-xs font-bold px-2 py-1 rounded text-primary shadow-sm">New</div>
+</div>
+<div class="flex flex-col gap-1">
+<div class="flex justify-between items-start">
+<h3 class="text-lg font-bold text-text-primary-light dark:text-text-primary-dark group-hover:text-primary transition-colors">YORI Classic Linen Shirt</h3>
+<div class="flex gap-1 pt-1">
+<div class="size-3 rounded-full bg-[#e5e0d5] border border-gray-200"></div>
+<div class="size-3 rounded-full bg-[#3b4d61]"></div>
+</div>
+</div>
+<p class="text-text-secondary-light dark:text-text-secondary-dark text-sm">Relaxed Fit</p>
+<p class="text-primary font-bold mt-1">850.000₫</p>
+</div>
+</div>
+<!-- Product Card 2 -->
+<div class="group flex flex-col gap-3">
+<div class="relative aspect-[3/4] overflow-hidden rounded-xl bg-gray-100 dark:bg-surface-dark">
+<div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors z-10"></div>
+<img alt="Yellow Tee" class="h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-105" data-alt="Man wearing a yellow oversized t-shirt in a studio setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD7JM5MXmHHhs4l1bezu6ioxRC_B7HmXIjc6zpvwqyAE4qSpEZkNistyVZ206sktIYNFrnVLgq_9VNBtRo9-C9wHAhX3_mREIzHXB1HZT8y0o_awsQeuphTC-tdPojndXAAg-7kkYhUNlZQk5gV9xOtJqLUNAQPr9aTvZpA2wzf0LbnH3IY5Ci_ug0ai9sziZngm-XTj8v9SDUvg91FvvsUVC42HCj55AsThEM3C_XfHatVVUBpBRRdTSuvJuMxKPnH5u30_9bu514"/>
+<button class="absolute bottom-4 right-4 z-20 translate-y-4 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 flex size-10 items-center justify-center rounded-full bg-surface-light text-text-primary-light shadow-lg hover:bg-primary hover:text-white dark:bg-surface-dark dark:text-text-primary-dark dark:hover:bg-primary">
+<span class="material-symbols-outlined text-[20px]">add_shopping_cart</span>
+</button>
+</div>
+<div class="flex flex-col gap-1">
+<div class="flex justify-between items-start">
+<h3 class="text-lg font-bold text-text-primary-light dark:text-text-primary-dark group-hover:text-primary transition-colors">Heavyweight Cotton Tee</h3>
+<div class="flex gap-1 pt-1">
+<div class="size-3 rounded-full bg-[#facc15]"></div>
+<div class="size-3 rounded-full bg-white border border-gray-200"></div>
+<div class="size-3 rounded-full bg-black"></div>
+</div>
+</div>
+<p class="text-text-secondary-light dark:text-text-secondary-dark text-sm">Oversized Fit</p>
+<div class="flex items-center gap-2 mt-1">
+<p class="text-primary font-bold">450.000₫</p>
+<p class="text-xs text-text-secondary-light line-through decoration-text-secondary-light">600.000₫</p>
+</div>
+</div>
+</div>
+<!-- Product Card 3 -->
+<div class="group flex flex-col gap-3">
+<div class="relative aspect-[3/4] overflow-hidden rounded-xl bg-gray-100 dark:bg-surface-dark">
+<div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors z-10"></div>
+<img alt="Casual Blazer" class="h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-105" data-alt="Close up of a man wearing a brown casual blazer and white t-shirt" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBQLVKlOVJToT7CiwHp4A6RFjiuyt9EVUus0ZwtBIvZyE1QGJrI_Xm32qT2wEVC26Ggc0p6Ng0oIAeuI1YGAUbwD-JMJcNkXpLTsM6PakWTkBVEjEOQ2PAVYOnELwq6HJzelTB8112o-jJO0MA2QCsUrVm9cXYKQ6-vpgknLUQ4LUUe-DpOyXBgIj5x_hEi7df4HEn7cNHC9NpozFodN8Md9B1u6bcCZmJ828sCHhXoBasX-2zO-bc7whhQwz3kIUySptQBddj26Kw"/>
+<button class="absolute bottom-4 right-4 z-20 translate-y-4 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 flex size-10 items-center justify-center rounded-full bg-surface-light text-text-primary-light shadow-lg hover:bg-primary hover:text-white dark:bg-surface-dark dark:text-text-primary-dark dark:hover:bg-primary">
+<span class="material-symbols-outlined text-[20px]">add_shopping_cart</span>
+</button>
+</div>
+<div class="flex flex-col gap-1">
+<div class="flex justify-between items-start">
+<h3 class="text-lg font-bold text-text-primary-light dark:text-text-primary-dark group-hover:text-primary transition-colors">Everyday Soft Blazer</h3>
+<div class="flex gap-1 pt-1">
+<div class="size-3 rounded-full bg-[#8d6e63]"></div>
+<div class="size-3 rounded-full bg-[#263238]"></div>
+</div>
+</div>
+<p class="text-text-secondary-light dark:text-text-secondary-dark text-sm">Regular Fit</p>
+<p class="text-primary font-bold mt-1">1.850.000₫</p>
+</div>
+</div>
+<!-- Product Card 4 -->
+<div class="group flex flex-col gap-3">
+<div class="relative aspect-[3/4] overflow-hidden rounded-xl bg-gray-100 dark:bg-surface-dark">
+<div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors z-10"></div>
+<img alt="Denim Shirt" class="h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-105" data-alt="Man wearing light blue denim shirt in a casual pose" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAWL-oSxkESnYddTPSI30h7FSi_hGVoCfejRb998N167y00XgTQ8F9zrfQQeoLKYYya0phCvlTpXOEoyzRljEtrlZuLheT4ITOEUJH9dQxccspAGrbyiRS880grxdQ4XIvsuvitm5oJJoq-Nbs1icBH2S8DO1wM4f_utAZmw_EuhUdi_ly3P2WC4nqJNgueDCNme6JwQE7G6gwWECYvG5mJOwkDVbU-S7i5NJnO2-Ttl6uYeHrkPA3zGyzmLXqkUcP60JBrfzRxfTQ"/>
+<button class="absolute bottom-4 right-4 z-20 translate-y-4 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 flex size-10 items-center justify-center rounded-full bg-surface-light text-text-primary-light shadow-lg hover:bg-primary hover:text-white dark:bg-surface-dark dark:text-text-primary-dark dark:hover:bg-primary">
+<span class="material-symbols-outlined text-[20px]">add_shopping_cart</span>
+</button>
+<div class="absolute top-3 left-3 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded shadow-sm">-20%</div>
+</div>
+<div class="flex flex-col gap-1">
+<div class="flex justify-between items-start">
+<h3 class="text-lg font-bold text-text-primary-light dark:text-text-primary-dark group-hover:text-primary transition-colors">Washed Denim Shirt</h3>
+<div class="flex gap-1 pt-1">
+<div class="size-3 rounded-full bg-[#90caf9]"></div>
+</div>
+</div>
+<p class="text-text-secondary-light dark:text-text-secondary-dark text-sm">Standard Fit</p>
+<div class="flex items-center gap-2 mt-1">
+<p class="text-primary font-bold">750.000₫</p>
+<p class="text-xs text-text-secondary-light line-through decoration-text-secondary-light">950.000₫</p>
+</div>
+</div>
+</div>
+<!-- Product Card 5 -->
+<div class="group flex flex-col gap-3">
+<div class="relative aspect-[3/4] overflow-hidden rounded-xl bg-gray-100 dark:bg-surface-dark">
+<div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors z-10"></div>
+<img alt="Bomber Jacket" class="h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-105" data-alt="Model wearing a dark bomber jacket with white t-shirt underneath" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD8PqMNRzv-awR8FNbdrkn9Wu3jRJ9AlzHpny5PkESaWxR1-R8MjtRBshL_pNlAyNCMvWYnfxwVi411960xDwPEKcD_GQXc-xOiFI9YCQFmGKjUDMu3LAi0fwiXjC2QIhMklQUgIVvXT7xsTd6E_gCRctt9LGP4bF_-nmaXkfIbqG21RH8ZG60TmL4_jMNZ4XKmntErWQk8LC2Pq4KHr2bvHdKScho17QQke7qrTSogtxzB7Pa_2aP3xRE4FyIjt7XtIIz2z-OxtEY"/>
+<button class="absolute bottom-4 right-4 z-20 translate-y-4 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 flex size-10 items-center justify-center rounded-full bg-surface-light text-text-primary-light shadow-lg hover:bg-primary hover:text-white dark:bg-surface-dark dark:text-text-primary-dark dark:hover:bg-primary">
+<span class="material-symbols-outlined text-[20px]">add_shopping_cart</span>
+</button>
+</div>
+<div class="flex flex-col gap-1">
+<div class="flex justify-between items-start">
+<h3 class="text-lg font-bold text-text-primary-light dark:text-text-primary-dark group-hover:text-primary transition-colors">Tech Nylon Bomber</h3>
+<div class="flex gap-1 pt-1">
+<div class="size-3 rounded-full bg-black"></div>
+<div class="size-3 rounded-full bg-[#5d4037]"></div>
+</div>
+</div>
+<p class="text-text-secondary-light dark:text-text-secondary-dark text-sm">Water Resistant</p>
+<p class="text-primary font-bold mt-1">1.250.000₫</p>
+</div>
+</div>
+<!-- Product Card 6 -->
+<div class="group flex flex-col gap-3">
+<div class="relative aspect-[3/4] overflow-hidden rounded-xl bg-gray-100 dark:bg-surface-dark">
+<div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors z-10"></div>
+<img alt="Oxford Shirt" class="h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-105" data-alt="Man wearing a white oxford shirt looking to the side" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBii9aC3n0vjWHROFX5yoc8C93X1sljy6HKHy8ERiOcq4XAvT9G1jtmIxn_9hm2jDfjWEpFMQF-erKoiP1mbBhUAbVtGnHELL2iylca1SEAQOivaS_oTzenIzBihoOBresUkn8hVLPCRI9HkgQ4Sw5zPcaXyxwddxYkJ_1AnTSDF2EAAutMH7pH_ZRPcvNjDjDMcerXmPGouOhuFvZZQ2lR79HtzFc8KkPr6SiLu07vrL06NVTcB27GcBUgA4mpaPoXh8jLlbdTnzc"/>
+<button class="absolute bottom-4 right-4 z-20 translate-y-4 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 flex size-10 items-center justify-center rounded-full bg-surface-light text-text-primary-light shadow-lg hover:bg-primary hover:text-white dark:bg-surface-dark dark:text-text-primary-dark dark:hover:bg-primary">
+<span class="material-symbols-outlined text-[20px]">add_shopping_cart</span>
+</button>
+</div>
+<div class="flex flex-col gap-1">
+<div class="flex justify-between items-start">
+<h3 class="text-lg font-bold text-text-primary-light dark:text-text-primary-dark group-hover:text-primary transition-colors">Premium Oxford Shirt</h3>
+<div class="flex gap-1 pt-1">
+<div class="size-3 rounded-full bg-white border border-gray-200"></div>
+<div class="size-3 rounded-full bg-[#bbdefb]"></div>
+</div>
+</div>
+<p class="text-text-secondary-light dark:text-text-secondary-dark text-sm">Slim Fit</p>
+<p class="text-primary font-bold mt-1">650.000₫</p>
+</div>
+</div>
+</div>
+<!-- Pagination -->
+<div class="mt-16 flex items-center justify-center gap-4">
+<button class="flex size-10 items-center justify-center rounded-lg border border-[#d0e1e7] dark:border-gray-700 bg-surface-light dark:bg-surface-dark text-text-secondary-light dark:text-text-secondary-dark hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<button class="flex size-10 items-center justify-center rounded-lg bg-primary text-white font-bold shadow-md shadow-primary/30">1</button>
+<button class="flex size-10 items-center justify-center rounded-lg border border-transparent text-text-secondary-light dark:text-text-secondary-dark hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors font-medium">2</button>
+<button class="flex size-10 items-center justify-center rounded-lg border border-transparent text-text-secondary-light dark:text-text-secondary-dark hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors font-medium">3</button>
+<span class="text-text-secondary-light">...</span>
+<button class="flex size-10 items-center justify-center rounded-lg border border-[#d0e1e7] dark:border-gray-700 bg-surface-light dark:bg-surface-dark text-text-secondary-light dark:text-text-secondary-dark hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+<div class="mt-8 text-center">
+<p class="text-sm text-text-secondary-light dark:text-text-secondary-dark">Showing 6 of 42 products</p>
+</div>
+</div>
+</div>
+</main>
+<!-- Minimal Footer -->
+<footer class="border-t border-[#e7f0f3] dark:border-gray-800 mt-20 bg-surface-light dark:bg-surface-dark">
+<div class="max-w-[1440px] mx-auto px-10 py-12 flex flex-col md:flex-row justify-between gap-10">
+<div class="flex flex-col gap-4 max-w-sm">
+<div class="flex items-center gap-2 text-text-primary-light dark:text-text-primary-dark">
+<svg class="size-6 text-primary" fill="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 2L2 22H22L12 2ZM12 6L17 18H7L12 6Z"></path>
+</svg>
+<span class="text-xl font-bold">YORI</span>
+</div>
+<p class="text-text-secondary-light dark:text-text-secondary-dark text-sm leading-relaxed">Simple, enduring, and essential. Japanese inspired minimalism for the modern wardrobe.</p>
+</div>
+<div class="flex flex-wrap gap-12 text-sm">
+<div class="flex flex-col gap-3">
+<h4 class="font-bold text-text-primary-light dark:text-text-primary-dark">Shop</h4>
+<a class="text-text-secondary-light dark:text-text-secondary-dark hover:text-primary dark:hover:text-primary transition-colors" href="#">Men</a>
+<a class="text-text-secondary-light dark:text-text-secondary-dark hover:text-primary dark:hover:text-primary transition-colors" href="#">Women</a>
+<a class="text-text-secondary-light dark:text-text-secondary-dark hover:text-primary dark:hover:text-primary transition-colors" href="#">Accessories</a>
+</div>
+<div class="flex flex-col gap-3">
+<h4 class="font-bold text-text-primary-light dark:text-text-primary-dark">About</h4>
+<a class="text-text-secondary-light dark:text-text-secondary-dark hover:text-primary dark:hover:text-primary transition-colors" href="#">Our Story</a>
+<a class="text-text-secondary-light dark:text-text-secondary-dark hover:text-primary dark:hover:text-primary transition-colors" href="#">Sustainability</a>
+<a class="text-text-secondary-light dark:text-text-secondary-dark hover:text-primary dark:hover:text-primary transition-colors" href="#">Contact</a>
+</div>
+<div class="flex flex-col gap-3">
+<h4 class="font-bold text-text-primary-light dark:text-text-primary-dark">Social</h4>
+<a class="text-text-secondary-light dark:text-text-secondary-dark hover:text-primary dark:hover:text-primary transition-colors" href="#">Instagram</a>
+<a class="text-text-secondary-light dark:text-text-secondary-dark hover:text-primary dark:hover:text-primary transition-colors" href="#">Twitter</a>
+</div>
+</div>
+</div>
+<div class="border-t border-[#e7f0f3] dark:border-gray-800 py-6 text-center text-xs text-text-secondary-light dark:text-text-secondary-dark">
+                © 2023 YORI Inc. All rights reserved.
+            </div>
+</footer>
+</div>
+</body></html>

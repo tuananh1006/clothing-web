@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+
+<html class="light" lang="vi"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>YORI - Xác nhận đặt hàng</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#19b3e6",
+                        "background-light": "#f8fbfc",
+                        "background-dark": "#111d21",
+                        "text-main": "#0e181b",
+                        "text-secondary": "#4e8597",
+                        "card-bg": "#ffffff",
+                        "dark-card-bg": "#1a2c32",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-text-main dark:text-white transition-colors duration-200">
+<div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
+<!-- Header -->
+<header class="sticky top-0 z-50 flex items-center justify-between whitespace-nowrap border-b border-solid border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-background-dark/80 backdrop-blur-md px-6 py-4 md:px-20 lg:px-40">
+<div class="flex items-center gap-4 text-text-main dark:text-white">
+<div class="size-8 text-primary">
+<svg class="w-full h-full" fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_6_543)">
+<path d="M42.1739 20.1739L27.8261 5.82609C29.1366 7.13663 28.3989 10.1876 26.2002 13.7654C24.8538 15.9564 22.9595 18.3449 20.6522 20.6522C18.3449 22.9595 15.9564 24.8538 13.7654 26.2002C10.1876 28.3989 7.13663 29.1366 5.82609 27.8261L20.1739 42.1739C21.4845 43.4845 24.5355 42.7467 28.1133 40.548C30.3042 39.2016 32.6927 37.3073 35 35C37.3073 32.6927 39.2016 30.3042 40.548 28.1133C42.7467 24.5355 43.4845 21.4845 42.1739 20.1739Z" fill="currentColor"></path>
+<path clip-rule="evenodd" d="M7.24189 26.4066C7.31369 26.4411 7.64204 26.5637 8.52504 26.3738C9.59462 26.1438 11.0343 25.5311 12.7183 24.4963C14.7583 23.2426 17.0256 21.4503 19.238 19.238C21.4503 17.0256 23.2426 14.7583 24.4963 12.7183C25.5311 11.0343 26.1438 9.59463 26.3738 8.52504C26.5637 7.64204 26.4411 7.31369 26.4066 7.24189C26.345 7.21246 26.143 7.14535 25.6664 7.1918C24.9745 7.25925 23.9954 7.5498 22.7699 8.14278C20.3369 9.32007 17.3369 11.4915 14.4142 14.4142C11.4915 17.3369 9.32007 20.3369 8.14278 22.7699C7.5498 23.9954 7.25925 24.9745 7.1918 25.6664C7.14534 26.143 7.21246 26.345 7.24189 26.4066ZM29.9001 10.7285C29.4519 12.0322 28.7617 13.4172 27.9042 14.8126C26.465 17.1544 24.4686 19.6641 22.0664 22.0664C19.6641 24.4686 17.1544 26.465 14.8126 27.9042C13.4172 28.7617 12.0322 29.4519 10.7285 29.9001L21.5754 40.747C21.6001 40.7606 21.8995 40.931 22.8729 40.7217C23.9424 40.4916 25.3821 39.879 27.0661 38.8441C29.1062 37.5904 31.3734 35.7982 33.5858 33.5858C35.7982 31.3734 37.5904 29.1062 38.8441 27.0661C39.879 25.3821 40.4916 23.9425 40.7216 22.8729C40.931 21.8995 40.7606 21.6001 40.747 21.5754L29.9001 10.7285ZM29.2403 4.41187L43.5881 18.7597C44.9757 20.1473 44.9743 22.1235 44.6322 23.7139C44.2714 25.3919 43.4158 27.2666 42.252 29.1604C40.8128 31.5022 38.8165 34.012 36.4142 36.4142C34.012 38.8165 31.5022 40.8128 29.1604 42.252C27.2666 43.4158 25.3919 44.2714 23.7139 44.6322C22.1235 44.9743 20.1473 44.9757 18.7597 43.5881L4.41187 29.2403C3.29027 28.1187 3.08209 26.5973 3.21067 25.2783C3.34099 23.9415 3.8369 22.4852 4.54214 21.0277C5.96129 18.0948 8.43335 14.7382 11.5858 11.5858C14.7382 8.43335 18.0948 5.9613 21.0277 4.54214C22.4852 3.8369 23.9415 3.34099 25.2783 3.21067C26.5973 3.08209 28.1187 3.29028 29.2403 4.41187Z" fill="currentColor" fill-rule="evenodd"></path>
+</g>
+<defs>
+<clippath id="clip0_6_543"><rect fill="white" height="48" width="48"></rect></clippath>
+</defs>
+</svg>
+</div>
+<h2 class="text-text-main dark:text-white text-xl font-bold leading-tight tracking-[-0.015em]">YORI</h2>
+</div>
+<div class="hidden md:flex flex-1 justify-end gap-8">
+<nav class="flex items-center gap-9">
+<a class="text-text-main dark:text-white hover:text-primary transition-colors text-sm font-medium leading-normal" href="#">Trang chủ</a>
+<a class="text-text-main dark:text-white hover:text-primary transition-colors text-sm font-medium leading-normal" href="#">Sản phẩm</a>
+<a class="text-text-main dark:text-white hover:text-primary transition-colors text-sm font-medium leading-normal" href="#">Bộ sưu tập</a>
+<a class="text-text-main dark:text-white hover:text-primary transition-colors text-sm font-medium leading-normal" href="#">Hỗ trợ</a>
+</nav>
+<div class="flex gap-2">
+<button class="flex size-10 cursor-pointer items-center justify-center overflow-hidden rounded-full bg-gray-100 dark:bg-gray-800 text-text-main dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+<span class="material-symbols-outlined text-[20px]">shopping_cart</span>
+</button>
+<button class="flex size-10 cursor-pointer items-center justify-center overflow-hidden rounded-full bg-gray-100 dark:bg-gray-800 text-text-main dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+<span class="material-symbols-outlined text-[20px]">person</span>
+</button>
+</div>
+</div>
+<div class="md:hidden">
+<span class="material-symbols-outlined text-text-main dark:text-white cursor-pointer">menu</span>
+</div>
+</header>
+<main class="flex-1 px-4 py-8 md:px-40 flex justify-center w-full">
+<div class="flex flex-col w-full max-w-[800px] flex-1 gap-6">
+<!-- Progress Bar -->
+<div class="flex flex-col gap-3 py-4">
+<div class="flex gap-6 justify-between items-end">
+<p class="text-text-main dark:text-white text-base font-medium leading-normal">Hoàn tất đặt hàng</p>
+</div>
+<div class="rounded-full bg-[#d0e1e7] dark:bg-gray-700 h-1.5 overflow-hidden">
+<div class="h-full rounded-full bg-primary w-full shadow-[0_0_10px_rgba(25,179,230,0.5)]"></div>
+</div>
+<div class="flex justify-between text-xs font-medium">
+<span class="text-primary dark:text-primary">Giỏ hàng</span>
+<span class="text-primary dark:text-primary">Thanh toán</span>
+<span class="text-primary dark:text-primary font-bold">Xác nhận</span>
+</div>
+</div>
+<!-- Success Hero Section -->
+<div class="flex flex-col items-center gap-6 py-8 animate-fade-in-up">
+<div class="size-24 rounded-full bg-primary/10 flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-primary text-[48px] font-bold">check_circle</span>
+</div>
+<div class="flex max-w-[480px] flex-col items-center gap-2 text-center">
+<h1 class="text-text-main dark:text-white text-3xl font-bold leading-tight tracking-[-0.015em]">Đặt hàng thành công!</h1>
+<p class="text-text-secondary dark:text-gray-400 text-base font-normal leading-relaxed">
+                            Cảm ơn bạn, An! Đơn hàng <span class="text-text-main dark:text-white font-bold">#YORI-8821</span> của bạn đã được tiếp nhận. Một email xác nhận đã được gửi tới an@email.com.
+                        </p>
+</div>
+</div>
+<!-- Order Details Card -->
+<div class="bg-card-bg dark:bg-dark-card-bg rounded-xl shadow-sm border border-gray-100 dark:border-gray-800 overflow-hidden">
+<div class="p-6 md:p-8">
+<h3 class="text-text-main dark:text-white tracking-tight text-xl font-bold leading-tight mb-6">Chi tiết đơn hàng</h3>
+<!-- Description List (Shipping Info) -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-8 mb-8 border-b border-dashed border-gray-200 dark:border-gray-700 pb-8">
+<div class="flex flex-col gap-1">
+<p class="text-text-secondary dark:text-gray-400 text-xs uppercase tracking-wider font-semibold">Người nhận</p>
+<p class="text-text-main dark:text-white text-sm font-medium">Nguyễn Văn An</p>
+</div>
+<div class="flex flex-col gap-1">
+<p class="text-text-secondary dark:text-gray-400 text-xs uppercase tracking-wider font-semibold">Địa chỉ giao hàng</p>
+<p class="text-text-main dark:text-white text-sm font-medium">123 Đường Lê Lợi, Quận 1, TP.HCM</p>
+</div>
+<div class="flex flex-col gap-1">
+<p class="text-text-secondary dark:text-gray-400 text-xs uppercase tracking-wider font-semibold">Dự kiến giao hàng</p>
+<p class="text-text-main dark:text-white text-sm font-medium">3 - 5 ngày làm việc</p>
+</div>
+<div class="flex flex-col gap-1">
+<p class="text-text-secondary dark:text-gray-400 text-xs uppercase tracking-wider font-semibold">Phương thức thanh toán</p>
+<p class="text-text-main dark:text-white text-sm font-medium">Thanh toán khi nhận hàng (COD)</p>
+</div>
+<div class="flex flex-col gap-1">
+<p class="text-text-secondary dark:text-gray-400 text-xs uppercase tracking-wider font-semibold">Số điện thoại</p>
+<p class="text-text-main dark:text-white text-sm font-medium">0909 123 456</p>
+</div>
+<div class="flex flex-col gap-1">
+<p class="text-text-secondary dark:text-gray-400 text-xs uppercase tracking-wider font-semibold">Email</p>
+<p class="text-text-main dark:text-white text-sm font-medium">an@email.com</p>
+</div>
+</div>
+<!-- Product List -->
+<div class="flex flex-col gap-6 mb-8">
+<!-- Item 1 -->
+<div class="flex gap-4 items-start">
+<div class="w-20 h-24 bg-gray-100 dark:bg-gray-800 rounded-lg bg-center bg-cover flex-shrink-0" data-alt="White oversized t-shirt on a hanger" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBe_pvIio1cjroo5zDOJoA6fZ_X9vq8W6wQ2_rlQJgCCuZI-mF4sefDEnkSxtd9DCeL0L8RpqVrFaA-snO6FsaZTzLBl87lb0xT6GTrMJ_2oSRhOAbdrRbES15MePv5KIkGYVePNkZIpMiVFZPhFD_LPRzTbcjctt-MCYXrkBZ8UG4c2VYnzGBIUOpv7_qu4rDdOxAvit6dNAHkqhz3hPrlh5F72eROMgOr8HvLl1Z5ABu06RKKQpMSC6j_ExCRzOYAGeSz4_aSCeQ');"></div>
+<div class="flex flex-1 flex-col justify-between h-24 py-1">
+<div>
+<p class="text-text-main dark:text-white font-bold text-sm leading-tight mb-1">Áo Thun Oversize YORI Basic</p>
+<p class="text-text-secondary dark:text-gray-400 text-xs">Size: L | Màu: Trắng</p>
+</div>
+<div class="flex justify-between items-end w-full">
+<p class="text-text-secondary dark:text-gray-400 text-xs">Số lượng: 1</p>
+<p class="text-text-main dark:text-white font-bold text-sm">350.000đ</p>
+</div>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="flex gap-4 items-start">
+<div class="w-20 h-24 bg-gray-100 dark:bg-gray-800 rounded-lg bg-center bg-cover flex-shrink-0" data-alt="Black cargo shorts flat lay" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBSkTzYjXWnh0TyotZ1u14TTkUvjK1DN7Ur7jO2pfHuiRbHlMXaSJU55XFjYyDU0RBRq4GygbTtyeOWWy_L7hfhu5AuMqLOHljEHxI6Lxu_HSZRxoO4Sdv9qRWA_EbXPirH99lRcr07CKu5V_laDaqqmEt7WAqgBbgXAuDUdyuLhCgagg364str0lYwgrm-5337LUt1kg_vm1Gxu39JPB1yYZKrd6j93N-0WLffcwAIroAHS5pWMHQaSa1hz5Yl9xg2CNaoHzqelSc');"></div>
+<div class="flex flex-1 flex-col justify-between h-24 py-1">
+<div>
+<p class="text-text-main dark:text-white font-bold text-sm leading-tight mb-1">Quần Short Kaki Minimal</p>
+<p class="text-text-secondary dark:text-gray-400 text-xs">Size: 32 | Màu: Đen</p>
+</div>
+<div class="flex justify-between items-end w-full">
+<p class="text-text-secondary dark:text-gray-400 text-xs">Số lượng: 1</p>
+<p class="text-text-main dark:text-white font-bold text-sm">450.000đ</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Cost Breakdown -->
+<div class="border-t border-gray-100 dark:border-gray-800 pt-6">
+<div class="flex flex-col gap-3 items-end">
+<div class="flex justify-between w-full md:w-1/2 text-sm">
+<span class="text-text-secondary dark:text-gray-400">Tạm tính</span>
+<span class="text-text-main dark:text-white font-medium">800.000đ</span>
+</div>
+<div class="flex justify-between w-full md:w-1/2 text-sm">
+<span class="text-text-secondary dark:text-gray-400">Phí vận chuyển</span>
+<span class="text-text-main dark:text-white font-medium">30.000đ</span>
+</div>
+<div class="flex justify-between w-full md:w-1/2 text-lg mt-2 pt-4 border-t border-gray-100 dark:border-gray-800">
+<span class="text-text-main dark:text-white font-bold">Tổng cộng</span>
+<span class="text-primary font-bold">830.000đ</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Action Buttons -->
+<div class="flex flex-col md:flex-row gap-4 justify-center mt-4">
+<button class="flex-1 md:max-w-[240px] cursor-pointer items-center justify-center rounded-lg h-12 bg-primary hover:bg-sky-500 text-white gap-2 text-sm font-bold leading-normal tracking-wide transition-all shadow-lg shadow-primary/20">
+                        Tiếp tục mua sắm
+                    </button>
+<button class="flex-1 md:max-w-[240px] cursor-pointer items-center justify-center rounded-lg h-12 bg-transparent border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 text-text-main dark:text-white gap-2 text-sm font-bold leading-normal tracking-wide transition-all">
+                        Theo dõi đơn hàng
+                    </button>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="mt-auto border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-background-dark py-8 px-4 md:px-40">
+<div class="flex flex-col md:flex-row justify-between items-center gap-4 text-center md:text-left">
+<p class="text-text-secondary dark:text-gray-500 text-sm">© 2023 YORI Brand. All rights reserved.</p>
+<div class="flex gap-6">
+<a class="text-text-secondary dark:text-gray-500 hover:text-primary text-sm transition-colors" href="#">Chính sách bảo mật</a>
+<a class="text-text-secondary dark:text-gray-500 hover:text-primary text-sm transition-colors" href="#">Điều khoản sử dụng</a>
+<a class="text-text-secondary dark:text-gray-500 hover:text-primary text-sm transition-colors" href="#">Liên hệ</a>
+</div>
+</div>
+</footer>
+</div>
+</body></html>

@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Thanh toán - YORI</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#19b3e6",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#111d21",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Manrope', sans-serif;
+        }
+        /* Hide scrollbar for cleaner look in summary if needed */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="bg-white text-[#0e181b] antialiased">
+<!-- TopNavBar -->
+<header class="sticky top-0 z-50 flex items-center justify-between border-b border-solid border-b-[#e7f0f3] bg-white/95 backdrop-blur-sm px-6 py-4 md:px-10 lg:px-40">
+<div class="flex items-center gap-4 text-[#0e181b] cursor-pointer">
+<div class="size-8 text-primary">
+<svg class="h-full w-full" fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_6_543)">
+<path d="M42.1739 20.1739L27.8261 5.82609C29.1366 7.13663 28.3989 10.1876 26.2002 13.7654C24.8538 15.9564 22.9595 18.3449 20.6522 20.6522C18.3449 22.9595 15.9564 24.8538 13.7654 26.2002C10.1876 28.3989 7.13663 29.1366 5.82609 27.8261L20.1739 42.1739C21.4845 43.4845 24.5355 42.7467 28.1133 40.548C30.3042 39.2016 32.6927 37.3073 35 35C37.3073 32.6927 39.2016 30.3042 40.548 28.1133C42.7467 24.5355 43.4845 21.4845 42.1739 20.1739Z" fill="currentColor"></path>
+<path clip-rule="evenodd" d="M7.24189 26.4066C7.31369 26.4411 7.64204 26.5637 8.52504 26.3738C9.59462 26.1438 11.0343 25.5311 12.7183 24.4963C14.7583 23.2426 17.0256 21.4503 19.238 19.238C21.4503 17.0256 23.2426 14.7583 24.4963 12.7183C25.5311 11.0343 26.1438 9.59463 26.3738 8.52504C26.5637 7.64204 26.4411 7.31369 26.4066 7.24189C26.345 7.21246 26.143 7.14535 25.6664 7.1918C24.9745 7.25925 23.9954 7.5498 22.7699 8.14278C20.3369 9.32007 17.3369 11.4915 14.4142 14.4142C11.4915 17.3369 9.32007 20.3369 8.14278 22.7699C7.5498 23.9954 7.25925 24.9745 7.1918 25.6664C7.14534 26.143 7.21246 26.345 7.24189 26.4066ZM29.9001 10.7285C29.4519 12.0322 28.7617 13.4172 27.9042 14.8126C26.465 17.1544 24.4686 19.6641 22.0664 22.0664C19.6641 24.4686 17.1544 26.465 14.8126 27.9042C13.4172 28.7617 12.0322 29.4519 10.7285 29.9001L21.5754 40.747C21.6001 40.7606 21.8995 40.931 22.8729 40.7217C23.9424 40.4916 25.3821 39.879 27.0661 38.8441C29.1062 37.5904 31.3734 35.7982 33.5858 33.5858C35.7982 31.3734 37.5904 29.1062 38.8441 27.0661C39.879 25.3821 40.4916 23.9425 40.7216 22.8729C40.931 21.8995 40.7606 21.6001 40.747 21.5754L29.9001 10.7285ZM29.2403 4.41187L43.5881 18.7597C44.9757 20.1473 44.9743 22.1235 44.6322 23.7139C44.2714 25.3919 43.4158 27.2666 42.252 29.1604C40.8128 31.5022 38.8165 34.012 36.4142 36.4142C34.012 38.8165 31.5022 40.8128 29.1604 42.252C27.2666 43.4158 25.3919 44.2714 23.7139 44.6322C22.1235 44.9743 20.1473 44.9757 18.7597 43.5881L4.41187 29.2403C3.29027 28.1187 3.08209 26.5973 3.21067 25.2783C3.34099 23.9415 3.8369 22.4852 4.54214 21.0277C5.96129 18.0948 8.43335 14.7382 11.5858 11.5858C14.7382 8.43335 18.0948 5.9613 21.0277 4.54214C22.4852 3.8369 23.9415 3.34099 25.2783 3.21067C26.5973 3.08209 28.1187 3.29028 29.2403 4.41187Z" fill="currentColor" fill-rule="evenodd"></path>
+</g>
+<defs>
+<clippath id="clip0_6_543"><rect fill="white" height="48" width="48"></rect></clippath>
+</defs>
+</svg>
+</div>
+<h2 class="text-[#0e181b] text-xl font-bold leading-tight tracking-[-0.015em] font-display">YORI</h2>
+</div>
+<button class="relative flex items-center justify-center rounded-lg p-2 text-[#0e181b] hover:bg-[#f6f7f8]">
+<span class="material-symbols-outlined text-[24px]">shopping_bag</span>
+<span class="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-xs text-white">2</span>
+</button>
+</header>
+<div class="mx-auto flex w-full max-w-[1440px] grow flex-col-reverse lg:flex-row">
+<!-- Left Column: Checkout Form -->
+<main class="flex w-full flex-col px-6 py-8 md:px-10 lg:w-7/12 lg:px-20 xl:w-2/3">
+<!-- Breadcrumbs -->
+<nav class="mb-8">
+<ol class="flex flex-wrap items-center gap-2 text-sm md:text-base">
+<li><a class="font-medium text-[#4e8597] hover:text-primary transition-colors" href="#">Giỏ hàng</a></li>
+<li><span class="material-symbols-outlined text-sm text-[#9ab0b8]">chevron_right</span></li>
+<li><span class="font-bold text-primary">Giao hàng</span></li>
+<li><span class="material-symbols-outlined text-sm text-[#9ab0b8]">chevron_right</span></li>
+<li><span class="font-medium text-[#9ab0b8]">Thanh toán</span></li>
+<li><span class="material-symbols-outlined text-sm text-[#9ab0b8]">chevron_right</span></li>
+<li><span class="font-medium text-[#9ab0b8]">Hoàn tất</span></li>
+</ol>
+</nav>
+<!-- Page Heading -->
+<div class="mb-8">
+<h1 class="text-2xl font-bold tracking-tight text-[#0e181b] md:text-3xl font-display">Thông tin giao hàng</h1>
+<p class="mt-2 text-[#4e8597]">Bạn đã có tài khoản? <a class="font-medium text-primary hover:underline" href="#">Đăng nhập</a> để thanh toán nhanh hơn.</p>
+</div>
+<!-- Form -->
+<form action="#" class="flex flex-col gap-8">
+<!-- Contact Info Group -->
+<section>
+<div class="mb-4 flex items-center justify-between">
+<h3 class="text-lg font-bold text-[#0e181b]">Thông tin liên hệ</h3>
+</div>
+<div class="grid gap-4 md:grid-cols-2">
+<label class="col-span-2 flex flex-col md:col-span-1">
+<span class="mb-2 text-sm font-medium text-[#0e181b]">Họ và tên</span>
+<input class="h-12 w-full rounded-lg border border-[#d0e1e7] bg-[#f8fbfc] px-4 text-base text-[#0e181b] placeholder:text-[#9ab0b8] focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary" placeholder="Ví dụ: Nguyễn Văn A" type="text"/>
+</label>
+<label class="col-span-2 flex flex-col md:col-span-1">
+<span class="mb-2 text-sm font-medium text-[#0e181b]">Số điện thoại</span>
+<input class="h-12 w-full rounded-lg border border-[#d0e1e7] bg-[#f8fbfc] px-4 text-base text-[#0e181b] placeholder:text-[#9ab0b8] focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary" placeholder="Ví dụ: 0912xxxxxx" type="tel"/>
+</label>
+<label class="col-span-2 flex flex-col">
+<span class="mb-2 text-sm font-medium text-[#0e181b]">Email</span>
+<input class="h-12 w-full rounded-lg border border-[#d0e1e7] bg-[#f8fbfc] px-4 text-base text-[#0e181b] placeholder:text-[#9ab0b8] focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary" placeholder="example@email.com" type="email"/>
+</label>
+</div>
+</section>
+<!-- Shipping Address Group -->
+<section>
+<div class="mb-4 flex items-center justify-between">
+<h3 class="text-lg font-bold text-[#0e181b]">Địa chỉ giao hàng</h3>
+</div>
+<div class="grid gap-4 md:grid-cols-3">
+<label class="col-span-3 md:col-span-1 flex flex-col">
+<span class="mb-2 text-sm font-medium text-[#0e181b]">Tỉnh / Thành phố</span>
+<div class="relative">
+<select class="h-12 w-full appearance-none rounded-lg border border-[#d0e1e7] bg-[#f8fbfc] px-4 pr-10 text-base text-[#0e181b] focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary">
+<option disabled="" selected="" value="">Chọn Tỉnh/Thành</option>
+<option value="hanoi">Hà Nội</option>
+<option value="hcm">TP. Hồ Chí Minh</option>
+<option value="danang">Đà Nẵng</option>
+</select>
+<span class="material-symbols-outlined pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[#9ab0b8]">expand_more</span>
+</div>
+</label>
+<label class="col-span-3 md:col-span-1 flex flex-col">
+<span class="mb-2 text-sm font-medium text-[#0e181b]">Quận / Huyện</span>
+<div class="relative">
+<select class="h-12 w-full appearance-none rounded-lg border border-[#d0e1e7] bg-[#f8fbfc] px-4 pr-10 text-base text-[#0e181b] focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary">
+<option disabled="" selected="" value="">Chọn Quận/Huyện</option>
+<option value="caugiay">Cầu Giấy</option>
+<option value="hoankiem">Hoàn Kiếm</option>
+</select>
+<span class="material-symbols-outlined pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[#9ab0b8]">expand_more</span>
+</div>
+</label>
+<label class="col-span-3 md:col-span-1 flex flex-col">
+<span class="mb-2 text-sm font-medium text-[#0e181b]">Phường / Xã</span>
+<div class="relative">
+<select class="h-12 w-full appearance-none rounded-lg border border-[#d0e1e7] bg-[#f8fbfc] px-4 pr-10 text-base text-[#0e181b] focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary">
+<option disabled="" selected="" value="">Chọn Phường/Xã</option>
+<option value="yenhca">Yên Hoà</option>
+<option value="dichvong">Dịch Vọng</option>
+</select>
+<span class="material-symbols-outlined pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[#9ab0b8]">expand_more</span>
+</div>
+</label>
+<label class="col-span-3 flex flex-col">
+<span class="mb-2 text-sm font-medium text-[#0e181b]">Địa chỉ cụ thể</span>
+<input class="h-12 w-full rounded-lg border border-[#d0e1e7] bg-[#f8fbfc] px-4 text-base text-[#0e181b] placeholder:text-[#9ab0b8] focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary" placeholder="Số nhà, tên đường, tòa nhà..." type="text"/>
+</label>
+<label class="col-span-3 flex flex-col">
+<span class="mb-2 text-sm font-medium text-[#0e181b]">Ghi chú (Tùy chọn)</span>
+<textarea class="w-full resize-y rounded-lg border border-[#d0e1e7] bg-[#f8fbfc] px-4 py-3 text-base text-[#0e181b] placeholder:text-[#9ab0b8] focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary" placeholder="Ghi chú về đơn hàng, ví dụ: thời gian hay chỉ dẫn địa điểm giao hàng chi tiết hơn." rows="2"></textarea>
+</label>
+</div>
+<div class="mt-4 flex items-center gap-3">
+<input class="h-5 w-5 rounded border-gray-300 text-primary focus:ring-primary" id="save-address" type="checkbox"/>
+<label class="text-sm font-medium text-[#0e181b]" for="save-address">Lưu địa chỉ này cho lần mua sau</label>
+</div>
+</section>
+<!-- Navigation Actions -->
+<div class="mt-6 flex flex-col-reverse items-center justify-between gap-4 sm:flex-row">
+<a class="flex items-center gap-2 text-sm font-bold text-[#4e8597] transition-colors hover:text-[#0e181b]" href="#">
+<span class="material-symbols-outlined text-lg">arrow_back</span>
+                        Quay lại giỏ hàng
+                    </a>
+<button class="flex h-12 w-full items-center justify-center rounded-lg bg-primary px-8 text-base font-bold text-white transition-all hover:bg-primary/90 sm:w-auto" type="submit">
+                        Tiếp tục đến phương thức thanh toán
+                    </button>
+</div>
+</form>
+<footer class="mt-20 border-t border-[#e7f0f3] pt-6 text-sm text-[#9ab0b8]">
+<div class="flex flex-wrap gap-4">
+<a class="hover:text-[#4e8597]" href="#">Chính sách hoàn trả</a>
+<a class="hover:text-[#4e8597]" href="#">Chính sách bảo mật</a>
+<a class="hover:text-[#4e8597]" href="#">Điều khoản sử dụng</a>
+</div>
+</footer>
+</main>
+<!-- Right Column: Order Summary (Sticky) -->
+<aside class="flex w-full flex-col border-b border-[#e7f0f3] bg-[#f8fbfc] px-6 py-8 md:px-10 lg:sticky lg:top-0 lg:h-screen lg:w-5/12 lg:border-b-0 lg:border-l lg:px-10 lg:py-12 xl:w-1/3">
+<h2 class="mb-6 text-xl font-bold text-[#0e181b] font-display">Đơn hàng (2 sản phẩm)</h2>
+<!-- Product List -->
+<div class="flex-1 overflow-y-auto no-scrollbar lg:max-h-[calc(100vh-350px)]">
+<div class="flex flex-col gap-4">
+<!-- Item 1 -->
+<div class="flex gap-4">
+<div class="relative h-20 w-20 shrink-0 overflow-hidden rounded-lg border border-[#e7f0f3] bg-white">
+<img alt="White Linen Shirt" class="h-full w-full object-cover" data-alt="Close up of a plain white linen shirt on a hanger" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDrTwmpbuk08NaGA6ew99zgMLIKBO4gwxa3P_KjVxf6_QCbbsV-OcWgHzZRYtL2W_T99JJay5p9Mfbv7wRCTYX_UwPhdOEJKB5Y990cbeek9X1JbrZ37K37Y-OjEVEkAa7vXIRyll1w3moWHzTFFNJxeZu4k8q_GeZTLNPeRxCOiICtVx626mK_cYp1eLX2GXK7akH8cOIHYWHH82hG-KIuYjQVfo13fS6uqkjR3QyhZucM1G5C96daatp1che_s5z-mmEWqzmsTms"/>
+<span class="absolute -right-2 -top-2 flex h-5 w-5 items-center justify-center rounded-full bg-[#9ab0b8] text-xs font-bold text-white">1</span>
+</div>
+<div class="flex flex-1 flex-col justify-center">
+<h3 class="text-base font-medium text-[#0e181b]">Áo Linen YORI - White</h3>
+<p class="text-sm text-[#4e8597]">Size M / Trắng</p>
+</div>
+<div class="flex items-center">
+<p class="text-base font-medium text-[#0e181b]">850.000₫</p>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="flex gap-4">
+<div class="relative h-20 w-20 shrink-0 overflow-hidden rounded-lg border border-[#e7f0f3] bg-white">
+<img alt="Beige Trousers" class="h-full w-full object-cover" data-alt="Beige wide-leg trousers folded neatly" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD8o_hkJ6BIKbF6cJ_cJGQvlJoYC_Vc6sw4DNjmgqlM-eMHufak5Akfx-2ilsBWiDnnuV95YM-tBHBR_Xl_nQxqCj9jXD6roelUu6rakLUIPcA_eo_FU85J-rgQZiu-b5c1xrFIpT2oPFVJT6RiRHprHmTI7YliyLbwEBA7HrP997Zjouu4xoo5Sn3lY-E2_yY6qAfDCDKDBHjYfrBlPY2-NvmyHK7Pv2ygobkwk-rjm61I4Cz1uFd_PyoLsB_hE2y5qREO-ZyZWtE"/>
+<span class="absolute -right-2 -top-2 flex h-5 w-5 items-center justify-center rounded-full bg-[#9ab0b8] text-xs font-bold text-white">1</span>
+</div>
+<div class="flex flex-1 flex-col justify-center">
+<h3 class="text-base font-medium text-[#0e181b]">Quần Wide Leg - Beige</h3>
+<p class="text-sm text-[#4e8597]">Size 29 / Beige</p>
+</div>
+<div class="flex items-center">
+<p class="text-base font-medium text-[#0e181b]">1.200.000₫</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Discount Code -->
+<div class="mt-8 border-t border-[#d0e1e7] py-6">
+<div class="flex gap-3">
+<input class="h-11 flex-1 rounded-lg border border-[#d0e1e7] bg-white px-4 text-sm placeholder:text-[#9ab0b8] focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary" placeholder="Nhập mã giảm giá" type="text"/>
+<button class="rounded-lg bg-[#e7f0f3] px-5 py-2 text-sm font-bold text-[#4e8597] transition-colors hover:bg-[#d0e1e7] hover:text-[#0e181b]">Áp dụng</button>
+</div>
+</div>
+<!-- Calculations -->
+<div class="space-y-3 border-t border-[#d0e1e7] pt-6">
+<div class="flex justify-between text-base">
+<span class="text-[#4e8597]">Tạm tính</span>
+<span class="font-medium text-[#0e181b]">2.050.000₫</span>
+</div>
+<div class="flex justify-between text-base">
+<span class="text-[#4e8597]">Phí vận chuyển</span>
+<span class="font-medium text-[#0e181b]">—</span>
+</div>
+</div>
+<!-- Total -->
+<div class="mt-6 flex items-center justify-between border-t border-[#d0e1e7] pt-6">
+<span class="text-lg font-bold text-[#0e181b]">Tổng cộng</span>
+<div class="flex items-end gap-2">
+<span class="text-sm font-medium text-[#9ab0b8]">VND</span>
+<span class="text-2xl font-bold text-primary">2.050.000₫</span>
+</div>
+</div>
+</aside>
+</div>
+</body></html>

@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html class="light" lang="vi"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Chính sách và Điều khoản - YORI</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#19b3e6",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#111d21",
+                        "text-main": "#0e181b",
+                        "text-sub": "#4e8597",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Manrope', sans-serif;
+        }.policy-nav::-webkit-scrollbar {
+            width: 4px;
+        }
+        .policy-nav::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .policy-nav::-webkit-scrollbar-thumb {
+            background-color: #e5e7eb;
+            border-radius: 20px;
+        }
+    </style>
+</head>
+<body class="bg-white dark:bg-background-dark text-text-main dark:text-white transition-colors duration-200 flex flex-col min-h-screen">
+<div class="relative flex w-full flex-col font-display">
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-gray-200 dark:border-gray-800 bg-white dark:bg-[#1a2c32] px-10 py-4 sticky top-0 z-50">
+<div class="flex items-center gap-4 text-text-main dark:text-white">
+<a class="flex items-center gap-4 text-text-main dark:text-white no-underline" href="#">
+<div class="size-8 text-primary">
+<svg fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M42.1739 20.1739L27.8261 5.82609C29.1366 7.13663 28.3989 10.1876 26.2002 13.7654C24.8538 15.9564 22.9595 18.3449 20.6522 20.6522C18.3449 22.9595 15.9564 24.8538 13.7654 26.2002C10.1876 28.3989 7.13663 29.1366 5.82609 27.8261L20.1739 42.1739C21.4845 43.4845 24.5355 42.7467 28.1133 40.548C30.3042 39.2016 32.6927 37.3073 35 35C37.3073 32.6927 39.2016 30.3042 40.548 28.1133C42.7467 24.5355 43.4845 21.4845 42.1739 20.1739Z" fill="currentColor"></path>
+<path clip-rule="evenodd" d="M7.24189 26.4066C7.31369 26.4411 7.64204 26.5637 8.52504 26.3738C9.59462 26.1438 11.0343 25.5311 12.7183 24.4963C14.7583 23.2426 17.0256 21.4503 19.238 19.238C21.4503 17.0256 23.2426 14.7583 24.4963 12.7183C25.5311 11.0343 26.1438 9.59463 26.3738 8.52504C26.5637 7.64204 26.4411 7.31369 26.4066 7.24189C26.345 7.21246 26.143 7.14535 25.6664 7.1918C24.9745 7.25925 23.9954 7.5498 22.7699 8.14278C20.3369 9.32007 17.3369 11.4915 14.4142 14.4142C11.4915 17.3369 9.32007 20.3369 8.14278 22.7699C7.5498 23.9954 7.25925 24.9745 7.1918 25.6664C7.14534 26.143 7.21246 26.345 7.24189 26.4066ZM29.9001 10.7285C29.4519 12.0322 28.7617 13.4172 27.9042 14.8126C26.465 17.1544 24.4686 19.6641 22.0664 22.0664C19.6641 24.4686 17.1544 26.465 14.8126 27.9042C13.4172 28.7617 12.0322 29.4519 10.7285 29.9001L21.5754 40.747C21.6001 40.7606 21.8995 40.931 22.8729 40.7217C23.9424 40.4916 25.3821 39.879 27.0661 38.8441C29.1062 37.5904 31.3734 35.7982 33.5858 33.5858C35.7982 31.3734 37.5904 29.1062 38.8441 27.0661C39.879 25.3821 40.4916 23.9425 40.7216 22.8729C40.931 21.8995 40.7606 21.6001 40.747 21.5754L29.9001 10.7285ZM29.2403 4.41187L43.5881 18.7597C44.9757 20.1473 44.9743 22.1235 44.6322 23.7139C44.2714 25.3919 43.4158 27.2666 42.252 29.1604C40.8128 31.5022 38.8165 34.012 36.4142 36.4142C34.012 38.8165 31.5022 40.8128 29.1604 42.252C27.2666 43.4158 25.3919 44.2714 23.7139 44.6322C22.1235 44.9743 20.1473 44.9757 18.7597 43.5881L4.41187 29.2403C3.29027 28.1187 3.08209 26.5973 3.21067 25.2783C3.34099 23.9415 3.8369 22.4852 4.54214 21.0277C5.96129 18.0948 8.43335 14.7382 11.5858 11.5858C14.7382 8.43335 18.0948 5.9613 21.0277 4.54214C22.4852 3.8369 23.9415 3.34099 25.2783 3.21067C26.5973 3.08209 28.1187 3.29028 29.2403 4.41187Z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+</div>
+<h2 class="text-2xl font-bold leading-tight tracking-[-0.015em] select-none">YORI</h2>
+</a>
+</div>
+<div class="hidden lg:flex items-center gap-9 flex-1 justify-center">
+<a class="text-text-main dark:text-gray-200 hover:text-primary transition-colors text-sm font-medium leading-normal" href="#">Trang chủ</a>
+<a class="text-text-main dark:text-gray-200 hover:text-primary transition-colors text-sm font-medium leading-normal" href="#">Danh mục</a>
+<a class="text-text-main dark:text-gray-200 hover:text-primary transition-colors text-sm font-medium leading-normal" href="#">Sản phẩm</a>
+<a class="text-text-main dark:text-gray-200 hover:text-primary transition-colors text-sm font-medium leading-normal" href="#">Bộ sưu tập</a>
+<a class="text-text-main dark:text-gray-200 hover:text-primary transition-colors text-sm font-medium leading-normal" href="#">Giới thiệu</a>
+<a class="text-text-main dark:text-gray-200 hover:text-primary transition-colors text-sm font-medium leading-normal" href="#">Liên hệ</a>
+</div>
+<div class="flex gap-2 items-center">
+<button class="flex items-center justify-center rounded-lg size-10 hover:bg-gray-100 dark:hover:bg-gray-700 text-text-main dark:text-gray-200 transition-colors">
+<span class="material-symbols-outlined">search</span>
+</button>
+<button class="flex items-center justify-center rounded-lg size-10 hover:bg-gray-100 dark:hover:bg-gray-700 text-text-main dark:text-gray-200 transition-colors">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+<button class="flex items-center justify-center rounded-lg size-10 hover:bg-gray-100 dark:hover:bg-gray-700 text-text-main dark:text-gray-200 transition-colors relative">
+<span class="material-symbols-outlined">shopping_cart</span>
+<span class="absolute top-1.5 right-1.5 size-2.5 bg-primary rounded-full border border-white dark:border-background-dark"></span>
+</button>
+</div>
+</header>
+</div>
+<main class="flex-grow">
+<div class="bg-background-light dark:bg-[#152329] py-16 px-4 lg:px-40 text-center border-b border-gray-100 dark:border-gray-800">
+<nav aria-label="Breadcrumb" class="flex justify-center mb-4">
+<ol class="inline-flex items-center space-x-1 md:space-x-3">
+<li class="inline-flex items-center">
+<a class="inline-flex items-center text-sm font-medium text-text-sub dark:text-gray-400 hover:text-primary" href="#">
+Trang chủ
+</a>
+</li>
+<li>
+<div class="flex items-center">
+<span class="material-symbols-outlined text-gray-400 text-sm mx-1">chevron_right</span>
+<span class="text-sm font-medium text-text-main dark:text-gray-200">Điều khoản &amp; Chính sách</span>
+</div>
+</li>
+</ol>
+</nav>
+<h1 class="text-3xl md:text-4xl font-extrabold text-text-main dark:text-white tracking-tight mb-4">
+            Điều khoản &amp; Chính sách
+        </h1>
+<p class="max-w-2xl mx-auto text-text-sub dark:text-gray-400 text-base leading-relaxed">
+            Chào mừng bạn đến với YORI. Chúng tôi cam kết mang đến trải nghiệm mua sắm minh bạch, an toàn và đáng tin cậy. Dưới đây là các quy định chi tiết về dịch vụ của chúng tôi.
+        </p>
+</div>
+<div class="w-full px-4 lg:px-40 py-12 flex justify-center">
+<div class="max-w-[1200px] w-full flex flex-col lg:flex-row gap-12">
+<aside class="w-full lg:w-1/4 flex-shrink-0">
+<nav class="sticky top-28 flex flex-col space-y-1">
+<a class="group flex items-center justify-between px-4 py-3 bg-primary/5 text-primary font-bold rounded-lg transition-all border-l-4 border-primary" href="#dieu-khoan-chung">
+<span>Điều khoản sử dụng</span>
+<span class="material-symbols-outlined text-lg">description</span>
+</a>
+<a class="group flex items-center justify-between px-4 py-3 text-text-sub dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-text-main dark:hover:text-white font-medium rounded-lg transition-all border-l-4 border-transparent hover:border-gray-200" href="#chinh-sach-mua-hang">
+<span>Chính sách mua hàng</span>
+<span class="material-symbols-outlined text-lg opacity-0 group-hover:opacity-100 transition-opacity">shopping_bag</span>
+</a>
+<a class="group flex items-center justify-between px-4 py-3 text-text-sub dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-text-main dark:hover:text-white font-medium rounded-lg transition-all border-l-4 border-transparent hover:border-gray-200" href="#chinh-sach-van-chuyen">
+<span>Vận chuyển &amp; Giao nhận</span>
+<span class="material-symbols-outlined text-lg opacity-0 group-hover:opacity-100 transition-opacity">local_shipping</span>
+</a>
+<a class="group flex items-center justify-between px-4 py-3 text-text-sub dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-text-main dark:hover:text-white font-medium rounded-lg transition-all border-l-4 border-transparent hover:border-gray-200" href="#chinh-sach-doi-tra">
+<span>Chính sách đổi trả</span>
+<span class="material-symbols-outlined text-lg opacity-0 group-hover:opacity-100 transition-opacity">sync_alt</span>
+</a>
+<a class="group flex items-center justify-between px-4 py-3 text-text-sub dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-text-main dark:hover:text-white font-medium rounded-lg transition-all border-l-4 border-transparent hover:border-gray-200" href="#bao-mat-thong-tin">
+<span>Bảo mật thông tin</span>
+<span class="material-symbols-outlined text-lg opacity-0 group-hover:opacity-100 transition-opacity">lock</span>
+</a>
+</nav>
+</aside>
+<div class="w-full lg:w-3/4 flex flex-col gap-12 pb-20">
+<section class="scroll-mt-32" id="dieu-khoan-chung">
+<div class="flex items-center gap-3 mb-6 pb-4 border-b border-gray-100 dark:border-gray-800">
+<span class="flex items-center justify-center size-10 rounded-full bg-gray-100 dark:bg-gray-800 text-text-main dark:text-white font-bold">1</span>
+<h2 class="text-2xl font-bold text-text-main dark:text-white">Điều khoản sử dụng chung</h2>
+</div>
+<div class="space-y-4 text-text-sub dark:text-gray-400 leading-relaxed text-[15px]">
+<p>Chào mừng quý khách đến với website thương mại điện tử của YORI. Khi quý khách truy cập vào trang web của chúng tôi, có nghĩa là quý khách đồng ý với các điều khoản này.</p>
+<p>Trang web có quyền thay đổi, chỉnh sửa, thêm hoặc lược bỏ bất kỳ phần nào trong Điều khoản mua bán hàng hóa này, vào bất cứ lúc nào. Các thay đổi có hiệu lực ngay khi được đăng trên trang web mà không cần thông báo trước.</p>
+<ul class="list-disc pl-5 space-y-2">
+<li>Khách hàng đảm bảo có đầy đủ hành vi dân sự để thực hiện các giao dịch mua bán hàng hóa theo quy định hiện hành của pháp luật Việt Nam.</li>
+<li>Nghiêm cấm sử dụng bất kỳ phần nào của trang web này với mục đích thương mại hoặc nhân danh bất kỳ đối tác thứ ba nào nếu không được chúng tôi cho phép bằng văn bản.</li>
+</ul>
+</div>
+</section>
+<section class="scroll-mt-32" id="chinh-sach-mua-hang">
+<div class="flex items-center gap-3 mb-6 pb-4 border-b border-gray-100 dark:border-gray-800">
+<span class="flex items-center justify-center size-10 rounded-full bg-gray-100 dark:bg-gray-800 text-text-main dark:text-white font-bold">2</span>
+<h2 class="text-2xl font-bold text-text-main dark:text-white">Chính sách mua hàng &amp; Thanh toán</h2>
+</div>
+<div class="space-y-6 text-text-sub dark:text-gray-400 leading-relaxed text-[15px]">
+<div>
+<h3 class="font-bold text-text-main dark:text-white mb-2 text-lg">Hướng dẫn đặt hàng</h3>
+<p>Quý khách có thể đặt hàng trực tuyến tại website YORI thông qua các bước cơ bản: Tìm kiếm sản phẩm, thêm vào giỏ hàng, điền thông tin giao nhận và chọn phương thức thanh toán.</p>
+</div>
+<div>
+<h3 class="font-bold text-text-main dark:text-white mb-2 text-lg">Phương thức thanh toán</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3">
+<div class="bg-gray-50 dark:bg-white/5 p-4 rounded-lg border border-gray-100 dark:border-gray-800">
+<h4 class="font-bold text-text-main dark:text-white mb-1">COD (Thanh toán khi nhận hàng)</h4>
+<p class="text-sm">Áp dụng cho tất cả các đơn hàng trên toàn quốc. Quý khách thanh toán tiền mặt trực tiếp cho nhân viên giao hàng.</p>
+</div>
+<div class="bg-gray-50 dark:bg-white/5 p-4 rounded-lg border border-gray-100 dark:border-gray-800">
+<h4 class="font-bold text-text-main dark:text-white mb-1">Chuyển khoản ngân hàng</h4>
+<p class="text-sm">Chuyển khoản qua số tài khoản chính thức của YORI. Nội dung chuyển khoản: Tên + Số điện thoại.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="scroll-mt-32" id="chinh-sach-van-chuyen">
+<div class="flex items-center gap-3 mb-6 pb-4 border-b border-gray-100 dark:border-gray-800">
+<span class="flex items-center justify-center size-10 rounded-full bg-gray-100 dark:bg-gray-800 text-text-main dark:text-white font-bold">3</span>
+<h2 class="text-2xl font-bold text-text-main dark:text-white">Vận chuyển &amp; Giao nhận</h2>
+</div>
+<div class="space-y-4 text-text-sub dark:text-gray-400 leading-relaxed text-[15px]">
+<p>YORI hợp tác với các đơn vị vận chuyển uy tín để đảm bảo hàng hóa đến tay quý khách nhanh chóng và an toàn nhất.</p>
+<div class="overflow-hidden border border-gray-200 dark:border-gray-700 rounded-lg mt-4">
+<table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+<thead class="bg-gray-50 dark:bg-white/5">
+<tr>
+<th class="px-6 py-3 text-left text-xs font-bold text-text-main dark:text-white uppercase tracking-wider" scope="col">Khu vực</th>
+<th class="px-6 py-3 text-left text-xs font-bold text-text-main dark:text-white uppercase tracking-wider" scope="col">Thời gian dự kiến</th>
+<th class="px-6 py-3 text-left text-xs font-bold text-text-main dark:text-white uppercase tracking-wider" scope="col">Phí vận chuyển</th>
+</tr>
+</thead>
+<tbody class="bg-white dark:bg-[#1a2c32] divide-y divide-gray-200 dark:divide-gray-700">
+<tr>
+<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-text-main dark:text-white">Nội thành TP.HCM</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-text-sub dark:text-gray-400">1 - 2 ngày</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-text-sub dark:text-gray-400">20.000đ</td>
+</tr>
+<tr>
+<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-text-main dark:text-white">Tỉnh thành khác</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-text-sub dark:text-gray-400">3 - 5 ngày</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-text-sub dark:text-gray-400">35.000đ</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p class="text-sm italic mt-2">* Miễn phí vận chuyển cho đơn hàng từ 1.000.000đ trở lên.</p>
+</div>
+</section>
+<section class="scroll-mt-32" id="chinh-sach-doi-tra">
+<div class="flex items-center gap-3 mb-6 pb-4 border-b border-gray-100 dark:border-gray-800">
+<span class="flex items-center justify-center size-10 rounded-full bg-gray-100 dark:bg-gray-800 text-text-main dark:text-white font-bold">4</span>
+<h2 class="text-2xl font-bold text-text-main dark:text-white">Chính sách đổi trả</h2>
+</div>
+<div class="space-y-6 text-text-sub dark:text-gray-400 leading-relaxed text-[15px]">
+<div class="bg-primary/5 border border-primary/20 p-5 rounded-lg">
+<h3 class="font-bold text-primary mb-2 flex items-center gap-2">
+<span class="material-symbols-outlined">verified</span> Cam kết hài lòng
+                            </h3>
+<p>YORI hỗ trợ đổi trả sản phẩm trong vòng <span class="font-bold text-text-main dark:text-white">07 ngày</span> kể từ ngày nhận hàng nếu sản phẩm có lỗi từ nhà sản xuất hoặc khách hàng không vừa size.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div>
+<h4 class="font-bold text-text-main dark:text-white mb-3">Điều kiện đổi trả</h4>
+<ul class="space-y-2">
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-green-500 text-lg mt-0.5">check_circle</span>
+<span>Sản phẩm còn nguyên tem, mác, chưa qua sử dụng, giặt tẩy.</span>
+</li>
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-green-500 text-lg mt-0.5">check_circle</span>
+<span>Sản phẩm không bị dơ bẩn, hư hỏng, có mùi lạ.</span>
+</li>
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-green-500 text-lg mt-0.5">check_circle</span>
+<span>Có hóa đơn mua hàng hoặc thông tin đơn hàng xác thực.</span>
+</li>
+</ul>
+</div>
+<div>
+<h4 class="font-bold text-text-main dark:text-white mb-3">Quy trình đổi trả</h4>
+<ol class="relative border-l border-gray-200 dark:border-gray-700 ml-3">
+<li class="mb-4 ml-6">
+<span class="absolute flex items-center justify-center w-6 h-6 bg-gray-100 rounded-full -left-3 ring-8 ring-white dark:ring-background-dark dark:bg-gray-700">
+<span class="text-xs font-bold">1</span>
+</span>
+<h3 class="font-medium text-text-main dark:text-white">Liên hệ</h3>
+<p class="text-sm">Gọi hotline hoặc nhắn tin cho Fanpage YORI.</p>
+</li>
+<li class="mb-4 ml-6">
+<span class="absolute flex items-center justify-center w-6 h-6 bg-gray-100 rounded-full -left-3 ring-8 ring-white dark:ring-background-dark dark:bg-gray-700">
+<span class="text-xs font-bold">2</span>
+</span>
+<h3 class="font-medium text-text-main dark:text-white">Gửi hàng</h3>
+<p class="text-sm">Đóng gói sản phẩm và gửi về kho YORI.</p>
+</li>
+<li class="ml-6">
+<span class="absolute flex items-center justify-center w-6 h-6 bg-gray-100 rounded-full -left-3 ring-8 ring-white dark:ring-background-dark dark:bg-gray-700">
+<span class="text-xs font-bold">3</span>
+</span>
+<h3 class="font-medium text-text-main dark:text-white">Xử lý</h3>
+<p class="text-sm">YORI kiểm tra và gửi sản phẩm đổi hoặc hoàn tiền trong 3-5 ngày.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</section>
+<section class="scroll-mt-32" id="bao-mat-thong-tin">
+<div class="flex items-center gap-3 mb-6 pb-4 border-b border-gray-100 dark:border-gray-800">
+<span class="flex items-center justify-center size-10 rounded-full bg-gray-100 dark:bg-gray-800 text-text-main dark:text-white font-bold">5</span>
+<h2 class="text-2xl font-bold text-text-main dark:text-white">Bảo mật thông tin</h2>
+</div>
+<div class="space-y-4 text-text-sub dark:text-gray-400 leading-relaxed text-[15px]">
+<p>YORI cam kết bảo mật tuyệt đối thông tin cá nhân của quý khách theo chính sách bảo vệ thông tin cá nhân. Việc thu thập và sử dụng thông tin của mỗi khách hàng chỉ được thực hiện khi có sự đồng ý của khách hàng đó trừ những trường hợp pháp luật có quy định khác.</p>
+<p>Chúng tôi cam kết không chuyển giao, cung cấp hay tiết lộ cho bên thứ 3 nào về thông tin cá nhân của khách hàng khi không có sự cho phép đồng ý từ khách hàng.</p>
+</div>
+</section>
+</div>
+</div>
+</div>
+<div class="w-full bg-[#f6f7f8] dark:bg-[#152329] py-16">
+<div class="max-w-[800px] mx-auto text-center px-4">
+<span class="material-symbols-outlined text-4xl text-primary mb-4">support_agent</span>
+<h2 class="text-2xl font-bold text-text-main dark:text-white mb-3">Cần hỗ trợ thêm?</h2>
+<p class="text-text-sub dark:text-gray-400 mb-6">Đội ngũ chăm sóc khách hàng của YORI luôn sẵn sàng giải đáp mọi thắc mắc của bạn.</p>
+<div class="flex flex-col sm:flex-row justify-center gap-4">
+<a class="inline-flex justify-center items-center gap-2 px-6 py-3 bg-white dark:bg-[#1a2c32] text-text-main dark:text-white font-bold rounded-lg border border-gray-200 dark:border-gray-700 hover:border-primary dark:hover:border-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-xl">call</span>
+                    090 123 4567
+                </a>
+<a class="inline-flex justify-center items-center gap-2 px-6 py-3 bg-primary hover:bg-[#159cc9] text-white font-bold rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined text-xl">mail</span>
+                    Gửi email hỗ trợ
+                </a>
+</div>
+</div>
+</div>
+</main>
+<footer class="bg-white dark:bg-[#0e181b] border-t border-gray-100 dark:border-gray-800">
+<div class="px-10 lg:px-40 py-16">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-10 max-w-[1200px] mx-auto">
+<div class="flex flex-col gap-4">
+<div class="flex items-center gap-2 text-text-main dark:text-white">
+<div class="size-6 text-primary">
+<svg fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M42.1739 20.1739L27.8261 5.82609C29.1366 7.13663 28.3989 10.1876 26.2002 13.7654C24.8538 15.9564 22.9595 18.3449 20.6522 20.6522C18.3449 22.9595 15.9564 24.8538 13.7654 26.2002C10.1876 28.3989 7.13663 29.1366 5.82609 27.8261L20.1739 42.1739C21.4845 43.4845 24.5355 42.7467 28.1133 40.548C30.3042 39.2016 32.6927 37.3073 35 35C37.3073 32.6927 39.2016 30.3042 40.548 28.1133C42.7467 24.5355 43.4845 21.4845 42.1739 20.1739Z" fill="currentColor"></path>
+</svg>
+</div>
+<h2 class="text-xl font-bold tracking-tight">YORI</h2>
+</div>
+<p class="text-text-sub dark:text-gray-500 text-sm leading-relaxed">
+                        Thời trang bền vững mang phong cách Nhật Bản. Tối giản trong thiết kế, tỉ mỉ trong từng đường kim mũi chỉ.
+                    </p>
+<div class="flex gap-4 mt-2">
+<a class="text-text-sub dark:text-gray-500 hover:text-primary transition-colors" href="#"><span class="material-symbols-outlined">public</span></a>
+<a class="text-text-sub dark:text-gray-500 hover:text-primary transition-colors" href="#"><span class="material-symbols-outlined">alternate_email</span></a>
+</div>
+</div>
+<div class="flex flex-col gap-4">
+<h3 class="text-text-main dark:text-white font-bold text-base">Liên kết nhanh</h3>
+<div class="flex flex-col gap-2">
+<a class="text-text-sub dark:text-gray-500 hover:text-primary text-sm transition-colors" href="#">Về chúng tôi</a>
+<a class="text-text-sub dark:text-gray-500 hover:text-primary text-sm transition-colors" href="#">Bộ sưu tập</a>
+<a class="text-text-sub dark:text-gray-500 hover:text-primary text-sm transition-colors" href="#">Blog</a>
+<a class="text-text-sub dark:text-gray-500 hover:text-primary text-sm transition-colors" href="#">Tuyển dụng</a>
+</div>
+</div>
+<div class="flex flex-col gap-4">
+<h3 class="text-text-main dark:text-white font-bold text-base">Hỗ trợ khách hàng</h3>
+<div class="flex flex-col gap-2">
+<a class="text-text-sub dark:text-gray-500 hover:text-primary text-sm transition-colors" href="#">Chính sách đổi trả</a>
+<a class="text-text-sub dark:text-gray-500 hover:text-primary text-sm transition-colors" href="#">Hướng dẫn chọn size</a>
+<a class="text-text-sub dark:text-gray-500 hover:text-primary text-sm transition-colors" href="#">Phí vận chuyển</a>
+<a class="text-text-sub dark:text-gray-500 hover:text-primary text-sm transition-colors" href="#">Câu hỏi thường gặp</a>
+</div>
+</div>
+<div class="flex flex-col gap-4">
+<h3 class="text-text-main dark:text-white font-bold text-base">Liên hệ</h3>
+<div class="flex flex-col gap-3">
+<div class="flex items-start gap-2 text-sm text-text-sub dark:text-gray-500">
+<span class="material-symbols-outlined text-lg mt-0.5">location_on</span>
+<span>123 Đường Nguyễn Huệ, Quận 1,<br/>TP. Hồ Chí Minh</span>
+</div>
+<div class="flex items-center gap-2 text-sm text-text-sub dark:text-gray-500">
+<span class="material-symbols-outlined text-lg">call</span>
+<span>090 123 4567</span>
+</div>
+<div class="flex items-center gap-2 text-sm text-text-sub dark:text-gray-500">
+<span class="material-symbols-outlined text-lg">mail</span>
+<span>support@yori.vn</span>
+</div>
+</div>
+</div>
+</div>
+<div class="border-t border-gray-100 dark:border-gray-800 mt-12 pt-8 text-center">
+<p class="text-text-sub dark:text-gray-600 text-xs">© 2024 YORI. All rights reserved. Designed with minimalist soul.</p>
+</div>
+</div>
+</footer>
+
+</body></html>
