@@ -5,17 +5,15 @@ import Footer from '@/components/common/Footer'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import CartItem from '@/components/cart/CartItem'
 import CartSummary from '@/components/cart/CartSummary'
-import Spinner from '@/components/common/Spinner'
 import Skeleton from '@/components/common/Skeleton'
 import { useCart } from '@/hooks/useCart'
 import { useToast } from '@/contexts/ToastContext'
 import { ROUTES } from '@/utils/constants'
-import { formatPrice } from '@/utils/formatters'
 import type { CartItemResponse } from '@/services/cart.service'
 
 const Cart = () => {
   const navigate = useNavigate()
-  const { items, totalPrice, isLoading, updateQuantity, removeItem, fetchCart } = useCart()
+  const { items, totalPrice, isLoading, updateQuantity, removeItem } = useCart()
   const { showError, showSuccess } = useToast()
   const [updatingItemId, setUpdatingItemId] = useState<string | null>(null)
   const [removingItemId, setRemovingItemId] = useState<string | null>(null)
@@ -84,8 +82,8 @@ const Cart = () => {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12 max-w-7xl">
           <Breadcrumb
             items={[
-              { label: 'Trang chủ', to: ROUTES.HOME },
-              { label: 'Giỏ hàng', to: ROUTES.CART },
+              { label: 'Trang chủ', path: ROUTES.HOME },
+              { label: 'Giỏ hàng', path: ROUTES.CART },
             ]}
           />
 

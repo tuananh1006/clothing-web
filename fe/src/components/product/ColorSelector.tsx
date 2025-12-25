@@ -1,5 +1,3 @@
-import { Product } from '@/types'
-
 interface ColorSelectorProps {
   colors?: string[]
   selectedColor?: string

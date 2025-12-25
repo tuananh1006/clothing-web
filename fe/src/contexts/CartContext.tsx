@@ -9,7 +9,6 @@ import {
   CartItemResponse,
 } from '@/services/cart.service'
 import type { AddToCartRequest, UpdateCartItemRequest } from '@/types/cart.types'
-import { formatPrice } from '@/utils/formatters'
 
 interface CartContextType {
   items: CartItemResponse[]

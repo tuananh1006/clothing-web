@@ -1,5 +1,3 @@
-import { Product } from '@/types'
-
 interface SizeSelectorProps {
   sizes?: string[]
   selectedSize?: string

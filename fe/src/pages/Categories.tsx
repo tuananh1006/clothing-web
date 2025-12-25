@@ -42,8 +42,8 @@ const Categories = () => {
               <div className="max-w-2xl">
                 <Breadcrumb
                   items={[
-                    { label: 'Trang chủ', to: ROUTES.HOME },
-                    { label: 'Danh mục', to: ROUTES.CATEGORIES },
+                    { label: 'Trang chủ', path: ROUTES.HOME },
+                    { label: 'Danh mục', path: ROUTES.CATEGORIES },
                   ]}
                 />
                 <h1 className="text-text-main dark:text-white text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-[1.1] mb-4 mt-4">
