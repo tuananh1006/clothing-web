@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import Header from '@/components/common/Header'
 import Footer from '@/components/common/Footer'
-import Breadcrumb from '@/components/common/Breadcrumb'
 import { ROUTES } from '@/utils/constants'
 
 const SizeGuide = () => {

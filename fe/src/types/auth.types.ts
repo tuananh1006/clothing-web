@@ -10,6 +10,8 @@ export interface User {
   address?: string
   avatar?: string
   phonenumber?: string
+  orders_count?: number
+  total_spent?: number
   createdAt?: string
   updatedAt?: string
 }

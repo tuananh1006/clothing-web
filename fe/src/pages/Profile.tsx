@@ -175,8 +175,8 @@ const Profile = () => {
         <div className="container mx-auto px-4 py-8 max-w-4xl">
           <Breadcrumb
             items={[
-              { label: 'Trang chủ', to: ROUTES.HOME },
-              { label: 'Thông tin tài khoản', to: ROUTES.PROFILE },
+              { label: 'Trang chủ', path: ROUTES.HOME },
+              { label: 'Thông tin tài khoản', path: ROUTES.PROFILE },
             ]}
           />
 
@@ -262,7 +262,7 @@ const Profile = () => {
                   id="email"
                   type="email"
                   placeholder="name@example.com"
-                  icon="mail"
+                  leftIcon={<span className="material-symbols-outlined">mail</span>}
                   {...register('email')}
                   error={errors.email?.message}
                   disabled // Email thường không được thay đổi
@@ -274,7 +274,7 @@ const Profile = () => {
                   id="phonenumber"
                   type="tel"
                   placeholder="0123456789"
-                  icon="phone"
+                  leftIcon={<span className="material-symbols-outlined">phone</span>}
                   {...register('phonenumber')}
                   error={errors.phonenumber?.message}
                 />

@@ -9,7 +9,7 @@ import Pagination from '@/components/common/Pagination'
 import Modal from '@/components/common/Modal'
 import { useToast } from '@/contexts/ToastContext'
 import * as adminService from '@/services/admin.service'
-import { ROUTES, PAGINATION } from '@/utils/constants'
+import { PAGINATION } from '@/utils/constants'
 import { formatDate } from '@/utils/formatters'
 import type { User } from '@/types'
 
@@ -120,7 +120,7 @@ const AdminCustomers = () => {
       key: 'createdAt',
       header: 'Ngày đăng ký',
       render: (customer) => (
-        <span className="text-sm">{formatDate(customer.createdAt)}</span>
+        <span className="text-sm">{formatDate(customer.createdAt || '')}</span>
       ),
     },
     {

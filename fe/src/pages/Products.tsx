@@ -130,8 +130,8 @@ const Products = () => {
         <div className="container mx-auto px-4 py-8 max-w-7xl">
           <Breadcrumb
             items={[
-              { label: 'Trang chủ', to: ROUTES.HOME },
-              { label: 'Sản phẩm', to: ROUTES.PRODUCTS },
+              { label: 'Trang chủ', path: ROUTES.HOME },
+              { label: 'Sản phẩm', path: ROUTES.PRODUCTS },
             ]}
           />
 

@@ -18,7 +18,11 @@ const Search = () => {
 
   const [searchInput, setSearchInput] = useState(searchQuery)
   const [products, setProducts] = useState<Product[]>([])
-  const [pagination, setPagination] = useState({
+  const [pagination, setPagination] = useState<{
+    page: number
+    limit: number
+    total_page: number
+  }>({
     page: pageParam,
     limit: PAGINATION.DEFAULT_LIMIT,
     total_page: 1,
@@ -26,7 +30,7 @@ const Search = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  const debounceTimerRef = useRef<NodeJS.Timeout | null>(null)
+  const debounceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   // Debounced search function
   const performSearch = useCallback(
@@ -146,8 +150,8 @@ const Search = () => {
         <div className="container mx-auto px-4 py-8 max-w-7xl">
           <Breadcrumb
             items={[
-              { label: 'Trang chủ', to: ROUTES.HOME },
-              { label: 'Tìm kiếm', to: ROUTES.SEARCH },
+              { label: 'Trang chủ', path: ROUTES.HOME },
+              { label: 'Tìm kiếm', path: ROUTES.SEARCH },
             ]}
           />
 
@@ -164,7 +168,7 @@ const Search = () => {
                   placeholder="Nhập tên sản phẩm bạn muốn tìm..."
                   value={searchInput}
                   onChange={(e) => setSearchInput(e.target.value)}
-                  icon="search"
+                  leftIcon={<span className="material-symbols-outlined">search</span>}
                   className="w-full pr-12"
                 />
                 <button
