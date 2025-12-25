@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
@@ -8,7 +8,6 @@ import Footer from '@/components/common/Footer'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import OrderSummary from '@/components/checkout/OrderSummary'
 import Button from '@/components/common/Button'
-import Spinner from '@/components/common/Spinner'
 import Skeleton from '@/components/common/Skeleton'
 import { useCart } from '@/hooks/useCart'
 import { useToast } from '@/contexts/ToastContext'
@@ -48,8 +47,6 @@ const Payment = () => {
       billing_address_same_as_shipping: true,
     },
   })
-
-  const billingSameAsShipping = watch('billing_address_same_as_shipping')
 
   // Load shipping address from sessionStorage and payment info
   useEffect(() => {

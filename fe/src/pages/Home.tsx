@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom'
 import Header from '@/components/common/Header'
 import Footer from '@/components/common/Footer'
 import ProductCard from '@/components/product/ProductCard'
-import Spinner from '@/components/common/Spinner'
 import Skeleton from '@/components/common/Skeleton'
 import { getBanners } from '@/services/banners.service'
 import { getProducts } from '@/services/products.service'
@@ -151,12 +150,6 @@ const Home = () => {
 
     return () => clearInterval(interval)
   }, [banners.length])
-
-  const handleBannerClick = (banner: Banner) => {
-    if (banner.link) {
-      window.location.href = banner.link
-    }
-  }
 
   return (
     <div className="min-h-screen flex flex-col bg-background-light dark:bg-background-dark">

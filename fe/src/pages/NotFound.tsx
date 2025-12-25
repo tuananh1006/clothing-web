@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom'
 import Header from '@/components/common/Header'
 import Footer from '@/components/common/Footer'
-import Button from '@/components/common/Button'
 import { ROUTES } from '@/utils/constants'
 
 const NotFound = () => {

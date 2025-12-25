@@ -15,7 +15,6 @@ import { useCart } from '@/hooks/useCart'
 import { useAuth } from '@/hooks/useAuth'
 import { useToast } from '@/contexts/ToastContext'
 import * as checkoutService from '@/services/checkout.service'
-import * as locationsService from '@/services/locations.service'
 import { ROUTES } from '@/utils/constants'
 import type { ShippingAddress } from '@/types/order.types'
 
@@ -40,7 +39,6 @@ const Checkout = () => {
   const { user } = useAuth()
   const { items, totalPrice, isLoading: cartLoading } = useCart()
   const { showError, showWarning } = useToast()
-  const [initData, setInitData] = useState<checkoutService.CheckoutInitResponse | null>(null)
   const [loading, setLoading] = useState(true)
   const [submitting, setSubmitting] = useState(false)
   const [shippingFee, setShippingFee] = useState(0)
@@ -72,7 +70,6 @@ const Checkout = () => {
     const fetchInitData = async () => {
       try {
         const data = await checkoutService.getCheckoutInit()
-        setInitData(data)
         // Pre-fill form with user data
         if (data.user) {
           setValue('full_name', data.user.name || '')
@@ -87,7 +84,7 @@ const Checkout = () => {
       }
     }
     fetchInitData()
-  }, [setValue])
+  }, [setValue, showError])
 
   // Validate shipping when address changes
   useEffect(() => {

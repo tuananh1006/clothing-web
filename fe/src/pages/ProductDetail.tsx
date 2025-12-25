@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useParams, useNavigate, Link } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import Header from '@/components/common/Header'
 import Footer from '@/components/common/Footer'
 import Breadcrumb from '@/components/common/Breadcrumb'
@@ -8,7 +8,6 @@ import ProductImageGallery from '@/components/product/ProductImageGallery'
 import SizeSelector from '@/components/product/SizeSelector'
 import ColorSelector from '@/components/product/ColorSelector'
 import Button from '@/components/common/Button'
-import Spinner from '@/components/common/Spinner'
 import Skeleton from '@/components/common/Skeleton'
 import { getProductDetail, getRelatedProducts } from '@/services/products.service'
 import { useCart } from '@/hooks/useCart'
@@ -235,12 +234,12 @@ const ProductDetail = () => {
         <div className="container mx-auto px-4 py-8 max-w-7xl">
           <Breadcrumb
             items={[
-              { label: 'Trang chủ', to: ROUTES.HOME },
-              { label: 'Sản phẩm', to: ROUTES.PRODUCTS },
+              { label: 'Trang chủ', path: ROUTES.HOME },
+              { label: 'Sản phẩm', path: ROUTES.PRODUCTS },
               ...(categoryName
-                ? [{ label: categoryName, to: `${ROUTES.PRODUCTS}?category=${typeof product.category === 'object' ? product.category.slug : ''}` }]
+                ? [{ label: categoryName, path: `${ROUTES.PRODUCTS}?category=${typeof product.category === 'object' ? product.category.slug : ''}` }]
                 : []),
-              { label: product.name, to: '#' },
+              { label: product.name },
             ]}
           />
 
