@@ -57,11 +57,34 @@ docs/
 - **Phát triển Frontend**: Xem [Frontend Checklist](./FRONTEND_CHECKLIST.md)
 - **Tích hợp Backend-Frontend**: Xem [Backend Fit Frontend Checklist](./BACKEND_FIT_FRONTEND_CHECKLIST.md)
 
+## 👥 Team Tasks & Work Division
+
+### Phân Công Công Việc
+- **[Team Work Division](./TEAM_WORK_DIVISION.md)** - Tổng quan phân công cho 6 thành viên
+
+### Task Files cho từng thành viên
+- **[Đỉnh - Product & Search Pages](./TASKS_DINH.md)** - 4 trang (ProductDetail, Products, Categories, Search)
+- **[Hướng - Cart & Checkout Flow](./TASKS_HUONG.md)** - 4 trang (Cart, Checkout, Payment, OrderSuccess)
+- **[Tuấn - Orders & Profile Pages](./TASKS_TUAN.md)** - 3 trang (Orders, OrderDetail, Profile)
+- **[Trung - Auth & Static Pages](./TASKS_TRUNG.md)** - 6-7 trang (Login, Signup, ForgotPassword, Contact, About, Terms, NotFound)
+- **[Tuấn Anh - Home & Misc Pages](./TASKS_TUAN_ANH.md)** - 2-3 trang (Home, SizeGuide, Error500)
+- **[Khoa - Admin Pages](./TASKS_KHOA.md)** - 5 trang (Dashboard, Products, Orders, Customers, Settings)
+
+Mỗi file task chứa:
+- ✅ Checklist chi tiết cho từng trang
+- ✅ So sánh với UI gốc
+- ✅ API endpoints cần dùng
+- ✅ Components cần tạo
+- ✅ Definition of Done
+
+---
+
 ## 📝 Ghi Chú
 
 - Tất cả tài liệu được viết bằng tiếng Việt
 - Các file markdown sử dụng format chuẩn với code blocks và tables
 - Cập nhật tài liệu khi có thay đổi trong code
+- Mỗi thành viên có file task riêng để làm việc độc lập
 
 ---
 
