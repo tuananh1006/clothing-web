@@ -2,7 +2,6 @@ import { Link } from 'react-router-dom'
 import { CartItemResponse } from '@/services/cart.service'
 import { ROUTES } from '@/utils/constants'
 import { formatPrice } from '@/utils/formatters'
-import Button from '@/components/common/Button'
 
 interface CartItemProps {
   item: CartItemResponse

@@ -41,7 +41,7 @@ const DataTable = <T extends { _id?: string; id?: string }>({
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="bg-gray-50 dark:bg-gray-800/50 border-b border-gray-200 dark:border-gray-700">
-                {columns.map((col, index) => (
+                {columns.map((_col, index) => (
                   <th key={index} className="px-6 py-4 text-xs font-semibold text-text-sub dark:text-gray-400 uppercase tracking-wider">
                     <Skeleton className="h-4 w-24" />
                   </th>
@@ -51,7 +51,7 @@ const DataTable = <T extends { _id?: string; id?: string }>({
             <tbody>
               {[1, 2, 3, 4, 5].map((i) => (
                 <tr key={i} className="border-b border-gray-200 dark:border-gray-700">
-                  {columns.map((col, index) => (
+                  {columns.map((_col, index) => (
                     <td key={index} className="px-6 py-4">
                       <Skeleton className="h-4 w-full" />
                     </td>

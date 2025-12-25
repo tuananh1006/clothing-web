@@ -1,4 +1,4 @@
-import React, { Component, ErrorInfo, ReactNode } from 'react'
+import { Component, ErrorInfo, ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import Button from './Button'
 import { ROUTES } from '@/utils/constants'
@@ -67,7 +67,7 @@ class ErrorBoundary extends Component<Props, State> {
               <p className="text-text-sub dark:text-gray-400 mb-6">
                 Xin lỗi, đã có lỗi không mong muốn xảy ra. Vui lòng thử lại sau.
               </p>
-              {process.env.NODE_ENV === 'development' && this.state.error && (
+              {import.meta.env.DEV && this.state.error && (
                 <details className="mb-6 text-left">
                   <summary className="cursor-pointer text-sm text-text-sub dark:text-gray-400 mb-2">
                     Chi tiết lỗi (Development)

@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom'
 import { formatPrice } from '@/utils/formatters'
 import type { CartItemResponse } from '@/services/cart.service'
 
