@@ -142,9 +142,9 @@ const Orders = () => {
                   <option value={OrderStatus.Cancelled}>Đã hủy</option>
                 </Select>
               </div>
-              {pagination.total_records > 0 && (
+              {pagination.total > 0 && (
                 <div className="text-sm text-text-sub dark:text-gray-400">
-                  Tìm thấy {pagination.total_records} đơn hàng
+                  Tìm thấy {pagination.total} đơn hàng
                 </div>
               )}
             </div>
@@ -181,11 +181,11 @@ const Orders = () => {
             )}
 
             {/* Pagination */}
-            {pagination.total_pages > 1 && (
+            {pagination.total_page > 1 && (
               <div className="flex justify-center">
                 <Pagination
                   currentPage={currentPage}
-                  totalPages={pagination.total_pages}
+                  totalPages={pagination.total_page}
                   onPageChange={handlePageChange}
                 />
               </div>
