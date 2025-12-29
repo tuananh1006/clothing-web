@@ -23,7 +23,7 @@ interface AdminReview extends Review {
     slug: string
     image?: string
     category?: string | {
-      _id: string | ObjectId
+      _id: string
       name?: string
       slug?: string
     }

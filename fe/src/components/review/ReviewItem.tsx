@@ -16,7 +16,7 @@ interface ReviewItemProps {
   onMarkHelpful?: () => void
 }
 
-const ReviewItem = ({ review, onEdit, onDelete, onMarkHelpful }: ReviewItemProps) => {
+const ReviewItem = ({ review, onEdit, onDelete }: ReviewItemProps) => {
   const { user: currentUser } = useAuth()
   const { showSuccess, showError } = useToast()
   const [isDeleting, setIsDeleting] = useState(false)
