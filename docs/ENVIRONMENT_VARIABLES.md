@@ -48,6 +48,7 @@ Các biến sau là optional, nếu không set sẽ dùng default values:
 - `DB_PRODUCTS_COLLECTION` (default: `products`)
 - `DB_CARTS_COLLECTION` (default: `carts`)
 - `DB_ORDERS_COLLECTION` (default: `orders`)
+- `DB_REVIEWS_COLLECTION` (default: `reviews`)
 - `DB_SETTINGS_COLLECTION` (default: `settings`)
 - `DB_CONTACTS_COLLECTION` (default: `contacts`)
 - `DB_BANNERS_COLLECTION` (default: `banners`)
@@ -131,6 +132,39 @@ Các biến này chỉ cần thiết nếu bạn muốn gửi email (forgot pass
 - **Example**: `noreply@yori.com`
 
 **Lưu ý**: Nếu không set các SMTP variables, email sending sẽ bị skip (không gây lỗi).
+
+## Cloudinary Configuration (Optional - for Image Uploads)
+
+### `CLOUDINARY_URL`
+- **Type**: String (URL)
+- **Required**: No (chỉ cần nếu muốn upload ảnh lên Cloudinary)
+- **Description**: Cloudinary connection URL với format `cloudinary://api_key:api_secret@cloud_name`
+- **Example**: `cloudinary://654923212411218:your_api_secret@dxlipiz59`
+
+**Hoặc sử dụng các biến riêng lẻ:**
+
+### `CLOUDINARY_CLOUD_NAME`
+- **Type**: String
+- **Required**: No
+- **Description**: Cloudinary cloud name
+- **Example**: `dxlipiz59`
+
+### `CLOUDINARY_API_KEY`
+- **Type**: String
+- **Required**: No
+- **Description**: Cloudinary API key
+- **Example**: `654923212411218`
+
+### `CLOUDINARY_API_SECRET`
+- **Type**: String
+- **Required**: No
+- **Description**: Cloudinary API secret
+- **Example**: `your_api_secret`
+
+**Lưu ý**: 
+- Nếu không set Cloudinary variables, image uploads sẽ fail
+- Ưu tiên sử dụng `CLOUDINARY_URL` vì đơn giản hơn
+- Cloudinary được sử dụng để upload ảnh reviews
 
 ## Password Hashing
 

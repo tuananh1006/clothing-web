@@ -10,6 +10,7 @@ import checkoutRouter from './routes/checkout.routes'
 import ordersRouter from './routes/orders.routes'
 import adminRouter from './routes/admin.routes'
 import contactRouter from './routes/contact.routes'
+import reviewsRouter from './routes/reviews.routes'
 import databaseServices from './services/database.services'
 import { defaultErrorHandler } from './middlewares/errors.middleware'
 import { initializeIndexes } from './utils/db-indexes'
@@ -91,6 +92,7 @@ app.use('/api/v1/checkout', checkoutRouter)
 app.use('/api/v1/orders', ordersRouter)
 app.use('/api/v1/admin', adminRouter)
 app.use('/api/v1/contact', contactRouter)
+app.use('/api/v1/reviews', reviewsRouter)
 
 // Serve OpenAPI spec (merged from src/docs/openapi/*)
 app.get('/openapi.json', (_req, res) => {

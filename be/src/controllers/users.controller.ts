@@ -136,16 +136,37 @@ export const uploadAvatarController = async (req: Request, res: Response, next: 
     // Check if file is uploaded via multer
     const file = (req as any).file
     if (file) {
-      // File uploaded via multer - convert to base64 or save to storage
-      // For now, convert to base64 data URL
-      const base64 = file.buffer.toString('base64')
-      const avatar_url = `data:${file.mimetype};base64,${base64}`
-      
-      const result = await usersServices.uploadAvatar(userId, avatar_url)
-      return res.status(HTTP_STATUS.OK).json({
-        message: USERS_MESSAGES.UPLOAD_AVATAR_SUCCESS,
-        data: result
-      })
+      // Upload to Cloudinary
+      try {
+        const cloudinaryService = (await import('~/services/cloudinary.service')).default
+        const uploadResult = await cloudinaryService.uploadImage(file.buffer, 'avatars', {
+          width: 400,
+          height: 400,
+          crop: 'fill',
+          format: 'jpg',
+          quality: 'auto'
+        })
+        
+        const avatar_url = uploadResult.secure_url
+        const result = await usersServices.uploadAvatar(userId, avatar_url)
+        return res.status(HTTP_STATUS.OK).json({
+          message: USERS_MESSAGES.UPLOAD_AVATAR_SUCCESS,
+          data: result
+        })
+      } catch (uploadError: any) {
+        console.error('Cloudinary upload error:', uploadError)
+        // Check if Cloudinary is not configured
+        const { v2: cloudinary } = await import('cloudinary')
+        const cloudinaryConfig = cloudinary.config()
+        if (!cloudinaryConfig.cloud_name || uploadError.message?.includes('not configured')) {
+          return res.status(HTTP_STATUS.BAD_REQUEST).json({
+            message: 'Cloudinary is not configured. Please configure Cloudinary to upload avatars.'
+          })
+        }
+        return res.status(HTTP_STATUS.BAD_REQUEST).json({
+          message: uploadError.message || 'Failed to upload avatar to Cloudinary'
+        })
+      }
     }
     
     // Fallback: accept avatar_url in body (for backward compatibility)

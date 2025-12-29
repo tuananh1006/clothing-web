@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import Header from '@/components/common/Header'
 import Footer from '@/components/common/Footer'
@@ -7,6 +7,7 @@ import ProductCard from '@/components/product/ProductCard'
 import ProductImageGallery from '@/components/product/ProductImageGallery'
 import SizeSelector from '@/components/product/SizeSelector'
 import ColorSelector from '@/components/product/ColorSelector'
+import ReviewList from '@/components/review/ReviewList'
 import Button from '@/components/common/Button'
 import Skeleton from '@/components/common/Skeleton'
 import { getProductDetail, getRelatedProducts } from '@/services/products.service'
@@ -39,41 +40,46 @@ const ProductDetail = () => {
   const [isAddingToCart, setIsAddingToCart] = useState(false)
 
   // Fetch product detail
-  useEffect(() => {
-    const fetchProduct = async () => {
-      if (!slug) {
-        setError('Product slug is required')
-        setIsLoading(false)
-        return
-      }
-
-      try {
-        setIsLoading(true)
-        setError(null)
-        const data = await getProductDetail(slug)
-        setProduct(data)
-
-        // Set default selections
-        if (data.sizes && data.sizes.length > 0) {
-          setSelectedSize(data.sizes[0])
-        }
-        if (data.colors && data.colors.length > 0) {
-          setSelectedColor(data.colors[0])
-        }
-      } catch (err: any) {
-        console.error('Error fetching product:', err)
-        if (err.message === 'Product not found' || err.response?.status === 404) {
-          setError('Sản phẩm không tồn tại')
-        } else {
-          setError('Không thể tải thông tin sản phẩm')
-        }
-      } finally {
-        setIsLoading(false)
-      }
+  const fetchProduct = useCallback(async () => {
+    if (!slug) {
+      setError('Product slug is required')
+      setIsLoading(false)
+      return
     }
 
-    fetchProduct()
+    try {
+      setIsLoading(true)
+      setError(null)
+      const data = await getProductDetail(slug)
+      setProduct(data)
+
+      // Set default selections
+      if (data.sizes && data.sizes.length > 0) {
+        setSelectedSize(data.sizes[0])
+      }
+      if (data.colors && data.colors.length > 0) {
+        setSelectedColor(data.colors[0])
+      }
+    } catch (err: any) {
+      console.error('Error fetching product:', err)
+      if (err.message === 'Product not found' || err.response?.status === 404) {
+        setError('Sản phẩm không tồn tại')
+      } else {
+        setError('Không thể tải thông tin sản phẩm')
+      }
+    } finally {
+      setIsLoading(false)
+    }
   }, [slug])
+
+  useEffect(() => {
+    fetchProduct()
+  }, [fetchProduct])
+
+  // Handle review update - refresh product data để cập nhật rating
+  const handleReviewUpdate = useCallback(() => {
+    fetchProduct()
+  }, [fetchProduct])
 
   // Fetch related products
   useEffect(() => {
@@ -397,6 +403,15 @@ const ProductDetail = () => {
               </div>
             </div>
           </div>
+
+          {/* Reviews Section */}
+          {product._id && (
+            <ReviewList 
+              product_id={product._id} 
+              product_name={product.name}
+              onReviewUpdate={handleReviewUpdate}
+            />
+          )}
 
           {/* Related Products */}
           {relatedProducts.length > 0 && (

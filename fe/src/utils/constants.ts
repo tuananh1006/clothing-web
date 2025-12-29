@@ -70,6 +70,7 @@ export const API_ENDPOINTS = {
     CUSTOMERS: '/admin/customers',
     CUSTOMER_DETAIL: (id: string) => `/admin/customers/${id}`,
     CUSTOMER_STATUS: (id: string) => `/admin/customers/${id}/status`,
+    REVIEWS: '/admin/reviews',
     SETTINGS: '/admin/settings',
     SETTINGS_GENERAL: '/admin/settings/general',
     SETTINGS_LOGO: '/admin/settings/logo',
@@ -107,6 +108,7 @@ export const ROUTES = {
   ADMIN_PRODUCTS: '/admin/products',
   ADMIN_ORDERS: '/admin/orders',
   ADMIN_CUSTOMERS: '/admin/customers',
+  ADMIN_REVIEWS: '/admin/reviews',
   ADMIN_SETTINGS: '/admin/settings',
 } as const
 
