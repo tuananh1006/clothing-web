@@ -2,11 +2,8 @@ import { useState, useEffect, useCallback } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import Header from '@/components/common/Header'
 import Footer from '@/components/common/Footer'
-import Breadcrumb from '@/components/common/Breadcrumb'
 import ProductCard from '@/components/product/ProductCard'
 import ProductImageGallery from '@/components/product/ProductImageGallery'
-import SizeSelector from '@/components/product/SizeSelector'
-import ColorSelector from '@/components/product/ColorSelector'
 import ReviewList from '@/components/review/ReviewList'
 import Button from '@/components/common/Button'
 import Skeleton from '@/components/common/Skeleton'
@@ -237,17 +234,19 @@ const ProductDetail = () => {
     <div className="min-h-screen flex flex-col bg-background-light dark:bg-background-dark">
       <Header />
       <main className="flex-grow">
-        <div className="container mx-auto px-4 py-8 max-w-7xl">
-          <Breadcrumb
-            items={[
-              { label: 'Trang chủ', path: ROUTES.HOME },
-              { label: 'Sản phẩm', path: ROUTES.PRODUCTS },
-              ...(categoryName
-                ? [{ label: categoryName, path: `${ROUTES.PRODUCTS}?category=${typeof product.category === 'object' ? product.category.slug : ''}` }]
-                : []),
-              { label: product.name },
-            ]}
-          />
+        <div className="w-full max-w-[1440px] mx-auto px-4 md:px-10 py-6">
+          {/* Breadcrumbs */}
+          <div className="flex flex-wrap gap-2 py-4 text-sm">
+            <a className="text-text-secondary-light dark:text-text-secondary-dark hover:text-primary dark:hover:text-primary transition-colors" href="#">Home</a>
+            <span className="text-text-secondary-light dark:text-text-secondary-dark">/</span>
+            {categoryName && (
+              <>
+                <a className="text-text-secondary-light dark:text-text-secondary-dark hover:text-primary dark:hover:text-primary transition-colors" href="#">{categoryName}</a>
+                <span className="text-text-secondary-light dark:text-text-secondary-dark">/</span>
+              </>
+            )}
+            <span className="text-text-primary-light dark:text-text-primary-dark font-medium">{product.name}</span>
+          </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 mt-8">
             {/* Product Images */}
@@ -261,7 +260,7 @@ const ProductDetail = () => {
                 {categoryName && (
                   <p className="text-sm text-primary font-medium mb-2">{categoryName}</p>
                 )}
-                <h1 className="text-3xl md:text-4xl font-bold text-text-main dark:text-white mb-4">
+                <h1 className="text-3xl md:text-4xl lg:text-5xl font-black tracking-[-0.033em] text-text-primary-light dark:text-text-primary-dark mb-4">
                   {product.name}
                 </h1>
                 {product.rating && (
@@ -280,7 +279,7 @@ const ProductDetail = () => {
                         </span>
                       ))}
                     </div>
-                    <span className="text-sm text-text-sub dark:text-gray-400">
+                    <span className="text-sm text-text-secondary-light dark:text-text-secondary-dark">
                       ({product.rating.toFixed(1)})
                     </span>
                   </div>
@@ -294,7 +293,7 @@ const ProductDetail = () => {
                 </p>
                 {product.price_before_discount &&
                   product.price_before_discount > product.price && (
-                    <p className="text-xl text-text-sub dark:text-gray-400 line-through">
+                    <p className="text-lg text-text-secondary-light dark:text-text-secondary-dark line-through">
                       {formatPrice(product.price_before_discount)}
                     </p>
                   )}
@@ -303,42 +302,77 @@ const ProductDetail = () => {
               {/* Description */}
               {product.description && (
                 <div>
-                  <h3 className="text-lg font-semibold text-text-main dark:text-white mb-2">
+                  <h3 className="font-bold text-sm uppercase tracking-wider text-text-primary-light dark:text-text-primary-dark mb-3">
                     Mô tả sản phẩm
                   </h3>
-                  <p className="text-text-sub dark:text-gray-400 leading-relaxed whitespace-pre-line">
+                  <p className="text-text-secondary-light dark:text-text-secondary-dark text-sm leading-relaxed whitespace-pre-line">
                     {product.description}
                   </p>
                 </div>
               )}
 
               {/* Size Selector */}
-              <SizeSelector
-                sizes={product.sizes}
-                selectedSize={selectedSize}
-                onSizeChange={setSelectedSize}
-                error={addToCartError && !selectedSize ? addToCartError : undefined}
-                quantity={product.quantity}
-              />
+              <div className="border-b border-[#e7f0f3] dark:border-gray-800 pb-6">
+                <h3 className="font-bold text-sm uppercase tracking-wider text-text-primary-light dark:text-text-primary-dark mb-4">
+                  Size
+                </h3>
+                <div className="flex flex-wrap gap-2">
+                  {product.sizes && product.sizes.length > 0 ? (
+                    product.sizes.map((size) => (
+                      <button
+                        key={size}
+                        onClick={() => setSelectedSize(size)}
+                        className={`h-10 px-4 rounded-lg border text-sm font-bold transition-colors ${
+                          selectedSize === size
+                            ? 'border-primary bg-primary/10 text-primary'
+                            : 'border-gray-200 dark:border-gray-700 text-text-secondary-light dark:text-text-secondary-dark hover:border-primary hover:text-primary bg-surface-light dark:bg-surface-dark'
+                        }`}
+                      >
+                        {size}
+                      </button>
+                    ))
+                  ) : null}
+                </div>
+              </div>
 
               {/* Color Selector */}
-              <ColorSelector
-                colors={product.colors}
-                selectedColor={selectedColor}
-                onColorChange={setSelectedColor}
-              />
+              <div className="border-b border-[#e7f0f3] dark:border-gray-800 pb-6">
+                <h3 className="font-bold text-sm uppercase tracking-wider text-text-primary-light dark:text-text-primary-dark mb-4">
+                  Color
+                </h3>
+                <div className="flex flex-wrap gap-3">
+                  {product.colors && product.colors.length > 0 ? (
+                    product.colors.map((color) => (
+                      <button
+                        key={color}
+                        onClick={() => setSelectedColor(color)}
+                        className={`size-8 rounded-full border-2 transition-transform hover:scale-110 ring-2 ring-offset-2 ring-transparent ring-offset-background-light dark:ring-offset-background-dark ${
+                          selectedColor === color
+                            ? 'ring-primary ring-offset-0 scale-110'
+                            : 'ring-transparent'
+                        }`}
+                        style={{
+                          backgroundColor: color,
+                          borderColor: selectedColor === color ? '#19b3e6' : 'transparent',
+                        }}
+                        title={color}
+                      />
+                    ))
+                  ) : null}
+                </div>
+              </div>
 
               {/* Quantity Selector */}
-              <div className="flex flex-col gap-2">
-                <label className="text-sm font-semibold text-text-main dark:text-gray-200">
+              <div className="flex flex-col gap-2 border-b border-[#e7f0f3] dark:border-gray-800 pb-6">
+                <label className="font-bold text-sm uppercase tracking-wider text-text-primary-light dark:text-text-primary-dark">
                   Số lượng
                 </label>
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-3">
                   <button
                     type="button"
                     onClick={() => handleQuantityChange(-1)}
                     disabled={quantity <= 1}
-                    className="flex items-center justify-center w-10 h-10 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-[#111d21] text-text-main dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    className="flex items-center justify-center h-10 w-10 rounded-lg border border-gray-200 dark:border-gray-700 bg-surface-light dark:bg-surface-dark text-text-primary-light dark:text-text-primary-dark hover:bg-gray-50 dark:hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                   >
                     <span className="material-symbols-outlined text-sm">remove</span>
                   </button>
@@ -353,17 +387,17 @@ const ProductDetail = () => {
                         setQuantity(val)
                       }
                     }}
-                    className="w-20 text-center px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-[#111d21] text-text-main dark:text-white focus:outline-none focus:ring-2 focus:ring-primary"
+                    className="w-20 text-center px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-surface-light dark:bg-surface-dark text-text-primary-light dark:text-text-primary-dark focus:outline-none focus:ring-2 focus:ring-primary"
                   />
                   <button
                     type="button"
                     onClick={() => handleQuantityChange(1)}
                     disabled={quantity >= product.quantity}
-                    className="flex items-center justify-center w-10 h-10 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-[#111d21] text-text-main dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    className="flex items-center justify-center h-10 w-10 rounded-lg border border-gray-200 dark:border-gray-700 bg-surface-light dark:bg-surface-dark text-text-primary-light dark:text-text-primary-dark hover:bg-gray-50 dark:hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                   >
                     <span className="material-symbols-outlined text-sm">add</span>
                   </button>
-                  <span className="text-sm text-text-sub dark:text-gray-400">
+                  <span className="text-sm text-text-secondary-light dark:text-text-secondary-dark">
                     Còn {product.quantity} sản phẩm
                   </span>
                 </div>
@@ -375,7 +409,7 @@ const ProductDetail = () => {
                   onClick={handleAddToCart}
                   disabled={product.quantity === 0 || isAddingToCart}
                   isLoading={isAddingToCart}
-                  className="w-full py-3 text-lg"
+                  className="w-full py-3 text-base font-bold"
                 >
                   {product.quantity === 0 ? 'Hết hàng' : 'Thêm vào giỏ hàng'}
                 </Button>
@@ -386,17 +420,17 @@ const ProductDetail = () => {
                 )}
               </div>
 
-              {/* Product Info */}
+              {/* Product Info Badges */}
               <div className="border-t border-gray-200 dark:border-gray-700 pt-6 space-y-3">
-                <div className="flex items-center gap-2 text-sm text-text-sub dark:text-gray-400">
+                <div className="flex items-center gap-2 text-sm text-text-secondary-light dark:text-text-secondary-dark">
                   <span className="material-symbols-outlined text-lg">local_shipping</span>
                   <span>Miễn phí vận chuyển cho đơn hàng trên 500.000₫</span>
                 </div>
-                <div className="flex items-center gap-2 text-sm text-text-sub dark:text-gray-400">
+                <div className="flex items-center gap-2 text-sm text-text-secondary-light dark:text-text-secondary-dark">
                   <span className="material-symbols-outlined text-lg">assignment_return</span>
                   <span>Đổi trả miễn phí trong 7 ngày</span>
                 </div>
-                <div className="flex items-center gap-2 text-sm text-text-sub dark:text-gray-400">
+                <div className="flex items-center gap-2 text-sm text-text-secondary-light dark:text-text-secondary-dark">
                   <span className="material-symbols-outlined text-lg">verified</span>
                   <span>Chính hãng 100%</span>
                 </div>

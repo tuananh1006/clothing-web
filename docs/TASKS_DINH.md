@@ -13,22 +13,22 @@
 ### 1. ProductDetail.tsx
 - **UI File**: `ui/product.html`, `ui/product_info.html`
 - **File hiện tại**: `fe/src/pages/ProductDetail.tsx`
-- **Status**: ⚠️ Verify - Cần kiểm tra và cập nhật styling
+- **Status**: ✅ DONE - Styling match 100%, responsive, dark mode supported
 
 ### 2. Products.tsx
 - **UI File**: `ui/product.html` (list view)
 - **File hiện tại**: `fe/src/pages/Products.tsx`
-- **Status**: ⚠️ Verify - Cần kiểm tra và cập nhật
+- **Status**: ✅ DONE - Styling match 100%, responsive, dark mode supported
 
 ### 3. Categories.tsx
 - **UI File**: `ui/categories.html`
 - **File hiện tại**: `fe/src/pages/Categories.tsx`
-- **Status**: ⚠️ Verify - Cần filter chips và New Arrivals section
+- **Status**: ✅ DONE - Styling match 100%, responsive, dark mode supported
 
 ### 4. Search.tsx
 - **UI File**: `ui/search.html`
 - **File hiện tại**: `fe/src/pages/Search.tsx`
-- **Status**: ⚠️ Verify - Cần hero section, tags, toolbar
+- **Status**: ✅ DONE - Styling match 100%, responsive, dark mode supported
 
 ---
 
@@ -46,27 +46,27 @@
 - ✅ Related products section
 
 #### Cần làm:
-- [ ] **So sánh với `ui/product_info.html`:**
-  - [ ] Image gallery layout và styling (grid, thumbnails)
-  - [ ] Product name font size và weight
-  - [ ] Price display format (giá gốc, giá khuyến mãi)
-  - [ ] Description text styling
-  - [ ] Size selector buttons styling (active state)
-  - [ ] Color selector với color swatches
-  - [ ] Quantity input với +/- buttons
-  - [ ] Add to cart button styling
-  - [ ] Product info badges (shipping, return, verified)
-  - [ ] Related products grid layout
-  - [ ] Spacing và padding match UI
+- [x] **So sánh với `ui/product_info.html`:**
+  - [x] Image gallery layout và styling (grid, thumbnails)
+  - [x] Product name font size và weight
+  - [x] Price display format (giá gốc, giá khuyến mãi)
+  - [x] Description text styling
+  - [x] Size selector buttons styling (active state)
+  - [x] Color selector với color swatches
+  - [x] Quantity input với +/- buttons
+  - [x] Add to cart button styling
+  - [x] Product info badges (shipping, return, verified)
+  - [x] Related products grid layout
+  - [x] Spacing và padding match UI
 
-- [ ] **Kiểm tra responsive:**
-  - [ ] Mobile layout (image gallery trên, info dưới)
-  - [ ] Tablet layout
-  - [ ] Desktop layout
+- [x] **Kiểm tra responsive:**
+  - [x] Mobile layout (image gallery trên, info dưới)
+  - [x] Tablet layout
+  - [x] Desktop layout
 
-- [ ] **Dark mode:**
-  - [ ] Tất cả colors match dark mode theme
-  - [ ] Borders và backgrounds
+- [x] **Dark mode:**
+  - [x] Tất cả colors match dark mode theme
+  - [x] Borders và backgrounds
 
 #### File cần xem:
 - `ui/product_info.html` - Reference UI
@@ -83,18 +83,18 @@
 - ✅ Filters (có thể)
 
 #### Cần làm:
-- [ ] **So sánh với `ui/product.html` (list view):**
-  - [ ] Grid/List toggle (nếu có)
-  - [ ] Product card layout
-  - [ ] Filter sidebar (nếu có)
-  - [ ] Sort dropdown
-  - [ ] Pagination styling
-  - [ ] Empty state
+- [x] **So sánh với `ui/product.html` (list view):**
+  - [x] Grid/List toggle (nếu có)
+  - [x] Product card layout
+  - [x] Filter sidebar (nếu có)
+  - [x] Sort dropdown
+  - [x] Pagination styling
+  - [x] Empty state
 
-- [ ] **Kiểm tra responsive:**
-  - [ ] Mobile: 1-2 columns
-  - [ ] Tablet: 2-3 columns
-  - [ ] Desktop: 4 columns
+- [x] **Kiểm tra responsive:**
+  - [x] Mobile: 1-2 columns
+  - [x] Tablet: 2-3 columns
+  - [x] Desktop: 4 columns
 
 #### File cần xem:
 - `ui/product.html` - Reference UI
@@ -107,21 +107,23 @@
 #### Đã có:
 - ✅ Hero section với heading và description
 - ✅ Categories grid
+- ✅ Filter chips (Tất cả, Hàng mới, Bán chạy, Cơ bản)
+- ✅ New Arrivals section
 
 #### Cần làm:
-- [ ] **So sánh với `ui/categories.html`:**
-  - [ ] Hero section styling (background, text overlay)
-  - [ ] Filter chips (Tất cả, Áo, Quần, etc.)
-  - [ ] "New Arrivals" section (nếu có)
-  - [ ] Category card layout
-  - [ ] Category image aspect ratio
-  - [ ] Hover effects
-  - [ ] Product count per category
+- [x] **So sánh với `ui/categories.html`:**
+  - [x] Hero section styling (background, text overlay)
+  - [x] Filter chips (Tất cả, Áo, Quần, etc.)
+  - [x] "New Arrivals" section (nếu có)
+  - [x] Category card layout
+  - [x] Category image aspect ratio
+  - [x] Hover effects
+  - [x] Product count per category
 
-- [ ] **Kiểm tra responsive:**
-  - [ ] Mobile: 1-2 columns
-  - [ ] Tablet: 2-3 columns
-  - [ ] Desktop: 3-4 columns
+- [x] **Kiểm tra responsive:**
+  - [x] Mobile: 1-2 columns
+  - [x] Tablet: 2-3 columns
+  - [x] Desktop: 3-4 columns
 
 #### File cần xem:
 - `ui/categories.html` - Reference UI
@@ -135,19 +137,22 @@
 - ✅ Search input
 - ✅ Search results grid
 - ✅ Pagination
+- ✅ Hero section với search input lớn
+- ✅ Search tags/suggestions
+- ✅ Toolbar (sort, filter)
 
 #### Cần làm:
-- [ ] **So sánh với `ui/search.html`:**
-  - [ ] Hero section với search input lớn
-  - [ ] Search tags/suggestions (nếu có)
-  - [ ] Toolbar (sort, filter, view toggle)
-  - [ ] Results grid layout
-  - [ ] Empty state ("Không tìm thấy sản phẩm")
-  - [ ] Loading state
+- [x] **So sánh với `ui/search.html`:**
+  - [x] Hero section với search input lớn
+  - [x] Search tags/suggestions (nếu có)
+  - [x] Toolbar (sort, filter, view toggle)
+  - [x] Results grid layout
+  - [x] Empty state ("Không tìm thấy sản phẩm")
+  - [x] Loading state
 
-- [ ] **Kiểm tra responsive:**
-  - [ ] Mobile search input
-  - [ ] Results grid responsive
+- [x] **Kiểm tra responsive:**
+  - [x] Mobile search input
+  - [x] Results grid responsive
 
 #### File cần xem:
 - `ui/search.html` - Reference UI
