@@ -374,7 +374,7 @@ const AdminCustomers = () => {
               </span>
               <span className="text-xs text-text-sub dark:text-gray-400">{getCustomerCode(customer)}</span>
             </div>
-          </div>
+        </div>
         )
       },
     },
@@ -416,13 +416,13 @@ const AdminCustomers = () => {
       render: (customer) => {
         const amount = customer.total_spent || customer.stats?.total_spent || 0
         return (
-          <span
+        <span
             className={`font-bold ${
               amount > 0 ? 'text-primary' : 'text-text-sub dark:text-gray-500'
-            }`}
-          >
+          }`}
+        >
             {formatTotalSpent(customer)}
-          </span>
+        </span>
         )
       },
     },
@@ -487,9 +487,9 @@ const AdminCustomers = () => {
             disabled={!canUnlockCustomer(customer)}
             onClick={() => {
               if (canUnlockCustomer(customer)) {
-                setCustomerToUpdate(customer)
+              setCustomerToUpdate(customer)
                 setNewStatus('active')
-                setStatusModalOpen(true)
+              setStatusModalOpen(true)
               }
             }}
           >
@@ -525,14 +525,14 @@ const AdminCustomers = () => {
           </div>
         </div>
 
-        {/* Filters */}
+            {/* Filters */}
         <div className="bg-white dark:bg-[#1a2c32] rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm p-4 mb-6">
           <div className="flex flex-col md:flex-row gap-4 justify-between">
             <div className="flex-1 max-w-lg relative">
               <span className="material-symbols-outlined absolute left-3 top-2.5 text-gray-400 text-[20px]">
                 filter_list
               </span>
-              <Input
+                <Input
                 placeholder="Tìm kiếm theo tên, email, số điện thoại..."
                 value={searchKeyword}
                 onChange={(e) => setSearchKeyword(e.target.value)}
@@ -540,22 +540,22 @@ const AdminCustomers = () => {
               />
             </div>
             <div className="flex gap-3 overflow-x-auto pb-1 md:pb-0">
-              <Select
-                value={filters.status}
-                onChange={(e) =>
-                  setFilters((prev) => ({ ...prev, status: e.target.value, page: 1 }))
-                }
+                <Select
+                  value={filters.status}
+                  onChange={(e) =>
+                    setFilters((prev) => ({ ...prev, status: e.target.value, page: 1 }))
+                  }
                 className="px-4 py-2 rounded-lg bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-sm text-text-main dark:text-white focus:ring-primary focus:border-primary outline-none cursor-pointer"
-                options={[
-                  { value: '', label: 'Tất cả trạng thái' },
+                  options={[
+                    { value: '', label: 'Tất cả trạng thái' },
                   { value: 'active', label: 'Đang hoạt động' },
                   { value: 'inactive', label: 'Bị khóa' },
                   { value: 'new', label: 'Mới đăng ký' },
                 ]}
               />
             </div>
-          </div>
-        </div>
+              </div>
+            </div>
 
         {/* Data Table - Desktop */}
         <div className="hidden md:block bg-white dark:bg-[#1a2c32] rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm overflow-hidden flex flex-col">
@@ -568,8 +568,8 @@ const AdminCustomers = () => {
             />
           </div>
 
-          {/* Pagination */}
-          {pagination.total_page > 1 && (
+            {/* Pagination */}
+            {pagination.total_page > 1 && (
             <div className="p-4 border-t border-gray-100 dark:border-gray-800 flex flex-col sm:flex-row items-center justify-between gap-4 bg-white dark:bg-[#1a2c32]">
               <span className="text-sm text-text-sub dark:text-gray-400">
                 Hiển thị{' '}
@@ -763,15 +763,15 @@ const AdminCustomers = () => {
           {/* Mobile Pagination */}
           {pagination.total_page > 1 && (
             <div className="mt-6">
-              <Pagination
-                currentPage={pagination.page}
-                totalPages={pagination.total_page}
-                onPageChange={(page) => setFilters((prev) => ({ ...prev, page }))}
-              />
-            </div>
-          )}
+                <Pagination
+                  currentPage={pagination.page}
+                  totalPages={pagination.total_page}
+                  onPageChange={(page) => setFilters((prev) => ({ ...prev, page }))}
+                />
+              </div>
+            )}
+          </div>
         </div>
-      </div>
 
         {/* Customer Detail Modal */}
       <Modal
