@@ -17,6 +17,15 @@ export interface UpdateUserRequest {
 }
 
 /**
+ * Interface cho change password request
+ */
+export interface ChangePasswordRequest {
+  current_password: string
+  new_password: string
+  password_confirmation: string
+}
+
+/**
  * Lấy thông tin user hiện tại
  * Backend endpoint: GET /users/me
  */
@@ -101,3 +110,15 @@ export const uploadAvatar = async (file: File): Promise<string> => {
   }
 }
 
+
+/**
+ * Đổi mật khẩu
+ * Backend endpoint: PATCH /users/me/password
+ */
+export const changePassword = async (data: ChangePasswordRequest): Promise<void> => {
+  try {
+    await api.patch<ApiResponse<void>>(API_ENDPOINTS.USERS.CHANGE_PASSWORD, data)
+  } catch (error: any) {
+    throw error
+  }
+}

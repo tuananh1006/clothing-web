@@ -23,6 +23,9 @@ export interface ShippingInfo {
   phone: string
   email: string
   address: string
+  province_id?: string
+  district_id?: string
+  ward_id?: string
   payment_method: string
   estimated_delivery: string
 }

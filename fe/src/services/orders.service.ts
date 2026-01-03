@@ -51,3 +51,18 @@ export const getOrderDetail = async (orderId: string): Promise<Order> => {
   }
 }
 
+/**
+ * Hủy đơn hàng
+ * Backend endpoint: PUT /orders/:orderId/cancel
+ */
+export const cancelOrder = async (orderId: string): Promise<{ message: string; order_id: string }> => {
+  try {
+    const response = await api.put<ApiResponse<{ message: string; order_id: string }>>(
+      API_ENDPOINTS.ORDERS.CANCEL(orderId)
+    )
+    return response.data.data
+  } catch (error: any) {
+    throw error
+  }
+}
+

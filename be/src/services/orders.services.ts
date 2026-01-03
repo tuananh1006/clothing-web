@@ -256,6 +256,53 @@ class OrdersService {
       { step: 'completed', label: 'Đã giao', completed: status === OrderStatus.Completed, time: '' }
     ]
   }
+  /**
+   * Cancel an order
+   * Only allow cancellation for Pending and Processing orders
+   */
+  async cancelOrder(user_id: string, order_id: string) {
+    const order = await databaseServices.orders.findOne({
+      _id: new ObjectId(order_id),
+      user_id: new ObjectId(user_id)
+    })
+
+    if (!order) {
+      throw new Error('Order not found')
+    }
+
+    // Check if order can be cancelled
+    if (order.status === OrderStatus.Cancelled) {
+      throw new Error('Order is already cancelled')
+    }
+
+    if (order.status === OrderStatus.Completed) {
+      throw new Error('Cannot cancel completed order')
+    }
+
+    if (order.status === OrderStatus.Shipping) {
+      throw new Error('Cannot cancel order that is being shipped')
+    }
+
+    // Update order status to cancelled
+    const result = await databaseServices.orders.updateOne(
+      { _id: new ObjectId(order_id) },
+      {
+        $set: {
+          status: OrderStatus.Cancelled,
+          updated_at: new Date()
+        }
+      }
+    )
+
+    if (result.modifiedCount === 0) {
+      throw new Error('Failed to cancel order')
+    }
+
+    return {
+      message: 'Order cancelled successfully',
+      order_id
+    }
+  }
 }
 
 export default new OrdersService()

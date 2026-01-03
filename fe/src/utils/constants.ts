@@ -14,6 +14,7 @@ export const API_ENDPOINTS = {
   USERS: {
     ME: '/users/me',
     UPLOAD_AVATAR: '/users/me/avatar',
+    CHANGE_PASSWORD: '/users/me/password', // ← NEW
   },
   // Products
   PRODUCTS: {
@@ -53,6 +54,7 @@ export const API_ENDPOINTS = {
   ORDERS: {
     LIST: '/orders',
     DETAIL: (orderId: string) => `/orders/${orderId}`,
+    CANCEL: (orderId: string) => `/orders/${orderId}/cancel`,
   },
   // Contact
   CONTACT: {
