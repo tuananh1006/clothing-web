@@ -10,6 +10,8 @@ import * as ordersService from '@/services/orders.service'
 import { ROUTES } from '@/utils/constants'
 import { formatPrice } from '@/utils/formatters'
 import { OrderStatus, type Order } from '@/types'
+import OrderTimeline from '@/components/orders/OrderTimeline'
+
 
 const getStatusBadgeClass = (status: OrderStatus) => {
   switch (status) {
@@ -177,6 +179,7 @@ const OrderDetail = () => {
                 </span>
               </div>
             </div>
+            <OrderTimeline currentStatus={order.status} />
 
             {/* Order Items */}
             <div className="bg-white dark:bg-[#1a2c32] rounded-xl border border-gray-200 dark:border-gray-700 p-6 mb-6">

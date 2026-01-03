@@ -34,3 +34,21 @@ export const getOrderController = async (req: Request, res: Response) => {
     data: order
   })
 }
+
+export const cancelOrderController = async (req: Request, res: Response) => {
+  const { userId } = req.decoded_authorization as any
+  const { order_id } = req.params
+
+  try {
+    const result = await ordersServices.cancelOrder(userId, order_id)
+
+    return res.json({
+      message: 'Cancel order successfully',
+      data: result
+    })
+  } catch (error: any) {
+    return res.status(400).json({
+      message: error.message || 'Failed to cancel order'
+    })
+  }
+}
