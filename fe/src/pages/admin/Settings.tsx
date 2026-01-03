@@ -17,7 +17,6 @@ const AdminSettings = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [isSaving, setIsSaving] = useState(false)
   const [logoFile, setLogoFile] = useState<File | null>(null)
-  const [hasChanges, setHasChanges] = useState(false)
 
   // Payment form
   const {
@@ -25,7 +24,7 @@ const AdminSettings = () => {
     handleSubmit: handleSubmitPayment,
     watch: watchPayment,
     setValue: setPaymentValue,
-    formState: { errors: paymentErrors, isDirty: isPaymentDirty },
+    formState: { isDirty: isPaymentDirty },
   } = useForm({
     defaultValues: {
       cod: true,
@@ -76,9 +75,9 @@ const AdminSettings = () => {
       // Map backend fields to frontend form fields
       const generalData = {
         store_name: settings.general?.store_name || 'YORI Fashion',
-        store_email: settings.general?.store_email || settings.general?.email || 'admin@yori.vn',
-        store_phone: settings.general?.store_phone || settings.general?.phone || '0988 123 456',
-        store_address: settings.general?.store_address || settings.general?.address || '123 Đường Nguyễn Huệ, Phường Bến Nghé, Quận 1, TP. Hồ Chí Minh',
+        store_email: settings.general?.store_email || 'admin@yori.vn',
+        store_phone: settings.general?.store_phone || '0988 123 456',
+        store_address: settings.general?.store_address || '123 Đường Nguyễn Huệ, Phường Bến Nghé, Quận 1, TP. Hồ Chí Minh',
         logo_url: settings.general?.logo_url || '',
       }
       reset(generalData)
@@ -149,7 +148,6 @@ const AdminSettings = () => {
       await adminService.updateSettingsGeneral(data)
       showSuccess('Đã cập nhật cài đặt chung thành công')
       fetchSettings()
-      setHasChanges(false)
     } catch (error: any) {
       showError(error.response?.data?.message || 'Không thể cập nhật cài đặt')
     } finally {
@@ -174,7 +172,6 @@ const AdminSettings = () => {
       }
       setLogoFile(null)
       await fetchSettings()
-      setHasChanges(false)
     } catch (error: any) {
       showError(error.response?.data?.message || 'Không thể tải logo')
     } finally {
@@ -207,21 +204,6 @@ const AdminSettings = () => {
         store_address: '123 Đường Nguyễn Huệ, Phường Bến Nghé, Quận 1, TP. Hồ Chí Minh',
       })
     }
-    setHasChanges(false)
-  }
-
-  const handleSaveAll = async () => {
-    // Save general settings
-    const generalData = watch()
-    await onSubmitGeneral(generalData)
-
-    // Save payment settings
-    const paymentData = watchPayment()
-    await onSubmitPayment(paymentData)
-
-    // Save shipping settings
-    const shippingData = watchShipping()
-    await onSubmitShipping(shippingData)
   }
 
   const onSubmitPayment = async (data: any) => {
@@ -234,7 +216,6 @@ const AdminSettings = () => {
       })
       showSuccess('Đã cập nhật cài đặt thanh toán thành công')
       fetchSettings()
-      setHasChanges(false)
     } catch (error: any) {
       showError(error.response?.data?.message || 'Không thể cập nhật cài đặt thanh toán')
     } finally {
@@ -257,7 +238,6 @@ const AdminSettings = () => {
       })
       showSuccess('Đã cập nhật cài đặt vận chuyển thành công')
       fetchSettings()
-      setHasChanges(false)
     } catch (error: any) {
       showError(error.response?.data?.message || 'Không thể cập nhật cài đặt vận chuyển')
     } finally {

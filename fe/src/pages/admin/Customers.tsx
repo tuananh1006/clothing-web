@@ -27,6 +27,7 @@ interface AdminCustomer extends User {
   joined_at_display?: string
   status_label?: string
   status_color?: string
+  status?: 'active' | 'inactive' | 'new'
 }
 
 const AdminCustomers = () => {
@@ -190,7 +191,8 @@ const AdminCustomers = () => {
 
   // Helper function to check if customer can be locked (active or new)
   const canLockCustomer = (customer: AdminCustomer) => {
-    return customer.status === 'active' || customer.status === 'new'
+    const status = customer.status || 'active'
+    return status === 'active' || status === 'new'
   }
 
   // Helper function to check if customer can be unlocked (inactive)

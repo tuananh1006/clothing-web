@@ -7,12 +7,10 @@ import StatsCard from '@/components/admin/StatsCard'
 import UpdateOrderStatusModal from '@/components/admin/UpdateOrderStatusModal'
 import Button from '@/components/common/Button'
 import Input from '@/components/common/Input'
-import Select from '@/components/common/Select'
-import Pagination from '@/components/common/Pagination'
 import { useToast } from '@/contexts/ToastContext'
 import * as adminService from '@/services/admin.service'
 import { ROUTES, PAGINATION } from '@/utils/constants'
-import { formatPrice, formatDate, formatDateShort, formatPriceSimple } from '@/utils/formatters'
+import { formatPrice, formatDateShort, formatPriceSimple } from '@/utils/formatters'
 import { OrderStatus, type Order } from '@/types'
 
 const AdminOrders = () => {
@@ -25,6 +23,7 @@ const AdminOrders = () => {
     page: 1,
     limit: PAGINATION.DEFAULT_LIMIT,
     total_page: 1,
+    total: 0,
   })
   const [isLoading, setIsLoading] = useState(true)
   const [isUpdateStatusModalOpen, setIsUpdateStatusModalOpen] = useState(false)
@@ -553,7 +552,7 @@ const AdminOrders = () => {
             isOpen={isUpdateStatusModalOpen}
             onClose={handleCloseUpdateStatusModal}
             order={{
-              _id: selectedOrderForUpdate._id || selectedOrderForUpdate.id || '',
+              _id: selectedOrderForUpdate._id || '',
               order_code: (selectedOrderForUpdate as any).order_code || '',
               status: selectedOrderForUpdate.status,
             }}
