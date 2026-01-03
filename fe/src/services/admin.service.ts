@@ -9,6 +9,7 @@ import type {
   AdminProductFilters,
   AdminOrderFilters,
   AdminCustomerFilters,
+  CustomerDetail,
 } from '@/types/admin.types'
 
 // Re-export types for convenience
@@ -219,17 +220,33 @@ export const getCustomers = async (
   filters: AdminCustomerFilters = {}
 ): Promise<{ customers: User[]; pagination: any }> => {
   try {
-    const params = {
+    // Build params object, only include non-empty values
+    const params: any = {
       page: filters.page || PAGINATION.DEFAULT_PAGE,
       limit: filters.limit || PAGINATION.DEFAULT_LIMIT,
-      ...filters,
     }
+
+    // Only add keyword if it's not empty
+    if (filters.keyword && filters.keyword.trim()) {
+      params.keyword = filters.keyword.trim()
+    }
+
+    // Only add status if it's not empty (including 'active', 'inactive', 'new')
+    if (filters.status && filters.status.trim()) {
+      params.status = filters.status.trim()
+    }
+
+    // Backend will use default sort_by='created_at' and order='desc' if not provided
+
+    console.log('API call params:', params)
+
     const response = await api.get<ApiResponse<{ customers: User[]; pagination: any }>>(
       API_ENDPOINTS.ADMIN.CUSTOMERS,
       { params }
     )
     return response.data.data
   } catch (error: any) {
+    console.error('API error:', error)
     throw error
   }
 }
@@ -238,9 +255,9 @@ export const getCustomers = async (
  * Lấy customer detail (admin)
  * Backend endpoint: GET /admin/customers/:id
  */
-export const getCustomerDetail = async (id: string): Promise<User> => {
+export const getCustomerDetail = async (id: string): Promise<CustomerDetail> => {
   try {
-    const response = await api.get<ApiResponse<User>>(API_ENDPOINTS.ADMIN.CUSTOMER_DETAIL(id))
+    const response = await api.get<ApiResponse<CustomerDetail>>(API_ENDPOINTS.ADMIN.CUSTOMER_DETAIL(id))
     return response.data.data
   } catch (error: any) {
     throw error

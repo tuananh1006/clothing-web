@@ -83,3 +83,26 @@ export interface AdminCustomerFilters {
   order?: 'asc' | 'desc'
 }
 
+/**
+ * Interface cho customer detail response
+ */
+export interface CustomerDetail {
+  id: string
+  info: {
+    name: string
+    email: string
+    phone: string
+  }
+  addresses: Array<{
+    id: number
+    full_address: string
+    is_default: boolean
+  }>
+  recent_orders: Array<{
+    order_code: string
+    created_at: Date | string
+    status: string
+    'cost_summary.total': number
+  }>
+}
+
