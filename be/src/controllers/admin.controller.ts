@@ -29,6 +29,25 @@ export const statsOverviewController = async (req: Request, res: Response) => {
   return res.json({ message: 'Get stats overview successfully', data })
 }
 
+export const categoryRevenueController = async (req: Request, res: Response) => {
+  const { start_date, end_date } = req.query
+  const data = await adminService.getCategoryRevenue({
+    start_date: start_date as string,
+    end_date: end_date as string
+  })
+  return res.json({ message: 'Get category revenue successfully', data })
+}
+
+export const topProductsController = async (req: Request, res: Response) => {
+  const { start_date, end_date, limit } = req.query
+  const data = await adminService.getTopProducts({
+    start_date: start_date as string,
+    end_date: end_date as string,
+    limit: limit ? Number(limit) : undefined
+  })
+  return res.json({ message: 'Get top products successfully', data })
+}
+
 export const adminCreateProductController = async (req: Request, res: Response) => {
   const data = await adminService.createAdminProduct(req.body)
   return res.json({ message: 'Create admin product successfully', data })

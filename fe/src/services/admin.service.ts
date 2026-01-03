@@ -10,6 +10,8 @@ import type {
   AdminOrderFilters,
   AdminCustomerFilters,
   CustomerDetail,
+  CategoryRevenue,
+  TopProduct,
 } from '@/types/admin.types'
 
 // Re-export types for convenience
@@ -21,6 +23,32 @@ export type {
   AdminProductFilters,
   AdminOrderFilters,
   AdminCustomerFilters,
+  CategoryRevenue,
+  TopProduct,
+}
+
+/**
+ * Helper function to clean params - remove empty strings, null, undefined
+ * and trim string values. Preserves numbers (including 0) and booleans (including false)
+ */
+const cleanParams = <T extends Record<string, any>>(params: T): Partial<T> => {
+  const cleaned: Partial<T> = {}
+  for (const key in params) {
+    const value = params[key]
+    // Skip undefined, null, and empty strings
+    if (value === undefined || value === null || value === '') {
+      continue
+    }
+    // Trim strings and skip if empty after trim
+    if (typeof value === 'string') {
+      const trimmed = value.trim()
+      if (trimmed) cleaned[key] = trimmed as T[Extract<keyof T, string>]
+    } else {
+      // Preserve numbers (including 0) and booleans (including false)
+      cleaned[key] = value
+    }
+  }
+  return cleaned
 }
 
 /**
@@ -34,7 +62,7 @@ export const getDashboardStats = async (params?: {
   try {
     const response = await api.get<ApiResponse<DashboardStats>>(
       API_ENDPOINTS.ADMIN.DASHBOARD_STATS,
-      { params }
+      { params: params ? cleanParams(params) : undefined }
     )
     return response.data.data
   } catch (error: any) {
@@ -54,7 +82,7 @@ export const getRevenueChart = async (params?: {
   try {
     const response = await api.get<ApiResponse<RevenueChartData[]>>(
       API_ENDPOINTS.ADMIN.REVENUE_CHART,
-      { params }
+      { params: params ? cleanParams(params) : undefined }
     )
     return response.data.data
   } catch (error: any) {
@@ -73,7 +101,7 @@ export const getStatsOverview = async (params?: {
   try {
     const response = await api.get<ApiResponse<StatsOverview>>(
       API_ENDPOINTS.ADMIN.STATS_OVERVIEW,
-      { params }
+      { params: params ? cleanParams(params) : undefined }
     )
     return response.data.data
   } catch (error: any) {
@@ -92,7 +120,7 @@ export const getProducts = async (
     const params = {
       page: filters.page || PAGINATION.DEFAULT_PAGE,
       limit: filters.limit || PAGINATION.DEFAULT_LIMIT,
-      ...filters,
+      ...cleanParams(filters),
     }
     const response = await api.get<ApiResponse<{ products: Product[]; pagination: any }>>(
       API_ENDPOINTS.ADMIN.PRODUCTS,
@@ -200,7 +228,7 @@ export const getOrders = async (
     const params = {
       page: filters.page || PAGINATION.DEFAULT_PAGE,
       limit: filters.limit || PAGINATION.DEFAULT_LIMIT,
-      ...filters,
+      ...cleanParams(filters),
     }
     const response = await api.get<ApiResponse<{ orders: Order[]; pagination: any }>>(
       API_ENDPOINTS.ADMIN.ORDERS,
@@ -220,33 +248,17 @@ export const getCustomers = async (
   filters: AdminCustomerFilters = {}
 ): Promise<{ customers: User[]; pagination: any }> => {
   try {
-    // Build params object, only include non-empty values
-    const params: any = {
+    const params = {
       page: filters.page || PAGINATION.DEFAULT_PAGE,
       limit: filters.limit || PAGINATION.DEFAULT_LIMIT,
+      ...cleanParams(filters),
     }
-
-    // Only add keyword if it's not empty
-    if (filters.keyword && filters.keyword.trim()) {
-      params.keyword = filters.keyword.trim()
-    }
-
-    // Only add status if it's not empty (including 'active', 'inactive', 'new')
-    if (filters.status && filters.status.trim()) {
-      params.status = filters.status.trim()
-    }
-
-    // Backend will use default sort_by='created_at' and order='desc' if not provided
-
-    console.log('API call params:', params)
-
     const response = await api.get<ApiResponse<{ customers: User[]; pagination: any }>>(
       API_ENDPOINTS.ADMIN.CUSTOMERS,
       { params }
     )
     return response.data.data
   } catch (error: any) {
-    console.error('API error:', error)
     throw error
   }
 }
@@ -346,6 +358,45 @@ export const updatePaymentSettings = async (data: any): Promise<void> => {
 export const updateShippingSettings = async (data: any): Promise<void> => {
   try {
     await api.put<ApiResponse<any>>(API_ENDPOINTS.ADMIN.SETTINGS_SHIPPING, data)
+  } catch (error: any) {
+    throw error
+  }
+}
+
+/**
+ * Lấy category revenue (cho pie chart)
+ * Backend endpoint: GET /admin/dashboard/category-revenue
+ */
+export const getCategoryRevenue = async (params?: {
+  start_date?: string
+  end_date?: string
+}): Promise<CategoryRevenue[]> => {
+  try {
+    const response = await api.get<ApiResponse<CategoryRevenue[]>>(
+      API_ENDPOINTS.ADMIN.CATEGORY_REVENUE,
+      { params: params ? cleanParams(params) : undefined }
+    )
+    return response.data.data
+  } catch (error: any) {
+    throw error
+  }
+}
+
+/**
+ * Lấy top products (cho top products list)
+ * Backend endpoint: GET /admin/dashboard/top-products
+ */
+export const getTopProducts = async (params?: {
+  start_date?: string
+  end_date?: string
+  limit?: number
+}): Promise<TopProduct[]> => {
+  try {
+    const response = await api.get<ApiResponse<TopProduct[]>>(
+      API_ENDPOINTS.ADMIN.TOP_PRODUCTS,
+      { params: params ? cleanParams(params) : undefined }
+    )
+    return response.data.data
   } catch (error: any) {
     throw error
   }

@@ -37,11 +37,25 @@ const AdminOrders = () => {
   const fetchOrders = useCallback(async () => {
     try {
       setIsLoading(true)
-      const response = await adminService.getOrders({
-        ...filters,
-        date_from: filters.date_from || undefined,
-        date_to: filters.date_to || undefined,
-      })
+      // Build filters object, only include non-empty values
+      const apiFilters: any = {
+        page: filters.page,
+        limit: filters.limit,
+      }
+      if (filters.keyword && filters.keyword.trim()) {
+        apiFilters.keyword = filters.keyword.trim()
+      }
+      if (filters.status && filters.status.trim()) {
+        apiFilters.status = filters.status.trim()
+      }
+      if (filters.date_from && filters.date_from.trim()) {
+        apiFilters.date_from = filters.date_from.trim()
+      }
+      if (filters.date_to && filters.date_to.trim()) {
+        apiFilters.date_to = filters.date_to.trim()
+      }
+
+      const response = await adminService.getOrders(apiFilters)
       setOrders(response.orders)
       setPagination(response.pagination)
     } catch (error: any) {

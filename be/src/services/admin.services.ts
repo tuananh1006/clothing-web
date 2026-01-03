@@ -417,34 +417,95 @@ class AdminService {
     const now = new Date()
     const todayStart = startOfDay(now)
 
-    // Count totals (all time)
-    const [total_users, total_orders, total_products] = await Promise.all([
-      databaseServices.users.countDocuments({}),
-      databaseServices.orders.countDocuments({}),
-      databaseServices.products.countDocuments({ $or: [{ deleted_at: { $exists: false } }, { deleted_at: null }] })
-    ])
+    // Determine current period
+    let currentStart: Date
+    let currentEnd: Date = params?.end_date ? new Date(params.end_date) : now
+    let previousStart: Date
+    let previousEnd: Date
 
-    // revenue in optional date range (default: total non-cancelled)
-    const match: any = { status: { $ne: OrderStatus.Cancelled } }
-    if (params?.start_date || params?.end_date) {
-      match.created_at = {}
-      if (params?.start_date) match.created_at.$gte = new Date(params.start_date)
-      if (params?.end_date) match.created_at.$lte = new Date(params.end_date)
+    if (params?.start_date && params?.end_date) {
+      // Custom date range
+      currentStart = new Date(params.start_date)
+      currentEnd = new Date(params.end_date)
+      const periodDays = Math.ceil((currentEnd.getTime() - currentStart.getTime()) / (1000 * 60 * 60 * 24))
+      previousEnd = addDays(currentStart, -1)
+      previousStart = addDays(previousEnd, -periodDays)
+    } else if (params?.start_date) {
+      // Start date only - use until now
+      currentStart = new Date(params.start_date)
+      const periodDays = Math.ceil((currentEnd.getTime() - currentStart.getTime()) / (1000 * 60 * 60 * 24))
+      previousEnd = addDays(currentStart, -1)
+      previousStart = addDays(previousEnd, -periodDays)
+    } else {
+      // Default: current month
+      currentStart = new Date(now.getFullYear(), now.getMonth(), 1)
+      previousEnd = addDays(currentStart, -1)
+      previousStart = new Date(previousEnd.getFullYear(), previousEnd.getMonth(), 1)
     }
 
-    const revenueAgg = await databaseServices.orders
-      .aggregate([{ $match: match }, { $group: { _id: null, revenue: { $sum: '$cost_summary.total' } } }])
-      .toArray()
+    // Current period stats
+    const currentMatch: any = {
+      status: { $ne: OrderStatus.Cancelled },
+      created_at: { $gte: currentStart, $lte: currentEnd }
+    }
 
-    const total_revenue = revenueAgg[0]?.revenue || 0
+    const [
+      currentRevenue,
+      currentOrders,
+      currentCustomers,
+      currentProducts
+    ] = await Promise.all([
+      databaseServices.orders
+        .aggregate([{ $match: currentMatch }, { $group: { _id: null, revenue: { $sum: '$cost_summary.total' } } }])
+        .toArray()
+        .then((r) => r[0]?.revenue || 0),
+      databaseServices.orders.countDocuments(currentMatch),
+      databaseServices.users.countDocuments({ createdAt: { $gte: currentStart, $lte: currentEnd } }),
+      databaseServices.products.countDocuments({
+        $or: [{ deleted_at: { $exists: false } }, { deleted_at: null }],
+        createdAt: { $gte: currentStart, $lte: currentEnd }
+      })
+    ])
+
+    // Previous period stats (for comparison)
+    const previousMatch: any = {
+      status: { $ne: OrderStatus.Cancelled },
+      created_at: { $gte: previousStart, $lte: previousEnd }
+    }
+
+    const [
+      previousRevenue,
+      previousOrders,
+      previousCustomers,
+      previousProducts
+    ] = await Promise.all([
+      databaseServices.orders
+        .aggregate([{ $match: previousMatch }, { $group: { _id: null, revenue: { $sum: '$cost_summary.total' } } }])
+        .toArray()
+        .then((r) => r[0]?.revenue || 0),
+      databaseServices.orders.countDocuments(previousMatch),
+      databaseServices.users.countDocuments({ createdAt: { $gte: previousStart, $lte: previousEnd } }),
+      databaseServices.products.countDocuments({
+        $or: [{ deleted_at: { $exists: false } }, { deleted_at: null }],
+        createdAt: { $gte: previousStart, $lte: previousEnd }
+      })
+    ])
+
+    // Calculate percentage change
+    const calculateChange = (current: number, previous: number): number => {
+      if (previous === 0) return current > 0 ? 100 : 0
+      return ((current - previous) / previous) * 100
+    }
 
     return {
-      total_revenue,
-      total_orders,
-      total_customers: total_users,
-      total_products
-      // Note: revenue_change, orders_change, customers_change, products_change are optional
-      // and can be calculated on frontend if needed
+      total_revenue: currentRevenue,
+      total_orders: currentOrders,
+      total_customers: currentCustomers,
+      total_products: currentProducts,
+      revenue_change: calculateChange(currentRevenue, previousRevenue),
+      orders_change: calculateChange(currentOrders, previousOrders),
+      customers_change: calculateChange(currentCustomers, previousCustomers),
+      products_change: calculateChange(currentProducts, previousProducts)
     }
   }
 
@@ -518,6 +579,116 @@ class AdminService {
     ])
 
     return { today, this_week, this_month, this_year }
+  }
+
+  /**
+   * Lấy revenue theo category (cho pie chart)
+   * Backend endpoint: GET /admin/dashboard/category-revenue
+   */
+  async getCategoryRevenue(params?: { start_date?: string; end_date?: string }) {
+    const match: any = { status: { $ne: OrderStatus.Cancelled } }
+    if (params?.start_date || params?.end_date) {
+      match.created_at = {}
+      if (params?.start_date) match.created_at.$gte = new Date(params.start_date)
+      if (params?.end_date) match.created_at.$lte = new Date(params.end_date)
+    }
+
+    const pipeline = [
+      { $match: match },
+      { $unwind: '$items' },
+      {
+        $lookup: {
+          from: process.env.DB_PRODUCTS_COLLECTION as string,
+          localField: 'items.product_id',
+          foreignField: '_id',
+          as: 'product'
+        }
+      },
+      { $unwind: { path: '$product', preserveNullAndEmptyArrays: false } }, // Remove products without category
+      {
+        $lookup: {
+          from: process.env.DB_CATEGORIES_COLLECTION as string,
+          localField: 'product.category',
+          foreignField: '_id',
+          as: 'category'
+        }
+      },
+      { $unwind: { path: '$category', preserveNullAndEmptyArrays: false } }, // Remove items without category
+      {
+        $group: {
+          _id: '$category._id',
+          name: { $first: '$category.name' },
+          revenue: { $sum: '$items.total' }
+        }
+      },
+      { $sort: { revenue: -1 } }
+    ]
+
+    const results = await databaseServices.orders.aggregate(pipeline).toArray()
+
+    // Calculate total revenue for percentage
+    const totalRevenue = results.reduce((sum, item) => sum + (item.revenue || 0), 0)
+
+    // Map to colors (có thể config sau)
+    const colors = ['#19b3e6', '#8b5cf6', '#f97316', '#10b981', '#ef4444', '#06b6d4', '#84cc16', '#f59e0b']
+
+    return results.map((item, index) => ({
+      id: item._id?.toString() || '',
+      name: item.name || 'Khác',
+      value: item.revenue || 0,
+      percentage: totalRevenue > 0 ? ((item.revenue || 0) / totalRevenue) * 100 : 0,
+      color: colors[index % colors.length]
+    }))
+  }
+
+  /**
+   * Lấy top products bán chạy (cho top products list)
+   * Backend endpoint: GET /admin/dashboard/top-products
+   */
+  async getTopProducts(params?: { start_date?: string; end_date?: string; limit?: number }) {
+    const match: any = { status: { $ne: OrderStatus.Cancelled } }
+    if (params?.start_date || params?.end_date) {
+      match.created_at = {}
+      if (params?.start_date) match.created_at.$gte = new Date(params.start_date)
+      if (params?.end_date) match.created_at.$lte = new Date(params.end_date)
+    }
+
+    const limit = params?.limit || 10
+
+    const pipeline = [
+      { $match: match },
+      { $unwind: '$items' },
+      {
+        $lookup: {
+          from: process.env.DB_PRODUCTS_COLLECTION as string,
+          localField: 'items.product_id',
+          foreignField: '_id',
+          as: 'product'
+        }
+      },
+      { $unwind: { path: '$product', preserveNullAndEmptyArrays: true } },
+      {
+        $group: {
+          _id: '$items.product_id',
+          name: { $first: '$items.name' },
+          image: { $first: '$items.thumbnail_url' },
+          revenue: { $sum: '$items.total' },
+          sold_count: { $sum: '$items.quantity' }
+        }
+      },
+      { $sort: { revenue: -1 } },
+      { $limit: limit }
+    ]
+
+    const results = await databaseServices.orders.aggregate(pipeline).toArray()
+
+    return results.map((item) => ({
+      id: item._id?.toString() || '',
+      name: item.name || 'Sản phẩm không xác định',
+      image: item.image || undefined,
+      revenue: item.revenue || 0,
+      sold_count: item.sold_count || 0
+    }))
   }
 
   async getAdminCustomers(params: {

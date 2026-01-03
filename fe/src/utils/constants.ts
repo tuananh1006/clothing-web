@@ -62,6 +62,8 @@ export const API_ENDPOINTS = {
   ADMIN: {
     DASHBOARD_STATS: '/admin/dashboard/stats',
     REVENUE_CHART: '/admin/dashboard/revenue-chart',
+    CATEGORY_REVENUE: '/admin/dashboard/category-revenue',
+    TOP_PRODUCTS: '/admin/dashboard/top-products',
     STATS_OVERVIEW: '/admin/stats/overview',
     PRODUCTS: '/admin/products',
     PRODUCTS_METADATA: '/admin/products/metadata',

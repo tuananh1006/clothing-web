@@ -10,6 +10,8 @@ import {
   dashboardStatsController,
   revenueChartController,
   statsOverviewController,
+  categoryRevenueController,
+  topProductsController,
   adminCreateProductController,
   adminGetProductsController,
   adminGetProductsMetadataController,
@@ -138,6 +140,34 @@ export default adminRouter
  * Query: { start_date?, end_date? }
  */
 adminRouter.get('/stats/overview', accessTokenValidator, requireAdmin, wrapRequestHandler(statsOverviewController))
+
+/**
+ * Description: Admin Category Revenue (for pie chart)
+ * Path: /dashboard/category-revenue
+ * Method: GET
+ * Header: { Authorization: Bearer <access_token> }
+ * Query: { start_date?, end_date? }
+ */
+adminRouter.get(
+  '/dashboard/category-revenue',
+  accessTokenValidator,
+  requireAdmin,
+  wrapRequestHandler(categoryRevenueController)
+)
+
+/**
+ * Description: Admin Top Products (for top products list)
+ * Path: /dashboard/top-products
+ * Method: GET
+ * Header: { Authorization: Bearer <access_token> }
+ * Query: { start_date?, end_date?, limit? }
+ */
+adminRouter.get(
+  '/dashboard/top-products',
+  accessTokenValidator,
+  requireAdmin,
+  wrapRequestHandler(topProductsController)
+)
 
 /**
  * Description: Admin - Order stats

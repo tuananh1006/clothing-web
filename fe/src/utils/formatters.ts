@@ -87,3 +87,21 @@ export const truncateText = (text: string, maxLength: number): string => {
   return text.slice(0, maxLength) + '...'
 }
 
+/**
+ * Format số lớn thành dạng rút gọn (ví dụ: 345200000 -> "345.2M")
+ * @param num - Số cần format
+ * @returns Chuỗi đã format (ví dụ: "345.2M", "1.5B", "2.3K")
+ */
+export const formatCompactNumber = (num: number): string => {
+  if (num >= 1000000000) {
+    return (num / 1000000000).toFixed(1).replace(/\.0$/, '') + 'B'
+  }
+  if (num >= 1000000) {
+    return (num / 1000000).toFixed(1).replace(/\.0$/, '') + 'M'
+  }
+  if (num >= 1000) {
+    return (num / 1000).toFixed(1).replace(/\.0$/, '') + 'K'
+  }
+  return num.toString()
+}
+

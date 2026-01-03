@@ -106,3 +106,25 @@ export interface CustomerDetail {
   }>
 }
 
+/**
+ * Interface cho category revenue (cho pie chart)
+ */
+export interface CategoryRevenue {
+  id: string
+  name: string
+  value: number
+  percentage: number
+  color: string
+}
+
+/**
+ * Interface cho top product
+ */
+export interface TopProduct {
+  id: string
+  name: string
+  image?: string
+  revenue: number
+  sold_count: number
+}
+

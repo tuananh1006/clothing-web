@@ -307,27 +307,27 @@ const AdminSettings = () => {
         {/* Tabs Navigation */}
         <div className="bg-white dark:bg-[#1a2c32] rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm mb-6">
           <div className="flex border-b border-gray-100 dark:border-gray-800 overflow-x-auto">
-            {tabs.map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id as any)}
+                {tabs.map((tab) => (
+                  <button
+                    key={tab.id}
+                    onClick={() => setActiveTab(tab.id as any)}
                 className={`flex items-center gap-2 px-6 py-4 font-medium transition-colors whitespace-nowrap ${
-                  activeTab === tab.id
-                    ? 'text-primary border-b-2 border-primary'
-                    : 'text-text-sub dark:text-gray-400 hover:text-text-main dark:hover:text-white'
-                }`}
-              >
-                <span className="material-symbols-outlined text-lg">{tab.icon}</span>
-                {tab.label}
-              </button>
-            ))}
+                      activeTab === tab.id
+                        ? 'text-primary border-b-2 border-primary'
+                        : 'text-text-sub dark:text-gray-400 hover:text-text-main dark:hover:text-white'
+                    }`}
+                  >
+                    <span className="material-symbols-outlined text-lg">{tab.icon}</span>
+                    {tab.label}
+                  </button>
+                ))}
           </div>
-        </div>
+              </div>
 
         {/* Settings Sections */}
         <div className="space-y-6">
-          {/* General Settings */}
-          {activeTab === 'general' && (
+                {/* General Settings */}
+                {activeTab === 'general' && (
             <div className="bg-white dark:bg-[#1a2c32] rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm overflow-hidden">
               <div className="px-6 py-4 border-b border-gray-100 dark:border-gray-800 flex items-center gap-3">
                 <span className="p-2 rounded-lg bg-blue-50 dark:bg-blue-900/20 text-primary">
@@ -354,13 +354,13 @@ const AdminSettings = () => {
                     {/* Form Fields */}
                     <div className="w-full md:w-2/3 space-y-4">
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <Input
-                          label="Tên cửa hàng"
-                          {...register('store_name', { required: 'Tên cửa hàng là bắt buộc' })}
-                          error={errors.store_name?.message}
+                    <Input
+                      label="Tên cửa hàng"
+                      {...register('store_name', { required: 'Tên cửa hàng là bắt buộc' })}
+                      error={errors.store_name?.message}
                           className="bg-gray-50 dark:bg-gray-800"
-                        />
-                        <Input
+                    />
+                    <Input
                           label="Số điện thoại"
                           {...register('store_phone')}
                           error={errors.store_phone?.message}
@@ -369,23 +369,23 @@ const AdminSettings = () => {
                       </div>
                       <Input
                         label="Email liên hệ"
-                        type="email"
-                        {...register('store_email', {
-                          required: 'Email là bắt buộc',
-                          pattern: {
-                            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                            message: 'Email không hợp lệ',
-                          },
-                        })}
-                        error={errors.store_email?.message}
+                      type="email"
+                      {...register('store_email', {
+                        required: 'Email là bắt buộc',
+                        pattern: {
+                          value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                          message: 'Email không hợp lệ',
+                        },
+                      })}
+                      error={errors.store_email?.message}
                         className="bg-gray-50 dark:bg-gray-800"
-                      />
+                    />
                       <div className="flex flex-col gap-2">
                         <label className="block text-sm font-medium text-text-main dark:text-white mb-1">
                           Địa chỉ cửa hàng
                         </label>
                         <textarea
-                          {...register('store_address')}
+                      {...register('store_address')}
                           rows={3}
                           className="w-full rounded-lg border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm focus:border-primary focus:ring-primary dark:text-white px-4 py-3 resize-none"
                         />
@@ -396,14 +396,14 @@ const AdminSettings = () => {
                         )}
                       </div>
                     </div>
+                    </div>
+                  </form>
+                    </div>
                   </div>
-                </form>
-              </div>
-            </div>
-          )}
+                )}
 
-          {/* Payment Settings */}
-          {activeTab === 'payment' && (
+                {/* Payment Settings */}
+                {activeTab === 'payment' && (
             <div className="bg-white dark:bg-[#1a2c32] rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm overflow-hidden">
               <div className="px-6 py-4 border-b border-gray-100 dark:border-gray-800 flex items-center gap-3">
                 <span className="p-2 rounded-lg bg-green-50 dark:bg-green-900/20 text-green-600">
@@ -501,14 +501,14 @@ const AdminSettings = () => {
                         onChange={(e) => setPaymentValue('momo', e.target.checked)}
                       />
                     </div>
-                  </div>
-                </form>
+                    </div>
+                  </form>
               </div>
             </div>
-          )}
+                )}
 
-          {/* Shipping Settings */}
-          {activeTab === 'shipping' && (
+                {/* Shipping Settings */}
+                {activeTab === 'shipping' && (
             <div className="bg-white dark:bg-[#1a2c32] rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm overflow-hidden">
               <div className="px-6 py-4 border-b border-gray-100 dark:border-gray-800 flex items-center gap-3">
                 <span className="p-2 rounded-lg bg-orange-50 dark:bg-orange-900/20 text-orange-600">
@@ -635,13 +635,13 @@ const AdminSettings = () => {
                         <span className="material-symbols-outlined text-gray-400">open_in_new</span>
                       </label>
                     </div>
-                  </div>
-                </form>
+                    </div>
+                  </form>
               </div>
             </div>
-          )}
+                )}
+          </div>
         </div>
-      </div>
     </AdminLayout>
   )
 }
