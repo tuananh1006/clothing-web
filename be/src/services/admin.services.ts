@@ -25,12 +25,17 @@ class AdminService {
     const page = params.page && params.page > 0 ? params.page : 1
     const limit = params.limit && params.limit > 0 ? params.limit : 10
 
-    const match: any = { $or: [{ deleted_at: { $exists: false } }, { deleted_at: null }] }
+    const match: any = {}
+
+    // Build $and array for complex conditions
+    const andConditions: any[] = [
+      { $or: [{ deleted_at: { $exists: false } }, { deleted_at: null }] }
+    ]
 
     // keyword: search by name or slug (fallback for SKU)
     if (params.keyword) {
       const regex = new RegExp(params.keyword, 'i')
-      match.$or = [{ name: regex }, { slug: regex }]
+      andConditions.push({ $or: [{ name: regex }, { slug: regex }] })
     }
 
     // category: accept slug or ObjectId string
@@ -43,19 +48,32 @@ class AdminService {
       }
 
       if (catId) {
-        match.category = catId
+        andConditions.push({ category: catId })
       } else {
         const cat = await databaseServices.categories.findOne({ slug: params.category_id })
-        if (cat?._id) match.category = cat._id
+        if (cat?._id) andConditions.push({ category: cat._id })
       }
     }
+
     // status mapping
     if (params.status === 'out_of_stock') {
-      match.quantity = 0
+      andConditions.push({ $or: [{ status: 'out_of_stock' }, { quantity: 0 }] })
     } else if (params.status === 'low_stock') {
-      match.quantity = { $gt: 0, $lt: 10 }
+      andConditions.push({ $or: [{ status: 'low_stock' }, { quantity: { $gt: 0, $lt: 10 } }] })
     } else if (params.status === 'active') {
-      match.quantity = { $gt: 0 }
+      // Active: quantity > 0 and status is not 'inactive' or 'draft'
+      andConditions.push({ quantity: { $gt: 0 } })
+      andConditions.push({ status: { $nin: ['inactive', 'draft'] } })
+    } else if (params.status === 'draft') {
+      // Draft: status must be 'draft'
+      andConditions.push({ status: 'draft' })
+    }
+
+    // Apply $and if we have multiple conditions, otherwise use the single condition
+    if (andConditions.length > 1) {
+      match.$and = andConditions
+    } else if (andConditions.length === 1) {
+      Object.assign(match, andConditions[0])
     }
 
     // sorting
@@ -77,39 +95,53 @@ class AdminService {
 
     const categories = categoryIds.length
       ? await databaseServices.categories
-          .find({ _id: { $in: categoryIds } })
-          .project({ name: 1 })
-          .toArray()
+        .find({ _id: { $in: categoryIds } })
+        .project({ name: 1 })
+        .toArray()
       : []
 
     const catMap = new Map(categories.map((c) => [c._id?.toString(), c.name]))
-
     const toVnCurrency = (n: number) => `${new Intl.NumberFormat('vi-VN').format(n)}đ`
-    const mapStatus = (qty: number) => {
-      if (!qty || qty === 0)
+
+    const mapStatus = (p: any) => {
+      const qty = p.quantity ?? 0
+      // Respect DB status first
+      if (p.status === 'inactive')
+        return { stock_status: 'inactive', status: 'inactive', status_label: 'Ngừng bán', status_color: 'red' }
+      if (p.status === 'draft')
+        return { stock_status: 'draft', status: 'draft', status_label: 'Bản nháp', status_color: 'gray' }
+
+      // Then check stock
+      if (qty === 0 || p.status === 'out_of_stock')
         return { stock_status: 'out_of_stock', status: 'out_of_stock', status_label: 'Hết hàng', status_color: 'red' }
-      if (qty > 0 && qty < 10)
+      if (qty < 10 || p.status === 'low_stock')
         return { stock_status: 'low_stock', status: 'active', status_label: 'Sắp hết', status_color: 'yellow' }
+
       return { stock_status: 'in_stock', status: 'active', status_label: 'Đang bán', status_color: 'green' }
     }
 
     const mapped = items.map((p) => {
       const qty = p.quantity ?? 0
-      const m = mapStatus(qty)
+      const m = mapStatus(p)
       return {
         _id: p._id?.toString() || '',
         id: p._id?.toString() || '',
         name: p.name,
         sku: p.slug,
+        image: p.image,
         thumbnail_url: p.image,
+        category: p.category?.toString() || '',
         category_name: catMap.get(p.category?.toString()) || '',
         price: p.price,
         price_display: toVnCurrency(p.price || 0),
         stock_quantity: qty,
         stock_status: m.stock_status,
-        status: m.status,
+        status: p.status || m.status,
         status_label: m.status_label,
-        status_color: m.status_color
+        status_color: m.status_color,
+        description: p.description || '',
+        colors: p.colors || [],
+        sizes: p.sizes || []
       }
     })
 
@@ -136,6 +168,61 @@ class AdminService {
       databaseServices.orders.countDocuments({ status: OrderStatus.Cancelled })
     ])
     return { pending, processing, shipping, completed, cancelled, total }
+  }
+
+  /**
+   * Lấy phân bổ đơn hàng theo trạng thái (cho order status distribution)
+   * Backend endpoint: GET /admin/dashboard/order-status-distribution
+   */
+  async getOrderStatusDistribution(params?: { start_date?: string; end_date?: string }) {
+    const match: any = {}
+    if (params?.start_date || params?.end_date) {
+      match.created_at = {}
+      if (params?.start_date) match.created_at.$gte = new Date(params.start_date)
+      if (params?.end_date) match.created_at.$lte = new Date(params.end_date)
+    }
+
+    const pipeline = [
+      { $match: match },
+      {
+        $group: {
+          _id: '$status',
+          count: { $sum: 1 },
+          revenue: { $sum: '$cost_summary.total' }
+        }
+      }
+    ]
+
+    const results = await databaseServices.orders.aggregate(pipeline).toArray()
+
+    const statusMap: Record<string, { label: string; color: string; icon: string }> = {
+      pending: { label: 'Chờ xử lý', color: '#f59e0b', icon: 'schedule' },
+      processing: { label: 'Đang xử lý', color: '#3b82f6', icon: 'settings' },
+      shipping: { label: 'Đang giao', color: '#8b5cf6', icon: 'local_shipping' },
+      completed: { label: 'Hoàn thành', color: '#10b981', icon: 'check_circle' },
+      cancelled: { label: 'Đã hủy', color: '#ef4444', icon: 'cancel' }
+    }
+
+    return results
+      .map((item) => {
+        const status = item._id || 'pending'
+        const config = statusMap[status] || statusMap.pending
+
+        return {
+          status,
+          label: config.label,
+          count: item.count || 0,
+          revenue: item.revenue || 0,
+          color: config.color,
+          icon: config.icon
+        }
+      })
+      .filter((item) => item.count > 0) // Chỉ hiển thị status có đơn hàng
+      .sort((a, b) => {
+        // Sort theo thứ tự: pending, processing, shipping, completed, cancelled
+        const order = ['pending', 'processing', 'shipping', 'completed', 'cancelled']
+        return order.indexOf(a.status) - order.indexOf(b.status)
+      })
   }
 
   async getAdminOrders(params: {
@@ -263,6 +350,102 @@ class AdminService {
       }
     }
   }
+
+  async updateAdminOrderStatus(id: string, status: OrderStatus) {
+    const _id = new ObjectId(id)
+    const order = await databaseServices.orders.findOne({ _id })
+
+    if (!order) {
+      throw new Error('Order not found')
+    }
+
+    // Validate status transition: không cho chuyển từ cancelled sang các status khác
+    if (order.status === OrderStatus.Cancelled && status !== OrderStatus.Cancelled) {
+      throw new Error('Cannot change status from cancelled to other status')
+    }
+
+    await databaseServices.orders.updateOne(
+      { _id },
+      {
+        $set: {
+          status,
+          updated_at: new Date()
+        }
+      }
+    )
+
+    const statusLabels: Record<OrderStatus, string> = {
+      [OrderStatus.Pending]: 'Chờ xử lý',
+      [OrderStatus.Processing]: 'Đang xử lý',
+      [OrderStatus.Shipping]: 'Đang giao',
+      [OrderStatus.Completed]: 'Hoàn thành',
+      [OrderStatus.Cancelled]: 'Đã hủy'
+    }
+
+    return {
+      message: `Đã cập nhật trạng thái đơn hàng thành ${statusLabels[status]}`,
+      order_id: id,
+      new_status: status
+    }
+  }
+
+  async createAdminProduct(payload: {
+    name: string
+    price: number
+    quantity: number
+    category_id: string
+    image: string
+    status?: string
+    description?: string
+    is_featured?: boolean
+    colors?: string[]
+    sizes?: string[]
+  }) {
+    // Basic slug generation (can be improved)
+    const slug = payload.name
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[đĐ]/g, 'd')
+      .replace(/([^0-9a-z-\s])/g, '')
+      .replace(/(\s+)/g, '-')
+      .replace(/-+/g, '-')
+      .replace(/^-+|-+$/g, '')
+
+    const doc: any = {
+      name: payload.name,
+      slug: `${slug}-${Date.now()}`,
+      price: payload.price,
+      quantity: payload.quantity,
+      image: payload.image,
+      description: payload.description || '',
+      is_featured: payload.is_featured || false,
+      colors: payload.colors || [],
+      sizes: payload.sizes || [],
+      status: payload.status || 'active',
+      created_at: new Date(),
+      updated_at: new Date()
+    }
+
+    if (payload.category_id) {
+      let catId: ObjectId | undefined
+      try {
+        catId = new ObjectId(payload.category_id)
+      } catch (_) {
+        // ignore invalid ObjectId
+      }
+      if (catId) {
+        doc.category = catId
+      } else {
+        const cat = await databaseServices.categories.findOne({ slug: payload.category_id })
+        if (cat?._id) doc.category = cat._id
+      }
+    }
+
+    const result = await databaseServices.products.insertOne(doc)
+    return this.getAdminProductDetail(result.insertedId.toString())
+  }
+
   async getAdminProductDetail(id: string) {
     const _id = new ObjectId(id)
     const p = await databaseServices.products.findOne({ _id })
@@ -284,8 +467,11 @@ class AdminService {
       quantity?: number
       category_id?: string
       image?: string
+      status?: string
       description?: string
       is_featured?: boolean
+      colors?: string[]
+      sizes?: string[]
     }
   ) {
     const _id = new ObjectId(id)
@@ -294,8 +480,11 @@ class AdminService {
     if (payload.price !== undefined) set.price = payload.price
     if (payload.quantity !== undefined) set.quantity = payload.quantity
     if (payload.image !== undefined) set.image = payload.image
+    if (payload.status !== undefined) set.status = payload.status
     if (payload.description !== undefined) set.description = payload.description
     if (payload.is_featured !== undefined) set.is_featured = payload.is_featured
+    if (payload.colors !== undefined) set.colors = payload.colors
+    if (payload.sizes !== undefined) set.sizes = payload.sizes
     if (payload.category_id) {
       let catId: ObjectId | undefined
       try {
@@ -340,34 +529,110 @@ class AdminService {
     const now = new Date()
     const todayStart = startOfDay(now)
 
-    // Count totals (all time)
-    const [total_users, total_orders, total_products] = await Promise.all([
-      databaseServices.users.countDocuments({}),
-      databaseServices.orders.countDocuments({}),
-      databaseServices.products.countDocuments({ $or: [{ deleted_at: { $exists: false } }, { deleted_at: null }] })
-    ])
+    // Determine current period
+    let currentStart: Date
+    let currentEnd: Date = params?.end_date ? new Date(params.end_date) : now
+    let previousStart: Date
+    let previousEnd: Date
 
-    // revenue in optional date range (default: total non-cancelled)
-    const match: any = { status: { $ne: OrderStatus.Cancelled } }
-    if (params?.start_date || params?.end_date) {
-      match.created_at = {}
-      if (params?.start_date) match.created_at.$gte = new Date(params.start_date)
-      if (params?.end_date) match.created_at.$lte = new Date(params.end_date)
+    if (params?.start_date && params?.end_date) {
+      // Custom date range
+      currentStart = new Date(params.start_date)
+      currentEnd = new Date(params.end_date)
+      const periodDays = Math.ceil((currentEnd.getTime() - currentStart.getTime()) / (1000 * 60 * 60 * 24))
+      previousEnd = addDays(currentStart, -1)
+      previousStart = addDays(previousEnd, -periodDays)
+    } else if (params?.start_date) {
+      // Start date only - use until now
+      currentStart = new Date(params.start_date)
+      const periodDays = Math.ceil((currentEnd.getTime() - currentStart.getTime()) / (1000 * 60 * 60 * 24))
+      previousEnd = addDays(currentStart, -1)
+      previousStart = addDays(previousEnd, -periodDays)
+    } else {
+      // Default: current month
+      currentStart = new Date(now.getFullYear(), now.getMonth(), 1)
+      previousEnd = addDays(currentStart, -1)
+      previousStart = new Date(previousEnd.getFullYear(), previousEnd.getMonth(), 1)
     }
 
-    const revenueAgg = await databaseServices.orders
-      .aggregate([{ $match: match }, { $group: { _id: null, revenue: { $sum: '$cost_summary.total' } } }])
-      .toArray()
+    // Current period stats
+    const currentMatch: any = {
+      status: { $ne: OrderStatus.Cancelled },
+      created_at: { $gte: currentStart, $lte: currentEnd }
+    }
 
-    const total_revenue = revenueAgg[0]?.revenue || 0
+    const [
+      currentRevenue,
+      currentOrders,
+      currentCustomers,
+      currentProducts
+    ] = await Promise.all([
+      databaseServices.orders
+        .aggregate([{ $match: currentMatch }, { $group: { _id: null, revenue: { $sum: '$cost_summary.total' } } }])
+        .toArray()
+        .then((r) => r[0]?.revenue || 0),
+      databaseServices.orders.countDocuments(currentMatch),
+      databaseServices.users.countDocuments({ createdAt: { $gte: currentStart, $lte: currentEnd } }),
+      databaseServices.products.countDocuments({
+        $or: [{ deleted_at: { $exists: false } }, { deleted_at: null }],
+        createdAt: { $gte: currentStart, $lte: currentEnd }
+      })
+    ])
+
+    // Previous period stats (for comparison)
+    const previousMatch: any = {
+      status: { $ne: OrderStatus.Cancelled },
+      created_at: { $gte: previousStart, $lte: previousEnd }
+    }
+
+    const [
+      previousRevenue,
+      previousOrders,
+      previousCustomers,
+      previousProducts
+    ] = await Promise.all([
+      databaseServices.orders
+        .aggregate([{ $match: previousMatch }, { $group: { _id: null, revenue: { $sum: '$cost_summary.total' } } }])
+        .toArray()
+        .then((r) => r[0]?.revenue || 0),
+      databaseServices.orders.countDocuments(previousMatch),
+      databaseServices.users.countDocuments({ createdAt: { $gte: previousStart, $lte: previousEnd } }),
+      databaseServices.products.countDocuments({
+        $or: [{ deleted_at: { $exists: false } }, { deleted_at: null }],
+        createdAt: { $gte: previousStart, $lte: previousEnd }
+      })
+    ])
+
+    // Calculate percentage change
+    const calculateChange = (current: number, previous: number): number => {
+      if (previous === 0) return current > 0 ? 100 : 0
+      return ((current - previous) / previous) * 100
+    }
+
+    // Calculate average order value
+    const averageOrderValue = currentOrders > 0 ? currentRevenue / currentOrders : 0
+    const previousAverageOrderValue = previousOrders > 0 ? previousRevenue / previousOrders : 0
+    const averageOrderValueChange = calculateChange(averageOrderValue, previousAverageOrderValue)
+
+    // Calculate conversion rate (simplified: orders / customers * 100)
+    // Note: This is a simplified calculation. Real conversion rate would need visitor data
+    const conversionRate = currentCustomers > 0 ? (currentOrders / currentCustomers) * 100 : 0
+    const previousConversionRate = previousCustomers > 0 ? (previousOrders / previousCustomers) * 100 : 0
+    const conversionRateChange = calculateChange(conversionRate, previousConversionRate)
 
     return {
-      total_revenue,
-      total_orders,
-      total_customers: total_users,
-      total_products
-      // Note: revenue_change, orders_change, customers_change, products_change are optional
-      // and can be calculated on frontend if needed
+      total_revenue: currentRevenue,
+      total_orders: currentOrders,
+      total_customers: currentCustomers,
+      total_products: currentProducts,
+      average_order_value: averageOrderValue,
+      conversion_rate: conversionRate,
+      revenue_change: calculateChange(currentRevenue, previousRevenue),
+      orders_change: calculateChange(currentOrders, previousOrders),
+      customers_change: calculateChange(currentCustomers, previousCustomers),
+      products_change: calculateChange(currentProducts, previousProducts),
+      average_order_value_change: averageOrderValueChange,
+      conversion_rate_change: conversionRateChange
     }
   }
 
@@ -443,6 +708,253 @@ class AdminService {
     return { today, this_week, this_month, this_year }
   }
 
+  /**
+   * Lấy revenue theo category (cho pie chart)
+   * Backend endpoint: GET /admin/dashboard/category-revenue
+   */
+  async getCategoryRevenue(params?: { start_date?: string; end_date?: string }) {
+    const match: any = { status: { $ne: OrderStatus.Cancelled } }
+    if (params?.start_date || params?.end_date) {
+      match.created_at = {}
+      if (params?.start_date) match.created_at.$gte = new Date(params.start_date)
+      if (params?.end_date) match.created_at.$lte = new Date(params.end_date)
+    }
+
+    const pipeline = [
+      { $match: match },
+      { $unwind: '$items' },
+      {
+        $lookup: {
+          from: process.env.DB_PRODUCTS_COLLECTION as string,
+          let: { product_id: '$items.product_id' },
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $eq: ['$_id', '$$product_id']
+                }
+              }
+            }
+          ],
+          as: 'product'
+        }
+      },
+      { $unwind: { path: '$product', preserveNullAndEmptyArrays: false } },
+      {
+        $match: {
+          'product.category': { $exists: true, $ne: null }
+        }
+      },
+      {
+        $lookup: {
+          from: process.env.DB_CATEGORIES_COLLECTION as string,
+          let: { category_id: '$product.category' },
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $eq: ['$_id', '$$category_id']
+                }
+              }
+            }
+          ],
+          as: 'category'
+        }
+      },
+      { $unwind: { path: '$category', preserveNullAndEmptyArrays: false } },
+      {
+        $group: {
+          _id: '$category._id',
+          name: { $first: '$category.name' },
+          revenue: { $sum: '$items.total' }
+        }
+      },
+      { $sort: { revenue: -1 } }
+    ]
+
+    const results = await databaseServices.orders.aggregate(pipeline).toArray()
+    
+    // Debug: Log để kiểm tra
+    console.log('[getCategoryRevenue] Match filter:', JSON.stringify(match, null, 2))
+    console.log('[getCategoryRevenue] Results count:', results.length)
+    if (results.length > 0) {
+      console.log('[getCategoryRevenue] Sample result:', JSON.stringify(results[0], null, 2))
+    } else {
+      // Debug: Kiểm tra xem có orders không
+      const orderCount = await databaseServices.orders.countDocuments(match)
+      console.log('[getCategoryRevenue] Total orders matching filter:', orderCount)
+      
+      // Debug: Kiểm tra xem có products với categories không
+      const sampleOrder = await databaseServices.orders.findOne(match)
+      if (sampleOrder && sampleOrder.items && sampleOrder.items.length > 0) {
+        console.log('[getCategoryRevenue] Sample order items:', sampleOrder.items.length)
+        const productIds = sampleOrder.items.map((item: any) => item.product_id)
+        const products = await databaseServices.products
+          .find({ _id: { $in: productIds } })
+          .toArray()
+        console.log('[getCategoryRevenue] Products found:', products.length)
+        products.forEach((p: any) => {
+          console.log(`[getCategoryRevenue] Product ${p.name}: category = ${p.category}`)
+        })
+      }
+    }
+
+    // Calculate total revenue for percentage
+    const totalRevenue = results.reduce((sum, item) => sum + (item.revenue || 0), 0)
+
+    // Map to colors (có thể config sau)
+    const colors = ['#19b3e6', '#8b5cf6', '#f97316', '#10b981', '#ef4444', '#06b6d4', '#84cc16', '#f59e0b']
+
+    const mapped = results.map((item, index) => ({
+      id: item._id?.toString() || '',
+      name: item.name || 'Khác',
+      value: item.revenue || 0,
+      percentage: totalRevenue > 0 ? ((item.revenue || 0) / totalRevenue) * 100 : 0,
+      color: colors[index % colors.length]
+    }))
+
+    console.log('Mapped Category Revenue:', JSON.stringify(mapped, null, 2))
+
+    return mapped
+  }
+
+  /**
+   * Lấy top products bán chạy (cho top products list)
+   * Backend endpoint: GET /admin/dashboard/top-products
+   */
+  async getTopProducts(params?: { start_date?: string; end_date?: string; limit?: number }) {
+    const match: any = { status: { $ne: OrderStatus.Cancelled } }
+    if (params?.start_date || params?.end_date) {
+      match.created_at = {}
+      if (params?.start_date) match.created_at.$gte = new Date(params.start_date)
+      if (params?.end_date) match.created_at.$lte = new Date(params.end_date)
+    }
+
+    const limit = params?.limit || 10
+
+    const pipeline = [
+      { $match: match },
+      { $unwind: '$items' },
+      {
+        $lookup: {
+          from: process.env.DB_PRODUCTS_COLLECTION as string,
+          let: { product_id: '$items.product_id' },
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $eq: ['$_id', '$$product_id']
+                }
+              }
+            }
+          ],
+          as: 'product'
+        }
+      },
+      { $unwind: { path: '$product', preserveNullAndEmptyArrays: true } },
+      {
+        $group: {
+          _id: '$items.product_id',
+          name: { $first: '$items.name' },
+          image: { $first: '$items.thumbnail_url' },
+          revenue: { $sum: '$items.total' },
+          sold_count: { $sum: '$items.quantity' }
+        }
+      },
+      { $sort: { revenue: -1 } },
+      { $limit: limit }
+    ]
+
+    const results = await databaseServices.orders.aggregate(pipeline).toArray()
+
+    // Filter out any potential duplicates by id (shouldn't happen but just in case)
+    const uniqueResults = results.filter(
+      (item, index, self) => index === self.findIndex((t) => t._id?.toString() === item._id?.toString())
+    )
+
+    return uniqueResults.map((item) => ({
+      id: item._id?.toString() || '',
+      name: item.name || 'Sản phẩm không xác định',
+      image: item.image || undefined,
+      revenue: item.revenue || 0,
+      sold_count: item.sold_count || 0
+    }))
+  }
+
+  /**
+   * Lấy chi tiết doanh thu theo ngày
+   * Backend endpoint: GET /admin/dashboard/daily-revenue
+   */
+  async getDailyRevenue(params?: { start_date?: string; end_date?: string; limit?: number }) {
+    const match: any = { status: { $ne: OrderStatus.Cancelled } }
+    if (params?.start_date || params?.end_date) {
+      match.created_at = {}
+      if (params?.start_date) match.created_at.$gte = new Date(params.start_date)
+      if (params?.end_date) match.created_at.$lte = new Date(params.end_date)
+    }
+
+    const limit = params?.limit || 7 // Default 7 days
+
+    const pipeline = [
+      { $match: match },
+      {
+        $group: {
+          _id: {
+            $dateToString: {
+              format: '%Y-%m-%d',
+              date: '$created_at'
+            }
+          },
+          orders: { $sum: 1 },
+          revenue: { $sum: '$cost_summary.total' },
+          profit: {
+            $sum: {
+              $subtract: ['$cost_summary.total', { $multiply: ['$cost_summary.total', 0.3] }] // Giả sử profit = 70% revenue
+            }
+          },
+          new_customers: { $addToSet: '$user_id' }
+        }
+      },
+      {
+        $project: {
+          date: '$_id',
+          orders: 1,
+          revenue: 1,
+          profit: 1,
+          new_customers: { $size: '$new_customers' }
+        }
+      },
+      { $sort: { date: -1 } },
+      { $limit: limit }
+    ]
+
+    const results = await databaseServices.orders.aggregate(pipeline).toArray()
+
+    // Calculate average revenue for status determination
+    const avgRevenue = results.length > 0
+      ? results.reduce((sum, item) => sum + (item.revenue || 0), 0) / results.length
+      : 0
+
+    return results.map((item) => {
+      // Determine status based on revenue compared to average
+      let status: 'good' | 'warning' | 'bad' = 'good'
+      if (item.revenue < avgRevenue * 0.7) {
+        status = 'bad'
+      } else if (item.revenue < avgRevenue * 0.9) {
+        status = 'warning'
+      }
+
+      return {
+        date: item.date,
+        orders: item.orders || 0,
+        revenue: item.revenue || 0,
+        profit: item.profit || 0,
+        new_customers: item.new_customers || 0,
+        status
+      }
+    })
+  }
+
   async getAdminCustomers(params: {
     page?: number
     limit?: number
@@ -468,6 +980,11 @@ class AdminService {
       match.verify = 2 // UserVerifyStatus.Banned
     } else if (params.status === 'new') {
       match.createdAt = { $gte: newSince }
+      // Exclude banned users when filtering for 'new'
+      match.verify = { $ne: 2 } // Not banned
+    } else if (params.status === 'active') {
+      // Active users: not banned
+      match.verify = { $ne: 2 } // Not banned
     }
 
     const sortBy = params.sort_by || 'created_at'
@@ -573,11 +1090,24 @@ class AdminService {
     const _id = new ObjectId(id)
     const user = await databaseServices.users.findOne({ _id })
     if (!user) return null
-    const recent_orders = await databaseServices.orders
-      .find({ user_id: _id }, { projection: { order_code: 1, created_at: 1, status: 1, 'cost_summary.total': 1 } })
+    const recent_orders_raw = await databaseServices.orders
+      .find({ user_id: _id }, { projection: { order_code: 1, created_at: 1, status: 1, cost_summary: 1 } })
       .sort({ created_at: -1 })
       .limit(5)
       .toArray()
+    
+    // Map orders to ensure cost_summary.total is accessible
+    const recent_orders = recent_orders_raw.map((order: any) => ({
+      order_code: order.order_code,
+      created_at: order.created_at ? order.created_at.toISOString() : undefined,
+      status: order.status,
+      total: order.cost_summary?.total || 0,
+      'cost_summary.total': order.cost_summary?.total || 0,
+      cost_summary: {
+        total: order.cost_summary?.total || 0
+      }
+    }))
+    
     return {
       id: user._id,
       info: {

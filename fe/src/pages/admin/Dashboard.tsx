@@ -2,6 +2,9 @@ import { useState, useEffect } from 'react'
 import AdminLayout from '@/components/admin/AdminLayout'
 import StatsCard from '@/components/admin/StatsCard'
 import Chart from '@/components/admin/Chart'
+import OrderStatusDistribution from '@/components/admin/OrderStatusDistribution'
+import TopProductsList from '@/components/admin/TopProductsList'
+import DateRangeButtons from '@/components/admin/DateRangeButtons'
 import Skeleton from '@/components/common/Skeleton'
 import { useToast } from '@/contexts/ToastContext'
 import * as adminService from '@/services/admin.service'
@@ -9,160 +12,208 @@ import * as adminService from '@/services/admin.service'
 const AdminDashboard = () => {
   const [stats, setStats] = useState<adminService.DashboardStats | null>(null)
   const [chartData, setChartData] = useState<adminService.RevenueChartData[]>([])
+  const [orderStatusData, setOrderStatusData] = useState<adminService.OrderStatusDistribution[]>([])
+  const [topProducts, setTopProducts] = useState<adminService.TopProduct[]>([])
   const [loading, setLoading] = useState(true)
   const [dateRange, setDateRange] = useState<{ start_date?: string; end_date?: string }>({})
+
   const { showError } = useToast()
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true)
       try {
-        const [statsData, chartDataResult] = await Promise.all([
+        // Fetch all dashboard data in parallel
+        // Note: revenue chart uses days=30 if no date range is specified
+        const chartParams = dateRange.start_date || dateRange.end_date
+          ? dateRange
+          : { ...dateRange, days: 30 }
+
+        const [statsData, chartDataResult, orderStatusDistributionData, topProductsData] = await Promise.all([
           adminService.getDashboardStats(dateRange),
-          adminService.getRevenueChart({ ...dateRange, days: 30 }),
+          adminService.getRevenueChart(chartParams),
+          adminService.getOrderStatusDistribution(dateRange),
+          adminService.getTopProducts({ ...dateRange, limit: 5 }),
         ])
         setStats(statsData)
         setChartData(chartDataResult)
+        setOrderStatusData(orderStatusDistributionData)
+        setTopProducts(topProductsData)
       } catch (error: any) {
         console.error('Failed to fetch dashboard data:', error)
         showError(error.response?.data?.message || 'Không thể tải dữ liệu dashboard.')
+        // Set empty arrays on error to prevent crashes
+        setOrderStatusData([])
+        setTopProducts([])
       } finally {
         setLoading(false)
       }
     }
 
     fetchData()
-  }, [dateRange])
+  }, [dateRange, showError])
 
-  const handleDateRangeChange = (type: 'start' | 'end', value: string) => {
-    setDateRange((prev) => ({
-      ...prev,
-      [type === 'start' ? 'start_date' : 'end_date']: value || undefined,
-    }))
+  const handleDateRangeChange = (range: { start_date?: string; end_date?: string }) => {
+    setDateRange(range)
   }
 
   return (
     <AdminLayout>
       <div className="max-w-[1600px] mx-auto w-full">
-          {/* Header */}
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold text-text-main dark:text-white mb-2">
-              Dashboard
-            </h1>
-            <p className="text-text-sub dark:text-gray-400">
-              Tổng quan về hoạt động của cửa hàng
+        {/* Header */}
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+          <div>
+            <h2 className="text-2xl font-bold text-text-main dark:text-white mb-1">
+              Báo cáo & Thống kê
+            </h2>
+            <p className="text-sm text-text-sub dark:text-gray-400">
+              Xem chi tiết hiệu quả kinh doanh và hành vi khách hàng.
             </p>
           </div>
-
-          {/* Date Range Filter */}
-          <div className="mb-6 flex flex-col sm:flex-row gap-4 items-end">
-            <div className="flex-1 sm:flex-initial">
-              <label className="block text-sm font-medium text-text-main dark:text-white mb-2">
-                Từ ngày
-              </label>
-              <input
-                type="date"
-                value={dateRange.start_date || ''}
-                onChange={(e) => handleDateRangeChange('start', e.target.value)}
-                className="w-full sm:w-auto px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#111d21] text-text-main dark:text-white focus:ring-2 focus:ring-primary focus:border-primary outline-none"
-              />
-            </div>
-            <div className="flex-1 sm:flex-initial">
-              <label className="block text-sm font-medium text-text-main dark:text-white mb-2">
-                Đến ngày
-              </label>
-              <input
-                type="date"
-                value={dateRange.end_date || ''}
-                onChange={(e) => handleDateRangeChange('end', e.target.value)}
-                className="w-full sm:w-auto px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#111d21] text-text-main dark:text-white focus:ring-2 focus:ring-primary focus:border-primary outline-none"
-              />
-            </div>
-            <button
-              onClick={() => setDateRange({})}
-              className="px-4 py-2 text-sm font-medium text-text-sub dark:text-gray-400 hover:text-primary transition-colors"
-            >
-              Xóa bộ lọc
-            </button>
-          </div>
-
-          {/* Stats Cards */}
-          {loading ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-              {[1, 2, 3, 4].map((i) => (
-                <Skeleton key={i} className="h-32 w-full rounded-xl" />
-              ))}
-            </div>
-          ) : stats ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-              <StatsCard
-                title="Tổng doanh thu"
-                value={stats.total_revenue}
-                icon="payments"
-                formatCurrency
-                trend={
-                  stats.revenue_change !== undefined
-                    ? {
-                        value: stats.revenue_change,
-                        isPositive: stats.revenue_change >= 0,
-                      }
-                    : undefined
-                }
-              />
-              <StatsCard
-                title="Tổng đơn hàng"
-                value={stats.total_orders}
-                icon="shopping_bag"
-                trend={
-                  stats.orders_change !== undefined
-                    ? {
-                        value: stats.orders_change,
-                        isPositive: stats.orders_change >= 0,
-                      }
-                    : undefined
-                }
-              />
-              <StatsCard
-                title="Tổng khách hàng"
-                value={stats.total_customers}
-                icon="people"
-                trend={
-                  stats.customers_change !== undefined
-                    ? {
-                        value: stats.customers_change,
-                        isPositive: stats.customers_change >= 0,
-                      }
-                    : undefined
-                }
-              />
-              <StatsCard
-                title="Tổng sản phẩm"
-                value={stats.total_products}
-                icon="inventory"
-                trend={
-                  stats.products_change !== undefined
-                    ? {
-                        value: stats.products_change,
-                        isPositive: stats.products_change >= 0,
-                      }
-                    : undefined
-                }
-              />
-            </div>
-          ) : null}
-
-          {/* Revenue Chart */}
-          <div className="mb-8">
-            <h2 className="text-xl font-bold text-text-main dark:text-white mb-4">
-              Biểu đồ doanh thu
-            </h2>
-            {loading ? (
-              <Skeleton className="h-80 w-full rounded-xl" />
-            ) : (
-              <Chart data={chartData} type="line" height={300} />
-            )}
-          </div>
+          <DateRangeButtons onRangeChange={handleDateRangeChange} />
         </div>
+
+        {/* Stats Cards */}
+        {loading ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            {[1, 2, 3, 4].map((i) => (
+              <Skeleton key={i} className="h-32 w-full rounded-xl" />
+            ))}
+          </div>
+        ) : stats ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6 mb-8">
+            <StatsCard
+              title="Doanh thu thuần"
+              value={stats.total_revenue}
+              icon="payments"
+              iconBgColor="blue"
+              formatCurrency
+              unit="VNĐ"
+              trend={
+                stats.revenue_change !== undefined
+                  ? {
+                      value: stats.revenue_change,
+                      isPositive: stats.revenue_change >= 0,
+                    }
+                  : undefined
+              }
+            />
+            <StatsCard
+              title="Tổng đơn hàng"
+              value={stats.total_orders}
+              icon="shopping_bag"
+              iconBgColor="purple"
+              unit="đơn"
+              trend={
+                stats.orders_change !== undefined
+                  ? {
+                      value: stats.orders_change,
+                      isPositive: stats.orders_change >= 0,
+                    }
+                  : undefined
+              }
+            />
+            <StatsCard
+              title="Giá trị trung bình đơn"
+              value={stats.average_order_value || 0}
+              icon="local_mall"
+              iconBgColor="orange"
+              formatCurrency
+              unit="VNĐ"
+              trend={
+                stats.average_order_value_change !== undefined
+                  ? {
+                      value: stats.average_order_value_change,
+                      isPositive: stats.average_order_value_change >= 0,
+                    }
+                  : undefined
+              }
+            />
+            <StatsCard
+              title="Tổng khách hàng"
+              value={stats.total_customers}
+              icon="people"
+              iconBgColor="orange"
+              trend={
+                stats.customers_change !== undefined
+                  ? {
+                      value: stats.customers_change,
+                      isPositive: stats.customers_change >= 0,
+                    }
+                  : undefined
+              }
+            />
+            <StatsCard
+              title="Tỷ lệ chuyển đổi"
+              value={stats.conversion_rate || 0}
+              icon="ads_click"
+              iconBgColor="green"
+              unit="%"
+              trend={
+                stats.conversion_rate_change !== undefined
+                  ? {
+                      value: stats.conversion_rate_change,
+                      isPositive: stats.conversion_rate_change >= 0,
+                    }
+                  : undefined
+              }
+            />
+            <StatsCard
+              title="Tổng sản phẩm"
+              value={stats.total_products}
+              icon="inventory"
+              iconBgColor="green"
+              trend={
+                stats.products_change !== undefined
+                  ? {
+                      value: stats.products_change,
+                      isPositive: stats.products_change >= 0,
+                    }
+                  : undefined
+              }
+            />
+          </div>
+        ) : null}
+
+        {/* Revenue Chart */}
+        {loading ? (
+          <Skeleton className="h-80 w-full rounded-xl mb-8" />
+        ) : (
+          <Chart
+            data={chartData}
+            type="line"
+            height={320}
+            title="Biểu đồ tăng trưởng"
+            subtitle="Doanh thu qua các tháng"
+            showExportButton
+          />
+        )}
+
+        {/* Pie Chart and Top Products */}
+        {loading ? (
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8 mt-8">
+            <Skeleton className="h-80 w-full rounded-xl" />
+            <div className="lg:col-span-2">
+              <Skeleton className="h-80 w-full rounded-xl" />
+            </div>
+          </div>
+        ) : (
+          <div className="flex flex-col md:flex-row gap-2 mb-8 mt-8 items-stretch">
+            <div className="flex md:w-1/3 lg:w-1/3">
+              <OrderStatusDistribution data={orderStatusData} />
+            </div>
+            <div className="flex md:w-2/3 lg:w-2/3">
+              {topProducts.length > 0 ? (
+                <TopProductsList products={topProducts} />
+              ) : (
+                <div className="bg-white dark:bg-[#1a2c32] rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm p-6 flex items-center justify-center min-h-[300px] w-full">
+                  <p className="text-text-sub dark:text-gray-400">Không có dữ liệu</p>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+      </div>
     </AdminLayout>
   )
 }

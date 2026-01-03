@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { ROUTES } from '@/utils/constants'
 import { useAuth } from '@/hooks/useAuth'
@@ -13,7 +13,34 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
   const navigate = useNavigate()
   const { user, logout } = useAuth()
   const { toggleTheme } = useTheme()
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true)
+  // Determine initial state based on screen width
+  const [isSidebarOpen, setIsSidebarOpen] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return window.innerWidth >= 768
+    }
+    return true
+  })
+
+  // Close sidebar on mobile when route changes
+  useEffect(() => {
+    if (window.innerWidth < 768) {
+      setIsSidebarOpen(false)
+    }
+  }, [location.pathname])
+
+  // Handle window resize
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 768) {
+        setIsSidebarOpen(true)
+      } else {
+        setIsSidebarOpen(false)
+      }
+    }
+
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
   const menuItems = [
     { path: ROUTES.ADMIN_DASHBOARD, icon: 'dashboard', label: 'Tổng quan' },
@@ -38,14 +65,23 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
 
   return (
     <div className="flex h-screen bg-background-light dark:bg-background-dark text-text-main dark:text-white transition-colors duration-200 font-display overflow-hidden">
+      {/* Mobile Overlay */}
+      {isSidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 z-20 md:hidden transition-opacity"
+          onClick={() => setIsSidebarOpen(false)}
+        />
+      )}
+
       {/* Sidebar */}
       <aside
-        className={`${
-          isSidebarOpen ? 'w-64' : 'w-0'
-        } bg-white dark:bg-[#1a2c32] border-r border-gray-200 dark:border-gray-800 flex flex-col transition-all duration-200 flex-shrink-0 z-20 overflow-hidden`}
+        className={`${isSidebarOpen
+            ? 'w-64 translate-x-0'
+            : 'w-64 -translate-x-full md:w-0 md:translate-x-0'
+          } fixed md:relative h-full bg-white dark:bg-[#1a2c32] border-r border-gray-200 dark:border-gray-800 flex flex-col transition-all duration-300 flex-shrink-0 z-30 overflow-hidden shadow-xl md:shadow-none`}
       >
         {/* Logo */}
-        <div className="h-16 flex items-center px-6 border-b border-gray-100 dark:border-gray-800 flex-shrink-0">
+        <div className="h-16 flex items-center px-6 border-b border-gray-100 dark:border-gray-800 flex-shrink-0 min-w-[256px]">
           <div className="size-8 text-primary mr-3">
             <svg fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
               <path
@@ -54,21 +90,20 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
               />
             </svg>
           </div>
-          <h1 className="text-xl font-bold tracking-tight">YORI Admin</h1>
+          <h1 className="text-xl font-bold tracking-tight whitespace-nowrap">YORI Admin</h1>
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 overflow-y-auto py-4">
+        <nav className="flex-1 overflow-y-auto py-4 min-w-[256px]">
           <ul className="space-y-1 px-3">
             {menuItems.map((item) => (
               <li key={item.path}>
                 <Link
                   to={item.path}
-                  className={`flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium transition-colors ${
-                    isActive(item.path)
-                      ? 'bg-primary/10 text-primary'
-                      : 'text-text-sub dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700/50 hover:text-text-main dark:hover:text-white'
-                  }`}
+                  className={`flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium transition-colors whitespace-nowrap ${isActive(item.path)
+                    ? 'bg-primary/10 text-primary'
+                    : 'text-text-sub dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700/50 hover:text-text-main dark:hover:text-white'
+                    }`}
                 >
                   <span className="material-symbols-outlined">{item.icon}</span>
                   {item.label}
@@ -78,14 +113,14 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
           </ul>
 
           {/* User section */}
-          <div className="mt-8 px-6 text-xs font-semibold text-text-sub uppercase tracking-wider mb-2">
+          <div className="mt-8 px-6 text-xs font-semibold text-text-sub uppercase tracking-wider mb-2 whitespace-nowrap">
             Hệ thống
           </div>
           <ul className="space-y-1 px-3">
             <li>
               <button
                 onClick={handleLogout}
-                className="w-full flex items-center gap-3 px-3 py-2.5 text-text-sub dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700/50 hover:text-text-main dark:hover:text-white rounded-lg font-medium transition-colors"
+                className="w-full flex items-center gap-3 px-3 py-2.5 text-text-sub dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700/50 hover:text-text-main dark:hover:text-white rounded-lg font-medium transition-colors whitespace-nowrap"
               >
                 <span className="material-symbols-outlined">logout</span>
                 Đăng xuất
@@ -95,7 +130,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
         </nav>
 
         {/* User profile at bottom */}
-        <div className="p-4 border-t border-gray-100 dark:border-gray-800 flex-shrink-0">
+        <div className="p-4 border-t border-gray-100 dark:border-gray-800 flex-shrink-0 min-w-[256px]">
           <div className="flex items-center gap-3">
             <div className="size-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center overflow-hidden">
               {user?.avatar ? (
@@ -105,10 +140,10 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
               )}
             </div>
             <div className="flex flex-col">
-              <span className="text-sm font-bold text-text-main dark:text-white">
+              <span className="text-sm font-bold text-text-main dark:text-white whitespace-nowrap">
                 {user?.full_name || 'Admin'}
               </span>
-              <span className="text-xs text-text-sub">Quản trị viên</span>
+              <span className="text-xs text-text-sub whitespace-nowrap">Quản trị viên</span>
             </div>
           </div>
         </div>
@@ -117,7 +152,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
       {/* Main content */}
       <div className="flex-1 flex flex-col h-full overflow-hidden relative">
         {/* Top header */}
-        <header className="h-16 bg-white dark:bg-[#1a2c32] border-b border-gray-200 dark:border-gray-800 flex items-center justify-between px-8 z-10 flex-shrink-0">
+        <header className="h-16 bg-white dark:bg-[#1a2c32] border-b border-gray-200 dark:border-gray-800 flex items-center justify-between px-4 md:px-8 z-10 flex-shrink-0">
           <div className="flex items-center gap-4">
             <button
               onClick={() => setIsSidebarOpen(!isSidebarOpen)}
@@ -125,7 +160,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
             >
               <span className="material-symbols-outlined">menu</span>
             </button>
-            <div className="relative w-96 hidden md:block">
+            <div className="relative w-full max-w-xs hidden md:block">
               <span className="material-symbols-outlined absolute left-3 top-2.5 text-gray-400 text-[20px]">
                 search
               </span>
@@ -136,7 +171,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
               />
             </div>
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 md:gap-4">
             <button
               onClick={toggleTheme}
               className="p-2 text-text-sub hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
@@ -158,11 +193,10 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
         </header>
 
         {/* Main content area */}
-        <main className="flex-1 overflow-y-auto p-8">{children}</main>
+        <main className="flex-1 overflow-y-auto p-4 md:p-8">{children}</main>
       </div>
     </div>
   )
 }
 
 export default AdminLayout
-

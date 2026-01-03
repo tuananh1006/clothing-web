@@ -71,6 +71,33 @@ export const updateProductValidator = validate(
           options: [['active', 'inactive', 'out_of_stock', 'low_stock', 'draft']],
           errorMessage: 'Invalid status'
         }
+      },
+      image: {
+        in: ['body'],
+        optional: true,
+        isString: { errorMessage: 'Image URL must be a string' },
+        trim: true
+      },
+      category_id: {
+        in: ['body'],
+        optional: true,
+        isString: { errorMessage: 'Category ID must be a string' },
+        trim: true
+      },
+      colors: {
+        in: ['body'],
+        optional: true,
+        isArray: { errorMessage: 'Colors must be an array' }
+      },
+      sizes: {
+        in: ['body'],
+        optional: true,
+        isArray: { errorMessage: 'Sizes must be an array' }
+      },
+      is_featured: {
+        in: ['body'],
+        optional: true,
+        isBoolean: { errorMessage: 'is_featured must be a boolean' }
       }
     },
     ['body']
@@ -120,6 +147,23 @@ export const updateSettingsGeneralValidator = validate(
         optional: true,
         isString: { errorMessage: 'Store address must be a string' },
         trim: true
+      }
+    },
+    ['body']
+  )
+)
+
+export const updateOrderStatusValidator = validate(
+  checkSchema(
+    {
+      status: {
+        in: ['body'],
+        isString: { errorMessage: 'Status must be a string' },
+        notEmpty: { errorMessage: 'Status is required' },
+        isIn: {
+          options: [['pending', 'processing', 'shipping', 'completed', 'cancelled']],
+          errorMessage: 'Status must be one of: pending, processing, shipping, completed, cancelled'
+        }
       }
     },
     ['body']

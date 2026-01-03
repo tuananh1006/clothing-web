@@ -6,10 +6,14 @@ export interface DashboardStats {
   total_orders: number
   total_customers: number
   total_products: number
+  average_order_value?: number
+  conversion_rate?: number
   revenue_change?: number
   orders_change?: number
   customers_change?: number
   products_change?: number
+  average_order_value_change?: number
+  conversion_rate_change?: number
 }
 
 /**
@@ -81,5 +85,50 @@ export interface AdminCustomerFilters {
   status?: string
   sort_by?: string
   order?: 'asc' | 'desc'
+}
+
+/**
+ * Interface cho customer detail response
+ */
+export interface CustomerDetail {
+  id: string
+  info: {
+    name: string
+    email: string
+    phone: string
+  }
+  addresses: Array<{
+    id: number
+    full_address: string
+    is_default: boolean
+  }>
+  recent_orders: Array<{
+    order_code: string
+    created_at: Date | string
+    status: string
+    'cost_summary.total': number
+  }>
+}
+
+/**
+ * Interface cho category revenue (cho pie chart)
+ */
+export interface CategoryRevenue {
+  id: string
+  name: string
+  value: number
+  percentage: number
+  color: string
+}
+
+/**
+ * Interface cho top product
+ */
+export interface TopProduct {
+  id: string
+  name: string
+  image?: string
+  revenue: number
+  sold_count: number
 }
 
