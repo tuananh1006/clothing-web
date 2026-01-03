@@ -116,8 +116,6 @@ const Orders = () => {
     )
   }
 
-  const selectedFilterLabel = STATUS_FILTERS.find(f => f.value === statusFilter)?.label || 'Tất cả'
-
   return (
     <div className="min-h-screen flex flex-col bg-background-light dark:bg-background-dark">
       <Header />
