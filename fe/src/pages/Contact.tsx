@@ -15,6 +15,8 @@ import * as contactService from '@/services/contact.service'
 const contactSchema = z.object({
   name: z.string().min(1, 'Vui lòng nhập tên của bạn'),
   email: z.string().min(1, 'Vui lòng nhập email').email('Email không hợp lệ'),
+  phone: z.string().optional(),
+  subject: z.string().min(3, 'Vui lòng nhập chủ đề').optional(),
   message: z.string().min(10, 'Vui lòng nhập ít nhất 10 ký tự'),
 })
 
@@ -55,77 +57,76 @@ const Contact = () => {
     <div className="min-h-screen flex flex-col bg-background-light dark:bg-background-dark">
       <Header />
       <main className="flex-grow">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12 max-w-6xl">
-          <Breadcrumb
-            items={[
-              { label: 'Trang chủ', path: ROUTES.HOME },
-              { label: 'Liên hệ' },
-            ]}
-          />
+        {/* Hero Section */}
+        <div className="bg-background-light dark:bg-[#1a2c32] py-16 px-4 lg:px-40 text-center relative overflow-hidden">
+          <div className="absolute -top-10 -left-10 w-40 h-40 bg-primary/5 rounded-full blur-3xl"></div>
+          <div className="absolute top-10 -right-10 w-60 h-60 bg-primary/10 rounded-full blur-3xl"></div>
+          <div className="relative z-10 max-w-2xl mx-auto">
+            <h1 className="text-3xl md:text-5xl font-bold text-text-main dark:text-white mb-3 tracking-tight">
+              Liên hệ với chúng tôi
+            </h1>
+            <p className="text-text-sub dark:text-gray-400 text-lg">
+              Chúng tôi luôn sẵn sàng lắng nghe mọi ý kiến đóng góp và thắc mắc của bạn.
+            </p>
+          </div>
+        </div>
 
-          <div className="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <div className="max-w-[1200px] mx-auto px-4 lg:px-40 py-16 lg:py-24">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
             {/* Left: Contact Info */}
             <div>
-              <h1 className="text-3xl font-bold text-text-main dark:text-white mb-4">
-                Liên hệ với chúng tôi
-              </h1>
-              <p className="text-text-sub dark:text-gray-400 mb-8">
-                Chúng tôi luôn sẵn sàng lắng nghe và hỗ trợ bạn. Hãy gửi tin nhắn cho chúng tôi
-                hoặc liên hệ trực tiếp qua các kênh sau.
+              <h2 className="text-2xl font-bold text-text-main dark:text-white mb-6">
+                Thông tin liên lạc
+              </h2>
+              <p className="text-text-sub dark:text-gray-400 mb-10 leading-relaxed text-base">
+                YORI đề cao sự kết nối chân thành. Cho dù bạn có câu hỏi về sản phẩm, đơn hàng hay chỉ muốn chia sẻ cảm nhận, đừng ngần ngại liên hệ.
               </p>
 
-              <div className="space-y-6">
-                <div className="flex items-start gap-4">
-                  <div className="p-3 bg-primary/10 dark:bg-primary/20 rounded-lg">
-                    <span className="material-symbols-outlined text-primary text-2xl">
-                      location_on
-                    </span>
+              <div className="space-y-8">
+                <div className="flex items-start gap-4 group">
+                  <div className="flex-shrink-0 flex items-center justify-center w-12 h-12 bg-background-light dark:bg-[#1a2c32] rounded-full text-primary group-hover:bg-primary group-hover:text-white transition-all duration-300">
+                    <span className="material-symbols-outlined">location_on</span>
                   </div>
                   <div>
-                    <h3 className="font-bold text-text-main dark:text-white mb-1">Địa chỉ</h3>
-                    <p className="text-text-sub dark:text-gray-400">
+                    <h3 className="font-bold text-text-main dark:text-white text-lg mb-1">Cửa hàng</h3>
+                    <p className="text-text-sub dark:text-gray-400 leading-relaxed">
                       123 Đường Nguyễn Huệ, Quận 1,<br />
                       TP. Hồ Chí Minh
                     </p>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-4">
-                  <div className="p-3 bg-primary/10 dark:bg-primary/20 rounded-lg">
-                    <span className="material-symbols-outlined text-primary text-2xl">call</span>
+                <div className="flex items-start gap-4 group">
+                  <div className="flex-shrink-0 flex items-center justify-center w-12 h-12 bg-background-light dark:bg-[#1a2c32] rounded-full text-primary group-hover:bg-primary group-hover:text-white transition-all duration-300">
+                    <span className="material-symbols-outlined">call</span>
                   </div>
                   <div>
-                    <h3 className="font-bold text-text-main dark:text-white mb-1">
-                      Số điện thoại
-                    </h3>
+                    <h3 className="font-bold text-text-main dark:text-white text-lg mb-1">Điện thoại</h3>
                     <p className="text-text-sub dark:text-gray-400">090 123 4567</p>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-4">
-                  <div className="p-3 bg-primary/10 dark:bg-primary/20 rounded-lg">
-                    <span className="material-symbols-outlined text-primary text-2xl">mail</span>
+                <div className="flex items-start gap-4 group">
+                  <div className="flex-shrink-0 flex items-center justify-center w-12 h-12 bg-background-light dark:bg-[#1a2c32] rounded-full text-primary group-hover:bg-primary group-hover:text-white transition-all duration-300">
+                    <span className="material-symbols-outlined">mail</span>
                   </div>
                   <div>
-                    <h3 className="font-bold text-text-main dark:text-white mb-1">Email</h3>
+                    <h3 className="font-bold text-text-main dark:text-white text-lg mb-1">Email</h3>
                     <p className="text-text-sub dark:text-gray-400">hello@yori.vn</p>
                   </div>
                 </div>
+              </div>
 
-                <div className="flex items-start gap-4">
-                  <div className="p-3 bg-primary/10 dark:bg-primary/20 rounded-lg">
-                    <span className="material-symbols-outlined text-primary text-2xl">schedule</span>
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-text-main dark:text-white mb-1">
-                      Giờ làm việc
-                    </h3>
-                    <p className="text-text-sub dark:text-gray-400">
-                      Thứ 2 - Thứ 6: 9:00 - 18:00
-                      <br />
-                      Thứ 7 - Chủ nhật: 10:00 - 16:00
-                    </p>
-                  </div>
+              {/* Social Links */}
+              <div className="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700">
+                <p className="text-sm font-semibold text-text-main dark:text-white mb-4">Theo dõi chúng tôi</p>
+                <div className="flex gap-4">
+                  <a href="#" className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-800 text-text-main dark:text-gray-400 hover:bg-primary hover:text-white dark:hover:bg-primary transition-all duration-300">
+                    <span className="material-symbols-outlined">public</span>
+                  </a>
+                  <a href="#" className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-800 text-text-main dark:text-gray-400 hover:bg-primary hover:text-white dark:hover:bg-primary transition-all duration-300">
+                    <span className="material-symbols-outlined">alternate_email</span>
+                  </a>
                 </div>
               </div>
             </div>
@@ -159,6 +160,20 @@ const Contact = () => {
                   {...register('email')}
                   error={errors.email?.message}
                   required
+                />
+
+                <Input
+                  label="Số điện thoại (tùy chọn)"
+                  type="tel"
+                  {...register('phone')}
+                  error={errors.phone?.message}
+                />
+
+                <Input
+                  label="Chủ đề (tùy chọn)"
+                  type="text"
+                  {...register('subject')}
+                  error={errors.subject?.message}
                 />
 
                 <div>
