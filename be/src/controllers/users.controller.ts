@@ -1,5 +1,6 @@
 import { Request, Response } from 'express'
 import usersServices from '~/services/users.services'
+import cloudinaryService from '~/services/cloudinary.service'
 import { NextFunction, ParamsDictionary } from 'express-serve-static-core'
 import {
   RegisterRequestBody,
@@ -138,7 +139,6 @@ export const uploadAvatarController = async (req: Request, res: Response, next: 
     if (file) {
       // Upload to Cloudinary
       try {
-        const cloudinaryService = (await import('~/services/cloudinary.service')).default
         const uploadResult = await cloudinaryService.uploadImage(file.buffer, 'avatars', {
           width: 400,
           height: 400,
@@ -156,9 +156,7 @@ export const uploadAvatarController = async (req: Request, res: Response, next: 
       } catch (uploadError: any) {
         console.error('Cloudinary upload error:', uploadError)
         // Check if Cloudinary is not configured
-        const { v2: cloudinary } = await import('cloudinary')
-        const cloudinaryConfig = cloudinary.config()
-        if (!cloudinaryConfig.cloud_name || uploadError.message?.includes('not configured')) {
+        if (uploadError.message?.includes('not configured') || uploadError.message?.includes('Cloudinary is not configured')) {
           return res.status(HTTP_STATUS.BAD_REQUEST).json({
             message: 'Cloudinary is not configured. Please configure Cloudinary to upload avatars.'
           })
