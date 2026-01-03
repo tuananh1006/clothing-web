@@ -1,4 +1,4 @@
-import { formatPrice, formatCompactNumber } from '@/utils/formatters'
+import { formatCompactNumber } from '@/utils/formatters'
 
 interface StatsCardProps {
   title: string

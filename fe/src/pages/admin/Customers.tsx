@@ -16,7 +16,7 @@ import type { User } from '@/types'
 import type { CustomerDetail } from '@/types/admin.types'
 
 // Extended User type for admin customers with additional fields from backend
-interface AdminCustomer extends User {
+interface AdminCustomer extends Omit<User, 'status'> {
   customer_code?: string
   avatar_url?: string | null
   stats?: {
@@ -27,6 +27,7 @@ interface AdminCustomer extends User {
   joined_at_display?: string
   status_label?: string
   status_color?: string
+  status?: 'active' | 'inactive' | 'new'
 }
 
 const AdminCustomers = () => {
@@ -138,7 +139,7 @@ const AdminCustomers = () => {
       }
 
       // Format data for Excel export
-      const exportData = response.customers.map((customer) => ({
+      const exportData = response.customers.map((customer: AdminCustomer) => ({
         'Mã khách hàng': customer.customer_code || `#USR-${customer._id.slice(-6).toUpperCase()}`,
         'Họ và tên': customer.full_name || `${customer.first_name} ${customer.last_name}`.trim(),
         'Email': customer.email || '',
@@ -190,7 +191,8 @@ const AdminCustomers = () => {
 
   // Helper function to check if customer can be locked (active or new)
   const canLockCustomer = (customer: AdminCustomer) => {
-    return customer.status === 'active' || customer.status === 'new'
+    const status = customer.status || 'active'
+    return status === 'active' || status === 'new'
   }
 
   // Helper function to check if customer can be unlocked (inactive)

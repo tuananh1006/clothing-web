@@ -168,7 +168,7 @@ const AdminProducts = () => {
     {
       key: 'image',
       header: 'Sản phẩm',
-      className: 'min-w-[300px]',
+      headerClassName: 'min-w-[300px]',
       render: (product) => (
         <div className="flex items-center gap-4">
           <div className="size-12 rounded-lg bg-gray-100 flex-shrink-0 border border-gray-100 dark:border-gray-800 overflow-hidden group">
@@ -188,7 +188,7 @@ const AdminProducts = () => {
     {
       key: 'category',
       header: 'Danh mục',
-      className: 'text-text-sub',
+      cellClassName: 'text-text-sub',
       render: (product) => (
         <span className="text-sm">{product.category_name || 'N/A'}</span>
       ),
@@ -198,7 +198,7 @@ const AdminProducts = () => {
       header: 'Giá bán',
       sortable: true,
       headerClassName: 'text-right',
-      className: 'text-right',
+      cellClassName: 'text-right',
       render: (product) => (
         <span className="font-medium text-text-main dark:text-white">{formatPrice(product.price)}</span>
       ),
@@ -208,7 +208,7 @@ const AdminProducts = () => {
       header: 'Kho hàng',
       sortable: true,
       headerClassName: 'text-center',
-      className: 'text-center',
+      cellClassName: 'text-center',
       render: (product) => (
         <div>
           <span className={`font-medium ${product.stock_quantity === 0 ? 'text-red-500' : 'text-text-main dark:text-white'}`}>
@@ -224,7 +224,7 @@ const AdminProducts = () => {
       key: 'status',
       header: 'Trạng thái',
       headerClassName: 'text-center',
-      className: 'text-center',
+      cellClassName: 'text-center',
       render: (product) => {
         const colorMap: Record<string, string> = {
           green: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400 border border-green-200 dark:border-green-800',
@@ -257,7 +257,7 @@ const AdminProducts = () => {
       key: 'actions',
       header: 'Hành động',
       headerClassName: 'text-right',
-      className: 'text-right',
+      cellClassName: 'text-right',
       render: (product) => (
         <div className="flex items-center justify-end gap-2">
           <button
