@@ -10,6 +10,7 @@ import checkoutRouter from './routes/checkout.routes'
 import ordersRouter from './routes/orders.routes'
 import adminRouter from './routes/admin.routes'
 import contactRouter from './routes/contact.routes'
+import reviewsRouter from './routes/reviews.routes'
 import databaseServices from './services/database.services'
 import { defaultErrorHandler } from './middlewares/errors.middleware'
 import { initializeIndexes } from './utils/db-indexes'
@@ -91,6 +92,19 @@ app.use('/api/v1/checkout', checkoutRouter)
 app.use('/api/v1/orders', ordersRouter)
 app.use('/api/v1/admin', adminRouter)
 app.use('/api/v1/contact', contactRouter)
+app.use('/api/v1/reviews', reviewsRouter)
+
+// Debug: Log all registered routes
+if (process.env.NODE_ENV !== 'production') {
+  console.log('Registered routes:')
+  console.log('  GET /api/v1/reviews/products/:product_id/reviews')
+  console.log('  POST /api/v1/reviews')
+  console.log('  PUT /api/v1/reviews/:review_id')
+  console.log('  DELETE /api/v1/reviews/:review_id')
+  console.log('  POST /api/v1/reviews/:review_id/helpful')
+  console.log('  GET /api/v1/reviews/admin/all')
+  console.log('  PUT /api/v1/reviews/admin/:review_id/moderate')
+}
 
 // Serve OpenAPI spec (merged from src/docs/openapi/*)
 app.get('/openapi.json', (_req, res) => {

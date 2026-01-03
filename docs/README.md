@@ -26,6 +26,7 @@ Tài liệu đầy đủ cho dự án YORI Fashion E-Commerce Platform.
 - **[Development Plan](./PLAN.md)** - Kế hoạch phát triển chi tiết
 - **[Backend Fit Frontend Checklist](./BACKEND_FIT_FRONTEND_CHECKLIST.md)** - Checklist tích hợp Backend-Frontend
 - **[Test Checklist](./TEST_CHECKLIST.md)** - API testing checklist
+- **[Feature Proposals](./FEATURE_PROPOSALS.md)** - Đề xuất các tính năng nên tích hợp thêm
 
 ## 🗂️ Cấu Trúc Tài Liệu
 
@@ -41,7 +42,8 @@ docs/
 ├── TEST_CHECKLIST.md                  # Testing checklist
 ├── UI_COMPARISON_REPORT.md            # UI comparison report
 ├── UI_COMPARISON_CHECKLIST.md         # UI comparison checklist
-└── UI_COMPARISON_SUMMARY.md           # UI comparison summary
+├── UI_COMPARISON_SUMMARY.md           # UI comparison summary
+└── FEATURE_PROPOSALS.md               # Feature proposals and suggestions
 ```
 
 ## 🔍 Tìm Kiếm Nhanh
@@ -56,6 +58,7 @@ docs/
 - **So sánh UI**: Xem [UI Comparison Report](./UI_COMPARISON_REPORT.md)
 - **Phát triển Frontend**: Xem [Frontend Checklist](./FRONTEND_CHECKLIST.md)
 - **Tích hợp Backend-Frontend**: Xem [Backend Fit Frontend Checklist](./BACKEND_FIT_FRONTEND_CHECKLIST.md)
+- **Đề xuất tính năng mới**: Xem [Feature Proposals](./FEATURE_PROPOSALS.md)
 
 ## 👥 Team Tasks & Work Division
 

@@ -7,4 +7,5 @@ export * from './order.types'
 export * from './admin.types'
 export * from './settings.types'
 export * from './contact.types'
+export * from './review.types'
 
