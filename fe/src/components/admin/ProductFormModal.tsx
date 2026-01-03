@@ -14,7 +14,7 @@ const productSchema = z.object({
     quantity: z.coerce.number().min(0, 'Số lượng phải lớn hơn hoặc bằng 0'),
     category_id: z.string().min(1, 'Vui lòng chọn danh mục'),
     image: z.string().url('Vui lòng nhập URL hình ảnh hợp lệ'),
-    status: z.enum(['active', 'inactive', 'out_of_stock', 'low_stock', 'draft']),
+    status: z.enum(['active', 'out_of_stock', 'draft']),
     description: z.string().optional(),
     color: z.string().optional(),
     size: z.string().optional(),
@@ -24,9 +24,7 @@ type ProductFormValues = z.infer<typeof productSchema>
 
 const STATUS_OPTIONS = [
     { value: 'active', label: 'Đang bán' },
-    { value: 'inactive', label: 'Ngừng bán' },
     { value: 'out_of_stock', label: 'Hết hàng' },
-    { value: 'low_stock', label: 'Sắp hết hàng' },
     { value: 'draft', label: 'Bản nháp' },
 ]
 

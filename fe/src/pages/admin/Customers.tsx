@@ -48,7 +48,6 @@ const AdminCustomers = () => {
     keyword: searchParams.get('keyword') || '',
     status: searchParams.get('status') || '',
   })
-  const [selectedCustomers, setSelectedCustomers] = useState<Set<string>>(new Set())
   const [statusModalOpen, setStatusModalOpen] = useState(false)
   const [customerToUpdate, setCustomerToUpdate] = useState<AdminCustomer | null>(null)
   const [newStatus, setNewStatus] = useState<'active' | 'inactive'>('active')
@@ -119,23 +118,6 @@ const AdminCustomers = () => {
     setSearchParams(params, { replace: true })
   }, [filters, setSearchParams])
 
-  const handleSelectAll = (checked: boolean) => {
-    if (checked) {
-      setSelectedCustomers(new Set(customers.map((c) => c._id)))
-    } else {
-      setSelectedCustomers(new Set())
-    }
-  }
-
-  const handleSelectCustomer = (customerId: string, checked: boolean) => {
-    const newSelected = new Set(selectedCustomers)
-    if (checked) {
-      newSelected.add(customerId)
-    } else {
-      newSelected.delete(customerId)
-    }
-    setSelectedCustomers(newSelected)
-  }
 
   const handleExportExcel = async () => {
     try {
@@ -311,25 +293,17 @@ const AdminCustomers = () => {
 
   const columns: Column<AdminCustomer>[] = [
     {
-      key: 'checkbox',
-      header: (
-        <input
-          type="checkbox"
-          className="rounded border-gray-300 text-primary focus:ring-primary bg-transparent cursor-pointer w-4 h-4"
-          checked={selectedCustomers.size === customers.length && customers.length > 0}
-          onChange={(e) => handleSelectAll(e.target.checked)}
-        />
-      ),
-      render: (customer) => (
-        <input
-          type="checkbox"
-          className="rounded border-gray-300 text-primary focus:ring-primary bg-transparent cursor-pointer w-4 h-4"
-          checked={selectedCustomers.has(customer._id)}
-          onChange={(e) => handleSelectCustomer(customer._id, e.target.checked)}
-        />
-      ),
-      headerClassName: 'w-4',
-      cellClassName: 'w-4',
+      key: 'stt',
+      header: 'STT',
+      headerClassName: 'w-16 text-center',
+      cellClassName: 'w-16 text-center',
+      render: (_customer, index) => {
+        const page = Number(pagination.page) || 1
+        const limit = Number(pagination.limit) || PAGINATION.DEFAULT_LIMIT
+        const idx = typeof index === 'number' ? index : 0
+        const stt = (page - 1) * limit + idx + 1
+        return <span className="text-text-sub dark:text-gray-400 font-medium">{isNaN(stt) ? '-' : String(stt)}</span>
+      },
     },
     {
       key: 'customer',
@@ -624,12 +598,18 @@ const AdminCustomers = () => {
                   }`}
                 >
                   <div className="flex items-start gap-3 mb-4">
-                    <input
-                      type="checkbox"
-                      className="mt-2 rounded border-gray-300 text-primary focus:ring-primary bg-transparent cursor-pointer w-4 h-4"
-                      checked={selectedCustomers.has(customer._id)}
-                      onChange={(e) => handleSelectCustomer(customer._id, e.target.checked)}
-                    />
+                    <div className="mt-2 w-8 text-center">
+                      <span className="text-text-sub dark:text-gray-400 font-medium text-sm">
+                        {(() => {
+                          const page = Number(pagination.page) || 1
+                          const limit = Number(pagination.limit) || PAGINATION.DEFAULT_LIMIT
+                          const idx = customers.indexOf(customer)
+                          if (idx < 0) return '-'
+                          const stt = (page - 1) * limit + idx + 1
+                          return isNaN(stt) ? '-' : String(stt)
+                        })()}
+                      </span>
+                    </div>
                     {avatarUrl ? (
                       <div
                         className={`size-10 rounded-full bg-gray-200 overflow-hidden flex-shrink-0 ${
@@ -928,7 +908,7 @@ const AdminCustomers = () => {
                                 </span>
                               </td>
                               <td className="px-4 py-3 text-sm font-bold text-primary text-right">
-                                {formatPrice(order['cost_summary.total'] || 0)}
+                                {formatPrice((order as any).total || (order as any)['cost_summary.total'] || (order as any).cost_summary?.total || 0)}
                               </td>
                             </tr>
                           )

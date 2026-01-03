@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import AdminLayout from '@/components/admin/AdminLayout'
 import StatsCard from '@/components/admin/StatsCard'
 import Chart from '@/components/admin/Chart'
-import PieChart from '@/components/admin/PieChart'
+import OrderStatusDistribution from '@/components/admin/OrderStatusDistribution'
 import TopProductsList from '@/components/admin/TopProductsList'
 import DateRangeButtons from '@/components/admin/DateRangeButtons'
 import Skeleton from '@/components/common/Skeleton'
@@ -12,7 +12,7 @@ import * as adminService from '@/services/admin.service'
 const AdminDashboard = () => {
   const [stats, setStats] = useState<adminService.DashboardStats | null>(null)
   const [chartData, setChartData] = useState<adminService.RevenueChartData[]>([])
-  const [categoryData, setCategoryData] = useState<adminService.CategoryRevenue[]>([])
+  const [orderStatusData, setOrderStatusData] = useState<adminService.OrderStatusDistribution[]>([])
   const [topProducts, setTopProducts] = useState<adminService.TopProduct[]>([])
   const [loading, setLoading] = useState(true)
   const [dateRange, setDateRange] = useState<{ start_date?: string; end_date?: string }>({})
@@ -29,21 +29,21 @@ const AdminDashboard = () => {
           ? dateRange
           : { ...dateRange, days: 30 }
 
-        const [statsData, chartDataResult, categoryRevenueData, topProductsData] = await Promise.all([
+        const [statsData, chartDataResult, orderStatusDistributionData, topProductsData] = await Promise.all([
           adminService.getDashboardStats(dateRange),
           adminService.getRevenueChart(chartParams),
-          adminService.getCategoryRevenue(dateRange),
-          adminService.getTopProducts({ ...dateRange, limit: 4 }),
+          adminService.getOrderStatusDistribution(dateRange),
+          adminService.getTopProducts({ ...dateRange, limit: 5 }),
         ])
         setStats(statsData)
         setChartData(chartDataResult)
-        setCategoryData(categoryRevenueData)
+        setOrderStatusData(orderStatusDistributionData)
         setTopProducts(topProductsData)
       } catch (error: any) {
         console.error('Failed to fetch dashboard data:', error)
         showError(error.response?.data?.message || 'Không thể tải dữ liệu dashboard.')
         // Set empty arrays on error to prevent crashes
-        setCategoryData([])
+        setOrderStatusData([])
         setTopProducts([])
       } finally {
         setLoading(false)
@@ -81,7 +81,7 @@ const AdminDashboard = () => {
             ))}
           </div>
         ) : stats ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6 mb-8">
             <StatsCard
               title="Doanh thu thuần"
               value={stats.total_revenue}
@@ -114,6 +114,22 @@ const AdminDashboard = () => {
               }
             />
             <StatsCard
+              title="Giá trị trung bình đơn"
+              value={stats.average_order_value || 0}
+              icon="local_mall"
+              iconBgColor="orange"
+              formatCurrency
+              unit="VNĐ"
+              trend={
+                stats.average_order_value_change !== undefined
+                  ? {
+                      value: stats.average_order_value_change,
+                      isPositive: stats.average_order_value_change >= 0,
+                    }
+                  : undefined
+              }
+            />
+            <StatsCard
               title="Tổng khách hàng"
               value={stats.total_customers}
               icon="people"
@@ -123,6 +139,21 @@ const AdminDashboard = () => {
                   ? {
                       value: stats.customers_change,
                       isPositive: stats.customers_change >= 0,
+                    }
+                  : undefined
+              }
+            />
+            <StatsCard
+              title="Tỷ lệ chuyển đổi"
+              value={stats.conversion_rate || 0}
+              icon="ads_click"
+              iconBgColor="green"
+              unit="%"
+              trend={
+                stats.conversion_rate_change !== undefined
+                  ? {
+                      value: stats.conversion_rate_change,
+                      isPositive: stats.conversion_rate_change >= 0,
                     }
                   : undefined
               }
@@ -153,7 +184,7 @@ const AdminDashboard = () => {
             type="line"
             height={320}
             title="Biểu đồ tăng trưởng"
-            subtitle="So sánh doanh thu (xanh) và lợi nhuận (tím) qua các tháng"
+            subtitle="Doanh thu qua các tháng"
             showExportButton
           />
         )}
@@ -167,29 +198,15 @@ const AdminDashboard = () => {
             </div>
           </div>
         ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8 mt-8">
-            {categoryData.length > 0 ? (
-              <PieChart
-                data={categoryData}
-                centerText={
-                  categoryData.length > 0
-                    ? {
-                        value: `${categoryData[0].percentage.toFixed(0)}%`,
-                        label: categoryData[0].name,
-                      }
-                    : undefined
-                }
-              />
-            ) : (
-              <div className="bg-white dark:bg-[#1a2c32] rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm p-6 flex items-center justify-center min-h-[300px]">
-                <p className="text-text-sub dark:text-gray-400">Không có dữ liệu</p>
-              </div>
-            )}
-            <div className="lg:col-span-2">
+          <div className="flex flex-col md:flex-row gap-2 mb-8 mt-8 items-stretch">
+            <div className="flex md:w-1/3 lg:w-1/3">
+              <OrderStatusDistribution data={orderStatusData} />
+            </div>
+            <div className="flex md:w-2/3 lg:w-2/3">
               {topProducts.length > 0 ? (
                 <TopProductsList products={topProducts} />
               ) : (
-                <div className="bg-white dark:bg-[#1a2c32] rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm p-6 flex items-center justify-center min-h-[300px]">
+                <div className="bg-white dark:bg-[#1a2c32] rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm p-6 flex items-center justify-center min-h-[300px] w-full">
                   <p className="text-text-sub dark:text-gray-400">Không có dữ liệu</p>
                 </div>
               )}

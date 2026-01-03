@@ -6,10 +6,14 @@ export interface DashboardStats {
   total_orders: number
   total_customers: number
   total_products: number
+  average_order_value?: number
+  conversion_rate?: number
   revenue_change?: number
   orders_change?: number
   customers_change?: number
   products_change?: number
+  average_order_value_change?: number
+  conversion_rate_change?: number
 }
 
 /**

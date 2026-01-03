@@ -1,6 +1,6 @@
 import api from './api'
 import { API_ENDPOINTS, PAGINATION } from '@/utils/constants'
-import type { ApiResponse, Product, Order, User } from '@/types'
+import type { ApiResponse, Product, Order, User, OrderStatus } from '@/types'
 import type {
   DashboardStats,
   RevenueChartData,
@@ -241,6 +241,25 @@ export const getOrders = async (
 }
 
 /**
+ * Update order status (admin)
+ * Backend endpoint: PUT /admin/orders/:id/status
+ */
+export const updateOrderStatus = async (
+  id: string,
+  status: OrderStatus
+): Promise<{ order_id: string; status: string }> => {
+  try {
+    const response = await api.put<ApiResponse<{ order_id: string; status: string }>>(
+      API_ENDPOINTS.ADMIN.UPDATE_ORDER_STATUS(id),
+      { status }
+    )
+    return response.data.data
+  } catch (error: any) {
+    throw error
+  }
+}
+
+/**
  * Lấy danh sách customers (admin)
  * Backend endpoint: GET /admin/customers
  */
@@ -394,6 +413,69 @@ export const getTopProducts = async (params?: {
   try {
     const response = await api.get<ApiResponse<TopProduct[]>>(
       API_ENDPOINTS.ADMIN.TOP_PRODUCTS,
+      { params: params ? cleanParams(params) : undefined }
+    )
+    return response.data.data
+  } catch (error: any) {
+    throw error
+  }
+}
+
+/**
+ * Interface cho daily revenue
+ */
+export interface DailyRevenue {
+  date: string
+  orders: number
+  revenue: number
+  profit: number
+  new_customers: number
+  status: 'good' | 'warning' | 'bad'
+}
+
+/**
+ * Lấy daily revenue (cho daily revenue table)
+ * Backend endpoint: GET /admin/dashboard/daily-revenue
+ */
+export const getDailyRevenue = async (params?: {
+  start_date?: string
+  end_date?: string
+  limit?: number
+}): Promise<DailyRevenue[]> => {
+  try {
+    const response = await api.get<ApiResponse<DailyRevenue[]>>(
+      API_ENDPOINTS.ADMIN.DAILY_REVENUE,
+      { params: params ? cleanParams(params) : undefined }
+    )
+    return response.data.data
+  } catch (error: any) {
+    throw error
+  }
+}
+
+/**
+ * Interface cho order status distribution
+ */
+export interface OrderStatusDistribution {
+  status: string
+  label: string
+  count: number
+  revenue: number
+  color: string
+  icon: string
+}
+
+/**
+ * Lấy order status distribution (cho order status distribution component)
+ * Backend endpoint: GET /admin/dashboard/order-status-distribution
+ */
+export const getOrderStatusDistribution = async (params?: {
+  start_date?: string
+  end_date?: string
+}): Promise<OrderStatusDistribution[]> => {
+  try {
+    const response = await api.get<ApiResponse<OrderStatusDistribution[]>>(
+      API_ENDPOINTS.ADMIN.ORDER_STATUS_DISTRIBUTION,
       { params: params ? cleanParams(params) : undefined }
     )
     return response.data.data

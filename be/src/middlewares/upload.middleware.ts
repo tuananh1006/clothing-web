@@ -82,3 +82,26 @@ export const uploadReviewImages = (req: Request, res: Response, next: NextFuncti
   next()
 }
 
+// Single file upload middleware for logo (optional - can also accept logo_url in body)
+export const uploadLogo = (req: Request, res: Response, next: NextFunction) => {
+  // Only use multer if Content-Type is multipart/form-data
+  if (req.headers['content-type']?.includes('multipart/form-data')) {
+    return upload.single('logo')(req, res, (err: any) => {
+      // Ignore multer errors if no file is provided (fallback to logo_url in body)
+      if (err instanceof multer.MulterError && err.code === 'LIMIT_FILE_SIZE') {
+        return res.status(413).json({
+          message: 'File size too large. Maximum size is 5MB'
+        })
+      }
+      if (err) {
+        return res.status(400).json({
+          message: err.message || 'File upload error'
+        })
+      }
+      next()
+    })
+  }
+  // If not multipart/form-data, skip multer and continue
+  next()
+}
+

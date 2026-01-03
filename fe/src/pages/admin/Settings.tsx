@@ -25,7 +25,7 @@ const AdminSettings = () => {
     handleSubmit: handleSubmitPayment,
     watch: watchPayment,
     setValue: setPaymentValue,
-    formState: { errors: paymentErrors },
+    formState: { errors: paymentErrors, isDirty: isPaymentDirty },
   } = useForm({
     defaultValues: {
       cod: true,
@@ -40,7 +40,7 @@ const AdminSettings = () => {
     handleSubmit: handleSubmitShipping,
     watch: watchShipping,
     setValue: setShippingValue,
-    formState: { errors: shippingErrors },
+    formState: { errors: shippingErrors, isDirty: isShippingDirty },
   } = useForm({
     defaultValues: {
       default_fee: 30000,
@@ -55,7 +55,8 @@ const AdminSettings = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    watch,
+    formState: { errors, isDirty },
     reset,
   } = useForm<Settings['general']>({
     defaultValues: {
@@ -161,8 +162,18 @@ const AdminSettings = () => {
       setIsSaving(true)
       const result = await adminService.uploadLogo(file)
       showSuccess('Đã tải logo thành công')
+      // Update settings state immediately with new logo URL
+      if (result.logo_url && settings) {
+        setSettings({
+          ...settings,
+          general: {
+            ...settings.general,
+            logo_url: result.logo_url,
+          },
+        })
+      }
       setLogoFile(null)
-      fetchSettings()
+      await fetchSettings()
       setHasChanges(false)
     } catch (error: any) {
       showError(error.response?.data?.message || 'Không thể tải logo')
@@ -297,6 +308,12 @@ const AdminSettings = () => {
                 }
               }}
               isLoading={isSaving}
+              disabled={
+                isSaving ||
+                (activeTab === 'general' && !isDirty && !logoFile) ||
+                (activeTab === 'payment' && !isPaymentDirty) ||
+                (activeTab === 'shipping' && !isShippingDirty)
+              }
             >
               <span className="material-symbols-outlined text-[18px] mr-2">save</span>
               Lưu thay đổi

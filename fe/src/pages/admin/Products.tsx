@@ -87,8 +87,14 @@ const AdminProducts = () => {
   const fetchProducts = useCallback(async () => {
     try {
       setIsLoading(true)
+      // Prepare filters for API call - ensure status is included even if empty
+      const apiFilters = {
+        ...filters,
+        // Explicitly include status even if empty string (will be cleaned by service)
+        status: filters.status || undefined,
+      }
       // Call service using filters. backend expects category_id
-      const response = await adminService.getProducts(filters)
+      const response = await adminService.getProducts(apiFilters)
       // Cast the response products to AdminProductItem[] as we know the shape differs from public Product type
       setProducts(response.products as unknown as AdminProductItem[])
       setPagination(response.pagination)
@@ -402,15 +408,6 @@ const AdminProducts = () => {
                 ))}
               </select>
             </div>
-            <button
-              className="px-4 py-2.5 border border-gray-200 dark:border-gray-700 rounded-lg text-text-sub hover:text-text-main hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors flex items-center justify-center gap-2"
-              onClick={() => {
-                fetchProducts()
-              }}
-            >
-              <span className="material-symbols-outlined text-[20px]">filter_list</span>
-              <span className="hidden md:inline">Lọc</span>
-            </button>
           </div>
         </div>
 

@@ -152,3 +152,20 @@ export const updateSettingsGeneralValidator = validate(
     ['body']
   )
 )
+
+export const updateOrderStatusValidator = validate(
+  checkSchema(
+    {
+      status: {
+        in: ['body'],
+        isString: { errorMessage: 'Status must be a string' },
+        notEmpty: { errorMessage: 'Status is required' },
+        isIn: {
+          options: [['pending', 'processing', 'shipping', 'completed', 'cancelled']],
+          errorMessage: 'Status must be one of: pending, processing, shipping, completed, cancelled'
+        }
+      }
+    },
+    ['body']
+  )
+)

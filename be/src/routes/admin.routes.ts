@@ -4,6 +4,7 @@ import {
   requireAdmin,
   updateProductValidator,
   updateCustomerStatusValidator,
+  updateOrderStatusValidator,
   updateSettingsGeneralValidator
 } from '~/middlewares/admin.middleware'
 import {
@@ -12,6 +13,8 @@ import {
   statsOverviewController,
   categoryRevenueController,
   topProductsController,
+  dailyRevenueController,
+  orderStatusDistributionController,
   adminCreateProductController,
   adminGetProductsController,
   adminGetProductsMetadataController,
@@ -20,6 +23,7 @@ import {
   adminDeleteProductController,
   adminOrdersStatsController,
   adminGetOrdersController,
+  adminUpdateOrderStatusController,
   adminGetCustomersController,
   adminGetCustomerDetailController,
   adminUpdateCustomerStatusController,
@@ -32,6 +36,7 @@ import {
 
 // Settings routes are appended after customer routes
 import { wrapRequestHandler } from '~/utils/handler'
+import { uploadLogo } from '~/middlewares/upload.middleware'
 
 const adminRouter = Router()
 
@@ -170,6 +175,34 @@ adminRouter.get(
 )
 
 /**
+ * Description: Admin Daily Revenue
+ * Path: /dashboard/daily-revenue
+ * Method: GET
+ * Header: { Authorization: Bearer <access_token> }
+ * Query: { start_date?, end_date?, limit? }
+ */
+adminRouter.get(
+  '/dashboard/daily-revenue',
+  accessTokenValidator,
+  requireAdmin,
+  wrapRequestHandler(dailyRevenueController)
+)
+
+/**
+ * Description: Admin Order Status Distribution
+ * Path: /dashboard/order-status-distribution
+ * Method: GET
+ * Header: { Authorization: Bearer <access_token> }
+ * Query: { start_date?, end_date? }
+ */
+adminRouter.get(
+  '/dashboard/order-status-distribution',
+  accessTokenValidator,
+  requireAdmin,
+  wrapRequestHandler(orderStatusDistributionController)
+)
+
+/**
  * Description: Admin - Order stats
  * Path: /orders/stats
  * Method: GET
@@ -183,6 +216,21 @@ adminRouter.get('/orders/stats', accessTokenValidator, requireAdmin, wrapRequest
  * Query: { page?, limit?, keyword?, status?, date_from?, date_to?, sort_by?, order? }
  */
 adminRouter.get('/orders', accessTokenValidator, requireAdmin, wrapRequestHandler(adminGetOrdersController))
+
+/**
+ * Description: Admin - Update order status
+ * Path: /orders/:id/status
+ * Method: PUT
+ * Header: { Authorization: Bearer <access_token> }
+ * Body: { status: 'pending' | 'processing' | 'shipping' | 'completed' | 'cancelled' }
+ */
+adminRouter.put(
+  '/orders/:id/status',
+  accessTokenValidator,
+  requireAdmin,
+  updateOrderStatusValidator,
+  wrapRequestHandler(adminUpdateOrderStatusController)
+)
 
 /**
  * Description: Admin - List customers
@@ -230,6 +278,7 @@ adminRouter.post(
   '/settings/logo',
   accessTokenValidator,
   requireAdmin,
+  uploadLogo,
   wrapRequestHandler(adminUpdateSettingsLogoController)
 )
 adminRouter.put(

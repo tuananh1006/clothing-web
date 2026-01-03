@@ -4,7 +4,7 @@ import Skeleton from '@/components/common/Skeleton'
 export interface Column<T> {
   key: string
   header: string | ReactNode
-  render: (item: T) => ReactNode
+  render: (item: T, index?: number) => ReactNode
   sortable?: boolean
   headerClassName?: string
   cellClassName?: string
@@ -107,14 +107,14 @@ const DataTable = <T extends { _id?: string; id?: string }>({
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-100 dark:divide-gray-800 text-sm">
-            {data.map((item) => (
+            {data.map((item, rowIndex) => (
               <tr
                 key={item._id || item.id || Math.random()}
                 className="group hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors"
               >
                 {columns.map((col) => (
                   <td key={col.key} className={`p-4 text-text-main dark:text-white ${col.cellClassName || ''}`}>
-                    {col.render(item)}
+                    {col.render(item, rowIndex)}
                   </td>
                 ))}
               </tr>

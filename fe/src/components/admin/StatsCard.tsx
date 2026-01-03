@@ -25,12 +25,16 @@ const StatsCard = ({
   // Format value
   let displayValue: string
   if (formatCurrency && typeof value === 'number') {
-    // Format như "345.2M VNĐ"
+    // Format như "345.2M VNĐ" hoặc "224K VNĐ"
     const compact = formatCompactNumber(value)
     displayValue = compact
   } else if (typeof value === 'number') {
-    // Format số thường như "1,540"
-    displayValue = new Intl.NumberFormat('vi-VN').format(value)
+    // Format số thường như "1,540" hoặc "3.8" cho percentage
+    if (unit === '%') {
+      displayValue = value.toFixed(1)
+    } else {
+      displayValue = new Intl.NumberFormat('vi-VN').format(value)
+    }
   } else {
     displayValue = value
   }

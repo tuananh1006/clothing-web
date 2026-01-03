@@ -111,16 +111,6 @@ const Chart = ({
               fill="#19b3e6"
               name="Doanh thu"
             />
-            {data[0]?.orders !== undefined && (
-              <DataComponent
-                type="monotone"
-                dataKey="orders"
-                stroke="#8b5cf6"
-                fill="#8b5cf6"
-                name="Lợi nhuận"
-                strokeDasharray="5 5"
-              />
-            )}
           </ChartComponent>
         </ResponsiveContainer>
       </div>

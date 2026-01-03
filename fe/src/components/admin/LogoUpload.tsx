@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 
 interface LogoUploadProps {
   currentLogoUrl?: string | null
@@ -18,6 +18,13 @@ const LogoUpload = ({
   const [preview, setPreview] = useState<string | null>(currentLogoUrl || null)
   const [error, setError] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
+
+  // Update preview when currentLogoUrl changes
+  useEffect(() => {
+    if (currentLogoUrl) {
+      setPreview(currentLogoUrl)
+    }
+  }, [currentLogoUrl])
 
   const handleFileInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
