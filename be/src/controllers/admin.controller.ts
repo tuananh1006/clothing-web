@@ -29,6 +29,11 @@ export const statsOverviewController = async (req: Request, res: Response) => {
   return res.json({ message: 'Get stats overview successfully', data })
 }
 
+export const adminCreateProductController = async (req: Request, res: Response) => {
+  const data = await adminService.createAdminProduct(req.body)
+  return res.json({ message: 'Create admin product successfully', data })
+}
+
 export const adminGetProductsController = async (req: Request, res: Response) => {
   const { page, limit, keyword, category_id, status, sort_by, order } = req.query
   const data = await adminService.getAdminProducts({

@@ -64,6 +64,7 @@ export const API_ENDPOINTS = {
     REVENUE_CHART: '/admin/dashboard/revenue-chart',
     STATS_OVERVIEW: '/admin/stats/overview',
     PRODUCTS: '/admin/products',
+    PRODUCTS_METADATA: '/admin/products/metadata',
     PRODUCT_DETAIL: (id: string) => `/admin/products/${id}`,
     ORDERS: '/admin/orders',
     ORDERS_STATS: '/admin/orders/stats',

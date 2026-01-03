@@ -104,6 +104,27 @@ export const getProducts = async (
 }
 
 /**
+ * Lấy metadata cho trang products (categories, statuses)
+ * Backend endpoint: GET /admin/products/metadata
+ */
+export const getProductsMetadata = async (): Promise<{
+  categories: { id: string; name: string; slug: string }[]
+  statuses: { value: string; label: string }[]
+}> => {
+  try {
+    const response = await api.get<
+      ApiResponse<{
+        categories: { id: string; name: string; slug: string }[]
+        statuses: { value: string; label: string }[]
+      }>
+    >(API_ENDPOINTS.ADMIN.PRODUCTS_METADATA)
+    return response.data.data
+  } catch (error: any) {
+    throw error
+  }
+}
+
+/**
  * Lấy product detail (admin)
  * Backend endpoint: GET /admin/products/:id
  */
@@ -123,6 +144,19 @@ export const getProductDetail = async (id: string): Promise<Product> => {
 export const updateProduct = async (id: string, data: Partial<Product>): Promise<Product> => {
   try {
     const response = await api.put<ApiResponse<Product>>(API_ENDPOINTS.ADMIN.PRODUCT_DETAIL(id), data)
+    return response.data.data
+  } catch (error: any) {
+    throw error
+  }
+}
+
+/**
+ * Create product
+ * Backend endpoint: POST /admin/products
+ */
+export const createProduct = async (data: Partial<Product>): Promise<Product> => {
+  try {
+    const response = await api.post<ApiResponse<Product>>(API_ENDPOINTS.ADMIN.PRODUCTS, data)
     return response.data.data
   } catch (error: any) {
     throw error

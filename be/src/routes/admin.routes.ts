@@ -10,6 +10,7 @@ import {
   dashboardStatsController,
   revenueChartController,
   statsOverviewController,
+  adminCreateProductController,
   adminGetProductsController,
   adminGetProductsMetadataController,
   adminGetProductDetailController,
@@ -63,6 +64,20 @@ adminRouter.get(
  * Query: { page?, limit?, keyword?, category_id?, status?, sort_by?, order? }
  */
 adminRouter.get('/products', accessTokenValidator, requireAdmin, wrapRequestHandler(adminGetProductsController))
+
+/**
+ * Description: Admin - Create product
+ * Path: /products
+ * Method: POST
+ * Header: { Authorization: Bearer <access_token> }
+ */
+adminRouter.post(
+  '/products',
+  accessTokenValidator,
+  requireAdmin,
+  updateProductValidator,
+  wrapRequestHandler(adminCreateProductController)
+)
 
 /**
  * Description: Admin - Products metadata (filters)

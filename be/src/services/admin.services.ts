@@ -77,39 +77,53 @@ class AdminService {
 
     const categories = categoryIds.length
       ? await databaseServices.categories
-          .find({ _id: { $in: categoryIds } })
-          .project({ name: 1 })
-          .toArray()
+        .find({ _id: { $in: categoryIds } })
+        .project({ name: 1 })
+        .toArray()
       : []
 
     const catMap = new Map(categories.map((c) => [c._id?.toString(), c.name]))
-
     const toVnCurrency = (n: number) => `${new Intl.NumberFormat('vi-VN').format(n)}đ`
-    const mapStatus = (qty: number) => {
-      if (!qty || qty === 0)
+
+    const mapStatus = (p: any) => {
+      const qty = p.quantity ?? 0
+      // Respect DB status first
+      if (p.status === 'inactive')
+        return { stock_status: 'inactive', status: 'inactive', status_label: 'Ngừng bán', status_color: 'red' }
+      if (p.status === 'draft')
+        return { stock_status: 'draft', status: 'draft', status_label: 'Bản nháp', status_color: 'gray' }
+
+      // Then check stock
+      if (qty === 0 || p.status === 'out_of_stock')
         return { stock_status: 'out_of_stock', status: 'out_of_stock', status_label: 'Hết hàng', status_color: 'red' }
-      if (qty > 0 && qty < 10)
+      if (qty < 10 || p.status === 'low_stock')
         return { stock_status: 'low_stock', status: 'active', status_label: 'Sắp hết', status_color: 'yellow' }
+
       return { stock_status: 'in_stock', status: 'active', status_label: 'Đang bán', status_color: 'green' }
     }
 
     const mapped = items.map((p) => {
       const qty = p.quantity ?? 0
-      const m = mapStatus(qty)
+      const m = mapStatus(p)
       return {
         _id: p._id?.toString() || '',
         id: p._id?.toString() || '',
         name: p.name,
         sku: p.slug,
+        image: p.image,
         thumbnail_url: p.image,
+        category: p.category?.toString() || '',
         category_name: catMap.get(p.category?.toString()) || '',
         price: p.price,
         price_display: toVnCurrency(p.price || 0),
         stock_quantity: qty,
         stock_status: m.stock_status,
-        status: m.status,
+        status: p.status || m.status,
         status_label: m.status_label,
-        status_color: m.status_color
+        status_color: m.status_color,
+        description: p.description || '',
+        colors: p.colors || [],
+        sizes: p.sizes || []
       }
     })
 
@@ -263,6 +277,63 @@ class AdminService {
       }
     }
   }
+  async createAdminProduct(payload: {
+    name: string
+    price: number
+    quantity: number
+    category_id: string
+    image: string
+    status?: string
+    description?: string
+    is_featured?: boolean
+    colors?: string[]
+    sizes?: string[]
+  }) {
+    // Basic slug generation (can be improved)
+    const slug = payload.name
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[đĐ]/g, 'd')
+      .replace(/([^0-9a-z-\s])/g, '')
+      .replace(/(\s+)/g, '-')
+      .replace(/-+/g, '-')
+      .replace(/^-+|-+$/g, '')
+
+    const doc: any = {
+      name: payload.name,
+      slug: `${slug}-${Date.now()}`,
+      price: payload.price,
+      quantity: payload.quantity,
+      image: payload.image,
+      description: payload.description || '',
+      is_featured: payload.is_featured || false,
+      colors: payload.colors || [],
+      sizes: payload.sizes || [],
+      status: payload.status || 'active',
+      created_at: new Date(),
+      updated_at: new Date()
+    }
+
+    if (payload.category_id) {
+      let catId: ObjectId | undefined
+      try {
+        catId = new ObjectId(payload.category_id)
+      } catch (_) {
+        // ignore invalid ObjectId
+      }
+      if (catId) {
+        doc.category = catId
+      } else {
+        const cat = await databaseServices.categories.findOne({ slug: payload.category_id })
+        if (cat?._id) doc.category = cat._id
+      }
+    }
+
+    const result = await databaseServices.products.insertOne(doc)
+    return this.getAdminProductDetail(result.insertedId.toString())
+  }
+
   async getAdminProductDetail(id: string) {
     const _id = new ObjectId(id)
     const p = await databaseServices.products.findOne({ _id })
@@ -284,8 +355,11 @@ class AdminService {
       quantity?: number
       category_id?: string
       image?: string
+      status?: string
       description?: string
       is_featured?: boolean
+      colors?: string[]
+      sizes?: string[]
     }
   ) {
     const _id = new ObjectId(id)
@@ -294,8 +368,11 @@ class AdminService {
     if (payload.price !== undefined) set.price = payload.price
     if (payload.quantity !== undefined) set.quantity = payload.quantity
     if (payload.image !== undefined) set.image = payload.image
+    if (payload.status !== undefined) set.status = payload.status
     if (payload.description !== undefined) set.description = payload.description
     if (payload.is_featured !== undefined) set.is_featured = payload.is_featured
+    if (payload.colors !== undefined) set.colors = payload.colors
+    if (payload.sizes !== undefined) set.sizes = payload.sizes
     if (payload.category_id) {
       let catId: ObjectId | undefined
       try {
