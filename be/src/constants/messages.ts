@@ -27,8 +27,10 @@ export const USERS_MESSAGES = {
   PROVIDER_IS_REQUIRED: 'Provider is required',
   TOKEN_IS_REQUIRED: 'Token is required',
   USER_NOT_FOUND: 'User not found',
+  CURRENT_PASSWORD_INCORRECT: 'Current password is incorrect',
   EMAIL_ALREADY_EXISTS: 'Email already exists',
   GET_USER_SUCCESS: 'Get user success',
   UPDATE_USER_SUCCESS: 'Update user success',
-  UPLOAD_AVATAR_SUCCESS: 'Upload avatar success'
+  UPLOAD_AVATAR_SUCCESS: 'Upload avatar success',
+  CHANGE_PASSWORD_SUCCESS: 'Change password success'
 } as const

@@ -7,7 +7,8 @@ import {
   socialLoginValidator,
   forgotPasswordValidator,
   resetPasswordValidator,
-  verifyForgotPasswordTokenValidator
+  verifyForgotPasswordTokenValidator,
+  changePasswordValidator
 } from '~/middlewares/users.middleware'
 import {
   loginController,
@@ -20,7 +21,8 @@ import {
   verifyForgotPasswordTokenController,
   getMeController,
   updateMeController,
-  uploadAvatarController
+  uploadAvatarController,
+  changePasswordController
 } from '~/controllers/users.controller'
 import { wrapRequestHandler } from '~/utils/handler'
 import { uploadAvatar as uploadAvatarMiddleware } from '~/middlewares/upload.middleware'
@@ -101,6 +103,20 @@ usersRouter.post(
   accessTokenValidator,
   uploadAvatarMiddleware,
   wrapRequestHandler(uploadAvatarController)
+)
+
+/**
+ * Description: Change current user password
+ * Path: /me/password
+ * Method: PATCH
+ * Header: { Authorization: Bearer <access_token> }
+ * Request Body: { current_password: string, new_password: string, password_confirmation: string }
+ */
+usersRouter.patch(
+  '/me/password',
+  accessTokenValidator,
+  changePasswordValidator,
+  wrapRequestHandler(changePasswordController)
 )
 
 export default usersRouter

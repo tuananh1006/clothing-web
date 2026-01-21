@@ -7,7 +7,8 @@ import {
   SocialLoginRequestBody,
   ForgotPasswordRequestBody,
   ResetPasswordRequestBody,
-  VerifyForgotPasswordTokenReqBody
+  VerifyForgotPasswordTokenReqBody,
+  ChangePasswordRequestBody
 } from '~/models/requests/users.requests'
 import { error } from 'node:console'
 import { ObjectId } from 'mongodb'
@@ -178,6 +179,22 @@ export const uploadAvatarController = async (req: Request, res: Response, next: 
     return res.status(HTTP_STATUS.OK).json({
       message: USERS_MESSAGES.UPLOAD_AVATAR_SUCCESS,
       data: result
+    })
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const changePasswordController = async (
+  req: Request<ParamsDictionary, any, ChangePasswordRequestBody>,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { userId } = req.decoded_authorization as any
+    await usersServices.changePassword(userId, req.body.new_password)
+    return res.status(HTTP_STATUS.OK).json({
+      message: USERS_MESSAGES.CHANGE_PASSWORD_SUCCESS
     })
   } catch (error) {
     next(error)

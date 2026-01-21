@@ -30,6 +30,12 @@ export interface ResetPasswordRequestBody {
   password_confirmation: string
 }
 
+export interface ChangePasswordRequestBody {
+  current_password: string
+  new_password: string
+  password_confirmation: string
+}
+
 export interface VerifyForgotPasswordTokenReqBody {
   forgot_password_token: string
 }

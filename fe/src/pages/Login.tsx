@@ -28,6 +28,7 @@ const Login = () => {
   const { showError, showSuccess } = useToast()
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false)
 
   const {
     register,
@@ -109,6 +110,16 @@ const Login = () => {
     }
   }
 
+  const handleTogglePasswordVisibility = () => {
+    setIsPasswordVisible((prev) => !prev)
+  }
+
+  const handlePasswordToggleKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>) => {
+    if (event.key !== 'Enter' && event.key !== ' ') return
+    event.preventDefault()
+    handleTogglePasswordVisibility()
+  }
+
   return (
     <div className="flex flex-col min-h-screen bg-background-light dark:bg-background-dark">
       <Header />
@@ -146,9 +157,23 @@ const Login = () => {
               {/* Password Input */}
               <Input
                 label="Mật khẩu"
-                type="password"
+                type={isPasswordVisible ? 'text' : 'password'}
                 placeholder="••••••••"
                 leftIcon={<span className="material-symbols-outlined">lock</span>}
+                rightIcon={
+                  <button
+                    type="button"
+                    aria-label={isPasswordVisible ? 'Ẩn mật khẩu' : 'Hiện mật khẩu'}
+                    tabIndex={0}
+                    onClick={handleTogglePasswordVisibility}
+                    onKeyDown={handlePasswordToggleKeyDown}
+                    className="p-1 rounded-md hover:text-primary focus:outline-none focus:ring-2 focus:ring-primary/40 transition-colors"
+                  >
+                    <span className="material-symbols-outlined text-[20px] leading-none">
+                      {isPasswordVisible ? 'visibility_off' : 'visibility'}
+                    </span>
+                  </button>
+                }
                 error={errors.password?.message}
                 {...register('password')}
               />

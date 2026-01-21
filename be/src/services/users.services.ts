@@ -405,6 +405,22 @@ class UsersService {
     )
     return { avatar_url }
   }
+
+  async changePassword(user_id: string, new_password: string) {
+    const user = await databaseServices.users.findOne({ _id: new ObjectId(user_id) })
+    if (!user) {
+      throw new ErrorWithStatus(USERS_MESSAGES.USER_NOT_FOUND, HTTP_STATUS.NOT_FOUND)
+    }
+    await databaseServices.users.updateOne(
+      { _id: new ObjectId(user_id) },
+      {
+        $set: {
+          password: hashPassword(new_password),
+          updatedAt: new Date()
+        }
+      }
+    )
+  }
 }
 
 export default new UsersService()

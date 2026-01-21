@@ -100,3 +100,7 @@
 2. **Sử dụng Google Images**: Tiếp tục sử dụng format hiện tại từ `lh3.googleusercontent.com/aida-public/...`
 3. **Sử dụng placeholder service**: Như `via.placeholder.com` hoặc `picsum.photos` cho testing
 
+
+
+
+
