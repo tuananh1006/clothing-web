@@ -23,7 +23,8 @@ export const ToastContextProvider: React.FC<{ children: React.ReactNode }> = ({ 
 
   const showToast = useCallback((message: string, type: ToastType, duration?: number) => {
     const id = Math.random().toString(36).substring(7)
-    setToasts((prev) => [...prev, { id, message, type, duration }])
+    // Chỉ hiển thị 1 toast tại một thời điểm để tránh bị loạn
+    setToasts([{ id, message, type, duration }])
   }, [])
 
   const removeToast = useCallback((id: string) => {

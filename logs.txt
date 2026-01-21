@@ -1,0 +1,16 @@
+react-router-dom.js?v=8f76032e:4413 ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+react-router-dom.js?v=8f76032e:4413 ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+api.ts:35 API Request: GET /wishlists http://localhost:5000/api/v1/wishlists
+api.ts:35 API Request: GET /cart http://localhost:5000/api/v1/cart
+api.ts:66 API Response: GET /wishlists 200
+api.ts:66 API Response: GET /cart 200
+api.ts:35 API Request: GET /categories http://localhost:5000/api/v1/categories
+api.ts:35 API Request: GET /products?page=1&limit=12&order=desc http://localhost:5000/api/v1/products?page=1&limit=12&order=desc
+api.ts:35 API Request: GET /categories http://localhost:5000/api/v1/categories
+api.ts:35 API Request: GET /products?page=1&limit=12&order=desc http://localhost:5000/api/v1/products?page=1&limit=12&order=desc
+2
+api.ts:66 API Response: GET /categories 200
+2
+api.ts:66 API Response: GET /products?page=1&limit=12&order=desc 200
+onboarding.js:30 Uncaught (in promise) undefined
+﻿

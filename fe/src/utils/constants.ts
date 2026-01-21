@@ -37,6 +37,12 @@ export const API_ENDPOINTS = {
     UPDATE_ITEM: (itemId: string) => `/cart/items/${itemId}`,
     DELETE_ITEM: (itemId: string) => `/cart/items/${itemId}`,
   },
+  // Wishlist
+  WISHLIST: {
+    LIST: '/wishlists',
+    ADD: '/wishlists',
+    REMOVE: (productId: string) => `/wishlists/${productId}`,
+  },
   // Locations
   LOCATIONS: {
     PROVINCES: '/locations/provinces',
@@ -105,6 +111,7 @@ export const ROUTES = {
   ORDER_DETAIL: (orderId: string) => `/orders/${orderId}`,
   ORDER_SUCCESS: (orderId: string) => `/orders/${orderId}/success`,
   PROFILE: '/profile',
+  WISHLIST: '/wishlist',
   ABOUT: '/about',
   CONTACT: '/contact',
   TERMS: '/terms',
