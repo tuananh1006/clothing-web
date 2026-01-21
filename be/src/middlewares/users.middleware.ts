@@ -297,3 +297,50 @@ export const verifyForgotPasswordTokenValidator = validate(
     ['body']
   )
 )
+
+export const changePasswordValidator = validate(
+  checkSchema(
+    {
+      current_password: {
+        in: ['body'],
+        notEmpty: { errorMessage: USERS_MESSAGES.USERNAME_AND_PASSWORD_REQUIRED },
+        isString: { errorMessage: USERS_MESSAGES.PASSWORD_MUST_BE_STRING },
+        custom: {
+          options: async (value, { req }) => {
+            const { userId } = req.decoded_authorization as any
+            const user = await databaseServices.users.findOne({
+              _id: new ObjectId(userId)
+            })
+            if (!user) {
+              throw new ErrorWithStatus(USERS_MESSAGES.USER_NOT_FOUND, HTTP_STATUS.NOT_FOUND)
+            }
+            const isCorrect = user.password === hashPassword(value)
+            if (!isCorrect) {
+              throw new ErrorWithStatus(USERS_MESSAGES.CURRENT_PASSWORD_INCORRECT, HTTP_STATUS.BAD_REQUEST)
+            }
+            return true
+          }
+        }
+      },
+      new_password: {
+        in: ['body'],
+        notEmpty: { errorMessage: 'New password is required' },
+        isString: { errorMessage: USERS_MESSAGES.PASSWORD_MUST_BE_STRING },
+        isLength: {
+          options: { min: 6 },
+          errorMessage: USERS_MESSAGES.PASSWORD_MIN_LENGTH
+        }
+      },
+      password_confirmation: {
+        in: ['body'],
+        notEmpty: { errorMessage: 'Password confirmation is required' },
+        isString: { errorMessage: 'Password confirmation must be a string' },
+        custom: {
+          options: (value, { req }) => value === req.body.new_password,
+          errorMessage: USERS_MESSAGES.PASSWORDS_NOT_MATCH
+        }
+      }
+    },
+    ['body']
+  )
+)
