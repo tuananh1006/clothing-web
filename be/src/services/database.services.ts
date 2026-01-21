@@ -8,6 +8,7 @@ import Cart from '~/models/schemas/Cart.schema'
 import Order from '~/models/schemas/Order.schema'
 import Banner from '~/models/schemas/Banner.schema'
 import Review from '~/models/schemas/Review.schema'
+import Wishlist from '~/models/schemas/Wishlist.schema'
 config({ quiet: true }) // tuỳ version dotenv
 
 // Connection URL
@@ -75,6 +76,11 @@ class DatabaseService {
   // Reviews collection
   get reviews(): Collection<Review> {
     return this.db.collection(process.env.DB_REVIEWS_COLLECTION || 'reviews')
+  }
+
+  // Wishlists collection
+  get wishlists(): Collection<Wishlist> {
+    return this.db.collection(process.env.DB_WISHLISTS_COLLECTION || 'wishlists')
   }
 }
 export default new DatabaseService()

@@ -26,6 +26,7 @@ const Terms = lazy(() => import('@/pages/Terms'))
 const SizeGuide = lazy(() => import('@/pages/SizeGuide'))
 const NotFound = lazy(() => import('@/pages/NotFound'))
 const Error500 = lazy(() => import('@/pages/Error500'))
+const Wishlist = lazy(() => import('@/pages/Wishlist'))
 
 // Admin pages
 const AdminDashboard = lazy(() => import('@/pages/admin/Dashboard'))
@@ -89,6 +90,14 @@ export const routes: RouteObject[] = [
   {
     path: '/size-guide',
     element: <SizeGuide />,
+  },
+  {
+    path: '/wishlist',
+    element: (
+      <PrivateRoute>
+        <Wishlist />
+      </PrivateRoute>
+    ),
   },
   // Protected routes (cần authentication)
   {

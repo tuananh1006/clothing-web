@@ -207,6 +207,17 @@ const Header = () => {
           )}
         </div>
 
+        {/* Wishlist (desktop icon) */}
+        {isAuthenticated && (
+          <Link
+            to={ROUTES.WISHLIST}
+            className="hidden sm:flex items-center justify-center rounded-lg size-10 hover:bg-gray-100 dark:hover:bg-gray-700 text-text-main dark:text-gray-200 transition-colors"
+            aria-label="Wishlist"
+          >
+            <span className="material-symbols-outlined">favorite</span>
+          </Link>
+        )}
+
         {/* Cart */}
         <Link
           to={ROUTES.CART}
