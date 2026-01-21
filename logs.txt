@@ -1,16 +1,19 @@
-react-router-dom.js?v=8f76032e:4413 ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
-react-router-dom.js?v=8f76032e:4413 ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
-api.ts:35 API Request: GET /wishlists http://localhost:5000/api/v1/wishlists
-api.ts:35 API Request: GET /cart http://localhost:5000/api/v1/cart
-api.ts:66 API Response: GET /wishlists 200
-api.ts:66 API Response: GET /cart 200
-api.ts:35 API Request: GET /categories http://localhost:5000/api/v1/categories
-api.ts:35 API Request: GET /products?page=1&limit=12&order=desc http://localhost:5000/api/v1/products?page=1&limit=12&order=desc
-api.ts:35 API Request: GET /categories http://localhost:5000/api/v1/categories
-api.ts:35 API Request: GET /products?page=1&limit=12&order=desc http://localhost:5000/api/v1/products?page=1&limit=12&order=desc
-2
-api.ts:66 API Response: GET /categories 200
-2
-api.ts:66 API Response: GET /products?page=1&limit=12&order=desc 200
-onboarding.js:30 Uncaught (in promise) undefined
-﻿
+
+Find in logs
+CtrlF
+Running build in Washington, D.C., USA (East) – iad1
+Build machine configuration: 2 cores, 8 GB
+Cloning github.com/tuananh1006/clothing-web (Branch: new-features, Commit: 68bd6ab)
+Cloning completed: 1.306s
+Restored build cache from previous deployment (Eq2V6GGUEvEu7NKJkscbqhEPAZNQ)
+Running "vercel build"
+Vercel CLI 50.4.8
+Installing dependencies...
+up to date in 2s
+67 packages are looking for funding
+  run `npm fund` for details
+Running "npm run build"
+> yori-fashion-frontend@1.0.0 build
+> tsc --noEmit && vite build
+src/components/common/Toast.tsx(2,18): error TS6133: 'AnimatePresence' is declared but its value is never read.
+Error: Command "npm run build" exited with 2

@@ -1,4 +1,5 @@
 import React, { createContext, useState, useCallback, useContext } from 'react'
+import { AnimatePresence } from 'framer-motion'
 import Toast, { ToastType } from '@/components/common/Toast'
 
 interface ToastItem {
@@ -40,17 +41,18 @@ export const ToastContextProvider: React.FC<{ children: React.ReactNode }> = ({ 
     <ToastContext.Provider value={{ showToast, showSuccess, showError, showInfo, showWarning }}>
       {children}
       {/* Toast Container */}
-      <div className="fixed top-4 right-4 z-50 flex flex-col gap-2 pointer-events-none">
-        {toasts.map((toast) => (
-          <div key={toast.id} className="pointer-events-auto">
+      <div className="fixed top-4 right-4 z-[9999] flex flex-col gap-3 pointer-events-none">
+        <AnimatePresence mode="wait">
+          {toasts.map((toast) => (
             <Toast
+              key={toast.id}
               message={toast.message}
               type={toast.type}
               duration={toast.duration}
               onClose={() => removeToast(toast.id)}
             />
-          </div>
-        ))}
+          ))}
+        </AnimatePresence>
       </div>
     </ToastContext.Provider>
   )

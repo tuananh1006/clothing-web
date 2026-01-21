@@ -131,18 +131,18 @@ const Products = () => {
         <div className="w-full max-w-[1440px] mx-auto px-4 md:px-10 py-6">
           {/* Breadcrumbs */}
           <div className="flex flex-wrap gap-2 py-4 text-sm">
-            <a className="text-text-secondary-light dark:text-text-secondary-dark hover:text-primary dark:hover:text-primary transition-colors" href="#">Home</a>
-            <span className="text-text-secondary-light dark:text-text-secondary-dark">/</span>
-            <span className="text-text-primary-light dark:text-text-primary-dark font-medium">Sản phẩm</span>
+            <a className="text-text-secondary-light dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors" href="#">Home</a>
+            <span className="text-text-secondary-light dark:text-gray-400">/</span>
+            <span className="text-text-primary-light dark:text-gray-100 font-medium">Sản phẩm</span>
           </div>
 
           {/* Page Heading & Controls */}
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-8 border-b border-[#e7f0f3] dark:border-gray-800 mb-8">
             <div className="flex flex-col gap-2">
-              <h1 className="text-4xl md:text-5xl font-black tracking-[-0.033em] text-text-primary-light dark:text-text-primary-dark">
+              <h1 className="text-4xl md:text-5xl font-black tracking-[-0.033em] text-text-primary-light dark:text-gray-50">
                 Tất cả sản phẩm
               </h1>
-              <p className="text-text-secondary-light dark:text-text-secondary-dark text-lg max-w-2xl">
+              <p className="text-text-secondary-light dark:text-gray-300 text-lg max-w-2xl">
                 Khám phá bộ sưu tập sản phẩm chất lượng cao từ YORI
               </p>
             </div>
@@ -157,7 +157,7 @@ const Products = () => {
                     handleFilterChange('sort_by', sort_by as ProductFilters['sort_by'])
                     handleFilterChange('order', order as ProductFilters['order'])
                   }}
-                  className="appearance-none bg-surface-light dark:bg-surface-dark border border-[#d0e1e7] dark:border-gray-700 text-text-primary-light dark:text-text-primary-dark rounded-lg py-3 pl-4 pr-10 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary cursor-pointer text-sm font-medium transition-shadow hover:shadow-sm"
+                  className="appearance-none bg-surface-light dark:bg-[#1b2833] border border-[#d0e1e7] dark:border-gray-700 text-text-primary-light dark:text-gray-100 rounded-lg py-3 pl-4 pr-10 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary cursor-pointer text-sm font-medium transition-shadow hover:shadow-sm"
                 >
                   <option value="createdAt_desc">Mới nhất</option>
                   <option value="createdAt_asc">Cũ nhất</option>
@@ -166,7 +166,7 @@ const Products = () => {
                   <option value="sold_desc">Bán chạy nhất</option>
                   <option value="view_desc">Xem nhiều nhất</option>
                 </select>
-                <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-text-secondary-light pointer-events-none text-lg">
+                <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-text-secondary-light dark:text-gray-400 pointer-events-none text-lg">
                   expand_more
                 </span>
               </div>
@@ -179,7 +179,7 @@ const Products = () => {
             <aside className="w-full lg:w-64 flex-shrink-0 space-y-6">
               {/* Mobile Filter Button */}
               <div className="flex items-center justify-between lg:hidden mb-4">
-                <button className="flex items-center gap-2 text-sm font-bold bg-gray-100 dark:bg-surface-dark px-4 py-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                <button className="flex items-center gap-2 text-sm font-bold bg-gray-100 dark:bg-[#1b2833] text-text-primary-light dark:text-gray-100 px-4 py-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
                   <span className="material-symbols-outlined text-[18px]">filter_list</span>
                   Bộ lọc
                 </button>
@@ -189,7 +189,7 @@ const Products = () => {
               <div className="hidden lg:flex flex-col gap-6">
                 {/* Category Filter */}
                 <div className="border-b border-gray-100 dark:border-gray-800 pb-6">
-                  <h3 className="font-bold text-sm uppercase tracking-wider text-text-primary-light dark:text-text-primary-dark mb-4">
+                  <h3 className="font-bold text-sm uppercase tracking-wider text-text-primary-light dark:text-gray-100 mb-4">
                     Danh mục
                   </h3>
                   <ul className="space-y-3">
@@ -201,7 +201,7 @@ const Products = () => {
                           onChange={() => handleFilterChange('category_slug', undefined)}
                           className="size-4 rounded border-gray-300 text-primary focus:ring-primary bg-transparent cursor-pointer"
                         />
-                        <span className={filters.category_slug ? 'text-text-secondary-light dark:text-text-secondary-dark group-hover:text-primary transition-colors' : 'text-text-primary-light dark:text-text-primary-dark font-medium'}>
+                        <span className={filters.category_slug ? 'text-text-secondary-light dark:text-gray-300 group-hover:text-primary transition-colors' : 'text-text-primary-light dark:text-gray-100 font-medium'}>
                           Tất cả
                         </span>
                       </label>
@@ -220,7 +220,7 @@ const Products = () => {
                             }
                             className="size-4 rounded border-gray-300 text-primary focus:ring-primary bg-transparent cursor-pointer"
                           />
-                          <span className={filters.category_slug === category.slug ? 'text-text-primary-light dark:text-text-primary-dark font-medium' : 'text-text-secondary-light dark:text-text-secondary-dark group-hover:text-primary transition-colors'}>
+                          <span className={filters.category_slug === category.slug ? 'text-text-primary-light dark:text-gray-100 font-medium' : 'text-text-secondary-light dark:text-gray-300 group-hover:text-primary transition-colors'}>
                             {category.name}
                           </span>
                         </label>
@@ -231,12 +231,12 @@ const Products = () => {
 
                 {/* Price Range Filter */}
                 <div className="border-b border-gray-100 dark:border-gray-800 pb-6">
-                  <h3 className="font-bold text-sm uppercase tracking-wider text-text-primary-light dark:text-text-primary-dark mb-4">
+                  <h3 className="font-bold text-sm uppercase tracking-wider text-text-primary-light dark:text-gray-100 mb-4">
                     Giá
                   </h3>
                   <div className="flex items-center justify-between gap-4 text-sm">
                     <div className="relative flex-1">
-                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary-light">₫</span>
+                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary-light dark:text-gray-400">₫</span>
                       <input
                         type="number"
                         placeholder="0"
@@ -247,12 +247,12 @@ const Products = () => {
                             e.target.value ? parseFloat(e.target.value) : undefined
                           )
                         }
-                        className="w-full rounded-md border border-gray-200 dark:border-gray-700 bg-surface-light dark:bg-surface-dark py-2 pl-7 pr-2 text-right focus:border-primary focus:ring-primary text-text-primary-light dark:text-text-primary-dark"
+                        className="w-full rounded-md border border-gray-200 dark:border-gray-700 bg-surface-light dark:bg-[#1b2833] py-2 pl-7 pr-2 text-right focus:border-primary focus:ring-primary text-text-primary-light dark:text-gray-100"
                       />
                     </div>
-                    <span className="text-text-secondary-light">-</span>
+                    <span className="text-text-secondary-light dark:text-gray-400">-</span>
                     <div className="relative flex-1">
-                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary-light">₫</span>
+                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary-light dark:text-gray-400">₫</span>
                       <input
                         type="number"
                         placeholder="∞"
@@ -263,7 +263,7 @@ const Products = () => {
                             e.target.value ? parseFloat(e.target.value) : undefined
                           )
                         }
-                        className="w-full rounded-md border border-gray-200 dark:border-gray-700 bg-surface-light dark:bg-surface-dark py-2 pl-7 pr-2 text-right focus:border-primary focus:ring-primary text-text-primary-light dark:text-text-primary-dark"
+                        className="w-full rounded-md border border-gray-200 dark:border-gray-700 bg-surface-light dark:bg-[#1b2833] py-2 pl-7 pr-2 text-right focus:border-primary focus:ring-primary text-text-primary-light dark:text-gray-100"
                       />
                     </div>
                   </div>
@@ -271,7 +271,7 @@ const Products = () => {
 
                 {/* Rating Filter */}
                 <div className="pb-6">
-                  <h3 className="font-bold text-sm uppercase tracking-wider text-text-primary-light dark:text-text-primary-dark mb-4">
+                  <h3 className="font-bold text-sm uppercase tracking-wider text-text-primary-light dark:text-gray-100 mb-4">
                     Đánh giá
                   </h3>
                   <div className="space-y-3">
@@ -290,7 +290,7 @@ const Products = () => {
                           onChange={() => handleFilterChange('rating_filter', option.value)}
                           className="size-4 rounded-full border-gray-300 text-primary focus:ring-primary bg-transparent cursor-pointer"
                         />
-                        <span className={filters.rating_filter === option.value ? 'text-text-primary-light dark:text-text-primary-dark font-medium' : 'text-text-secondary-light dark:text-text-secondary-dark group-hover:text-primary transition-colors'}>
+                        <span className={filters.rating_filter === option.value ? 'text-text-primary-light dark:text-gray-100 font-medium' : 'text-text-secondary-light dark:text-gray-300 group-hover:text-primary transition-colors'}>
                           {option.label}
                         </span>
                       </label>
@@ -323,7 +323,7 @@ const Products = () => {
                 </div>
               ) : error ? (
                 <div className="text-center py-12">
-                  <span className="material-symbols-outlined text-6xl text-gray-400 dark:text-gray-600 mb-4">
+                  <span className="material-symbols-outlined text-6xl text-gray-400 dark:text-gray-400 mb-4">
                     error_outline
                   </span>
                   <p className="text-red-500 dark:text-red-400 mb-4 text-lg font-semibold">{error}</p>
@@ -350,13 +350,13 @@ const Products = () => {
                 </>
               ) : (
                 <div className="text-center py-12">
-                  <span className="material-symbols-outlined text-6xl text-gray-400 dark:text-gray-600 mb-4">
+                  <span className="material-symbols-outlined text-6xl text-gray-400 dark:text-gray-400 mb-4">
                     inventory_2
                   </span>
-                  <p className="text-xl font-bold text-text-primary-light dark:text-text-primary-dark mb-2">
+                  <p className="text-xl font-bold text-text-primary-light dark:text-gray-100 mb-2">
                     Không tìm thấy sản phẩm
                   </p>
-                  <p className="text-text-secondary-light dark:text-text-secondary-dark mb-6">
+                  <p className="text-text-secondary-light dark:text-gray-300 mb-6">
                     Thử thay đổi bộ lọc để tìm thêm sản phẩm
                   </p>
                   {hasActiveFilters && (
