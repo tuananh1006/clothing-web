@@ -9,6 +9,7 @@ import { verifyToken } from '~/utils/jwt'
 import { ErrorWithStatus } from '~/models/Errors'
 import HTTP_STATUS from '~/constants/httpStatus'
 import { ObjectId } from 'mongodb'
+import { UserVerifyStatus } from '~/constants/enums'
 config()
 export const loginValidator = validate(
   checkSchema(
@@ -26,6 +27,10 @@ export const loginValidator = validate(
             })
             if (user === null) {
               throw new Error(USERS_MESSAGES.EMAIL_OR_PASSWORD_INCORRECT)
+            }
+            // Kiểm tra account bị khóa
+            if (user.verify === UserVerifyStatus.Banned) {
+              throw new ErrorWithStatus('Tài khoản của bạn đã bị khóa. Vui lòng liên hệ admin để được hỗ trợ.', HTTP_STATUS.FORBIDDEN)
             }
             req.user = user
             return true
@@ -127,6 +132,16 @@ export const accessTokenValidator = validate(
             token: access_token,
             secretOrPublicKey: process.env.JWT_SECRET
           })
+          // Kiểm tra user status sau khi verify token
+          if (decodedVerifyToken.userId) {
+            const user = await databaseServices.users.findOne({ _id: new ObjectId(decodedVerifyToken.userId) })
+            if (!user) {
+              throw new ErrorWithStatus(USERS_MESSAGES.USER_NOT_FOUND, HTTP_STATUS.UNAUTHORIZED)
+            }
+            if (user.verify === UserVerifyStatus.Banned) {
+              throw new ErrorWithStatus('Tài khoản của bạn đã bị khóa. Vui lòng liên hệ admin để được hỗ trợ.', HTTP_STATUS.FORBIDDEN)
+            }
+          }
           req.decoded_authorization = decodedVerifyToken
           return true
         }

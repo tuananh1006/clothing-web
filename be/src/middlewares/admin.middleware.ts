@@ -1,9 +1,10 @@
 import { Request, Response, NextFunction } from 'express'
 import databaseServices from '~/services/database.services'
 import { ObjectId } from 'mongodb'
-import { UserRole } from '~/constants/enums'
+import { UserRole, UserVerifyStatus } from '~/constants/enums'
 import { checkSchema } from 'express-validator'
 import { validate } from '~/utils/validation'
+import HTTP_STATUS from '~/constants/httpStatus'
 
 export const requireAdmin = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -14,6 +15,10 @@ export const requireAdmin = async (req: Request, res: Response, next: NextFuncti
     const user = await databaseServices.users.findOne({ _id: new ObjectId(decoded.userId) })
     if (!user) {
       return res.status(401).json({ message: 'Unauthorized' })
+    }
+    // Kiểm tra account bị khóa
+    if (user.verify === UserVerifyStatus.Banned) {
+      return res.status(HTTP_STATUS.FORBIDDEN).json({ message: 'Tài khoản của bạn đã bị khóa. Vui lòng liên hệ admin để được hỗ trợ.' })
     }
     if (user.role !== UserRole.Admin && user.role !== UserRole.Staff) {
       return res.status(403).json({ message: 'Forbidden: Admin access required' })
