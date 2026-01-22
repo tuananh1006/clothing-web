@@ -31,14 +31,15 @@ const Cart = () => {
   }
 
   const handleRemoveItem = async (itemId: string) => {
-    if (!window.confirm('Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ hàng?')) {
-      return
-    }
+    setRemovingItemId(itemId)
     try {
-      setRemovingItemId(itemId)
       await removeItem(itemId)
-      showSuccess('Đã xóa sản phẩm khỏi giỏ hàng')
+      // Đảm bảo toast được hiển thị sau khi state đã update
+      requestAnimationFrame(() => {
+        showSuccess('Đã xóa sản phẩm khỏi giỏ hàng')
+      })
     } catch (error: any) {
+      console.error('Error removing item:', error)
       showError(error.response?.data?.message || 'Không thể xóa sản phẩm. Vui lòng thử lại.')
     } finally {
       setRemovingItemId(null)

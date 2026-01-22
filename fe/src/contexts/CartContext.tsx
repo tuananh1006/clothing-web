@@ -89,8 +89,12 @@ export const CartProvider = ({ children }: CartProviderProps) => {
     try {
       const updateData: UpdateCartItemRequest = { buy_count: quantity }
       await updateCartItemService(itemId, updateData)
-      // Refresh cart after updating
-      await fetchCart()
+      // Update state directly instead of refetching to avoid reload
+      setItems((prevItems) =>
+        prevItems.map((item) =>
+          item._id === itemId ? { ...item, buy_count: quantity } : item
+        )
+      )
     } catch (error) {
       throw error
     }
@@ -100,8 +104,8 @@ export const CartProvider = ({ children }: CartProviderProps) => {
   const removeItem = async (itemId: string) => {
     try {
       await deleteCartItemService(itemId)
-      // Refresh cart after removing
-      await fetchCart()
+      // Update state directly instead of refetching to avoid reload
+      setItems((prevItems) => prevItems.filter((item) => item._id !== itemId))
     } catch (error) {
       throw error
     }
