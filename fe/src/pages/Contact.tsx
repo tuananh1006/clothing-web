@@ -56,94 +56,117 @@ const Contact = () => {
       <Header />
       <main className="flex-grow">
         {/* Hero Section */}
-        <div className="bg-background-light dark:bg-[#1a2c32] py-16 px-4 lg:px-40 text-center relative overflow-hidden">
-          <div className="absolute -top-10 -left-10 w-40 h-40 bg-primary/5 rounded-full blur-3xl"></div>
-          <div className="absolute top-10 -right-10 w-60 h-60 bg-primary/10 rounded-full blur-3xl"></div>
-          <div className="relative z-10 max-w-2xl mx-auto">
-            <h1 className="text-3xl md:text-5xl font-bold text-text-main dark:text-white mb-3 tracking-tight">
+        <div className="bg-gradient-to-br from-background-light to-gray-50 dark:from-[#1a2c32] dark:to-[#111d21] py-12 md:py-16 px-4 lg:px-10 text-center relative overflow-hidden">
+          <div className="absolute -top-20 -left-20 w-72 h-72 bg-primary/10 rounded-full blur-3xl"></div>
+          <div className="absolute top-20 -right-20 w-96 h-96 bg-primary/5 rounded-full blur-3xl"></div>
+          <div className="relative z-10 max-w-3xl mx-auto">
+            <h1 className="text-4xl md:text-6xl font-bold text-text-main dark:text-white mb-4 tracking-tight">
               Liên hệ với chúng tôi
             </h1>
-            <p className="text-text-sub dark:text-gray-400 text-lg">
+            <p className="text-text-sub dark:text-gray-400 text-lg md:text-xl leading-relaxed">
               Chúng tôi luôn sẵn sàng lắng nghe mọi ý kiến đóng góp và thắc mắc của bạn.
             </p>
           </div>
         </div>
 
-        <div className="max-w-[1200px] mx-auto px-4 lg:px-40 py-16 lg:py-24">
+        <div className="max-w-[1280px] mx-auto px-4 md:px-10 py-8 lg:py-12">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
             {/* Left: Contact Info */}
-            <div>
-              <h2 className="text-2xl font-bold text-text-main dark:text-white mb-6">
-                Thông tin liên lạc
-              </h2>
-              <p className="text-text-sub dark:text-gray-400 mb-10 leading-relaxed text-base">
-                YORI đề cao sự kết nối chân thành. Cho dù bạn có câu hỏi về sản phẩm, đơn hàng hay chỉ muốn chia sẻ cảm nhận, đừng ngần ngại liên hệ.
-              </p>
+            <div className="space-y-8">
+              <div>
+                <h2 className="text-3xl font-bold text-text-main dark:text-white mb-4">
+                  Thông tin liên lạc
+                </h2>
+                <p className="text-text-sub dark:text-gray-400 leading-relaxed text-base">
+                  YORI đề cao sự kết nối chân thành. Cho dù bạn có câu hỏi về sản phẩm, đơn hàng hay chỉ muốn chia sẻ cảm nhận, đừng ngần ngại liên hệ.
+                </p>
+              </div>
 
-              <div className="space-y-8">
-                <div className="flex items-start gap-4 group">
-                  <div className="flex-shrink-0 flex items-center justify-center w-12 h-12 bg-background-light dark:bg-[#1a2c32] rounded-full text-primary group-hover:bg-primary group-hover:text-white transition-all duration-300">
-                    <span className="material-symbols-outlined">location_on</span>
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-text-main dark:text-white text-lg mb-1">Cửa hàng</h3>
-                    <p className="text-text-sub dark:text-gray-400 leading-relaxed">
-                      123 Đường Nguyễn Huệ, Quận 1,<br />
-                      TP. Hồ Chí Minh
-                    </p>
+              <div className="space-y-6">
+                <div className="group p-6 bg-white dark:bg-[#1a2c32] rounded-xl border border-gray-200 dark:border-gray-700 hover:border-primary dark:hover:border-primary hover:shadow-lg transition-all duration-300">
+                  <div className="flex items-start gap-4">
+                    <div className="flex-shrink-0 flex items-center justify-center w-14 h-14 bg-primary/10 dark:bg-primary/20 rounded-xl text-primary group-hover:bg-primary group-hover:text-white transition-all duration-300">
+                      <span className="material-symbols-outlined text-2xl">location_on</span>
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="font-bold text-text-main dark:text-white text-lg mb-2">Cửa hàng</h3>
+                      <p className="text-text-sub dark:text-gray-400 leading-relaxed">
+                        123 Đường Nguyễn Huệ, Quận 1,<br />
+                        TP. Hồ Chí Minh
+                      </p>
+                    </div>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-4 group">
-                  <div className="flex-shrink-0 flex items-center justify-center w-12 h-12 bg-background-light dark:bg-[#1a2c32] rounded-full text-primary group-hover:bg-primary group-hover:text-white transition-all duration-300">
-                    <span className="material-symbols-outlined">call</span>
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-text-main dark:text-white text-lg mb-1">Điện thoại</h3>
-                    <p className="text-text-sub dark:text-gray-400">090 123 4567</p>
+                <div className="group p-6 bg-white dark:bg-[#1a2c32] rounded-xl border border-gray-200 dark:border-gray-700 hover:border-primary dark:hover:border-primary hover:shadow-lg transition-all duration-300">
+                  <div className="flex items-start gap-4">
+                    <div className="flex-shrink-0 flex items-center justify-center w-14 h-14 bg-primary/10 dark:bg-primary/20 rounded-xl text-primary group-hover:bg-primary group-hover:text-white transition-all duration-300">
+                      <span className="material-symbols-outlined text-2xl">call</span>
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="font-bold text-text-main dark:text-white text-lg mb-2">Điện thoại</h3>
+                      <a href="tel:0901234567" className="text-text-sub dark:text-gray-400 hover:text-primary transition-colors">
+                        090 123 4567
+                      </a>
+                    </div>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-4 group">
-                  <div className="flex-shrink-0 flex items-center justify-center w-12 h-12 bg-background-light dark:bg-[#1a2c32] rounded-full text-primary group-hover:bg-primary group-hover:text-white transition-all duration-300">
-                    <span className="material-symbols-outlined">mail</span>
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-text-main dark:text-white text-lg mb-1">Email</h3>
-                    <p className="text-text-sub dark:text-gray-400">hello@yori.vn</p>
+                <div className="group p-6 bg-white dark:bg-[#1a2c32] rounded-xl border border-gray-200 dark:border-gray-700 hover:border-primary dark:hover:border-primary hover:shadow-lg transition-all duration-300">
+                  <div className="flex items-start gap-4">
+                    <div className="flex-shrink-0 flex items-center justify-center w-14 h-14 bg-primary/10 dark:bg-primary/20 rounded-xl text-primary group-hover:bg-primary group-hover:text-white transition-all duration-300">
+                      <span className="material-symbols-outlined text-2xl">mail</span>
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="font-bold text-text-main dark:text-white text-lg mb-2">Email</h3>
+                      <a href="mailto:hello@yori.vn" className="text-text-sub dark:text-gray-400 hover:text-primary transition-colors">
+                        hello@yori.vn
+                      </a>
+                    </div>
                   </div>
                 </div>
               </div>
 
               {/* Social Links */}
-              <div className="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700">
-                <p className="text-sm font-semibold text-text-main dark:text-white mb-4">Theo dõi chúng tôi</p>
-                <div className="flex gap-4">
-                  <a href="#" className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-800 text-text-main dark:text-gray-400 hover:bg-primary hover:text-white dark:hover:bg-primary transition-all duration-300">
+              <div className="pt-8 border-t border-gray-200 dark:border-gray-700">
+                <p className="text-base font-semibold text-text-main dark:text-white mb-5">Theo dõi chúng tôi</p>
+                <div className="flex gap-3">
+                  <a href="#" className="flex items-center justify-center w-12 h-12 rounded-xl bg-gray-100 dark:bg-gray-800 text-text-main dark:text-gray-400 hover:bg-primary hover:text-white dark:hover:bg-primary transition-all duration-300 hover:scale-110">
                     <span className="material-symbols-outlined">public</span>
                   </a>
-                  <a href="#" className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-800 text-text-main dark:text-gray-400 hover:bg-primary hover:text-white dark:hover:bg-primary transition-all duration-300">
+                  <a href="#" className="flex items-center justify-center w-12 h-12 rounded-xl bg-gray-100 dark:bg-gray-800 text-text-main dark:text-gray-400 hover:bg-primary hover:text-white dark:hover:bg-primary transition-all duration-300 hover:scale-110">
                     <span className="material-symbols-outlined">alternate_email</span>
+                  </a>
+                  <a href="#" className="flex items-center justify-center w-12 h-12 rounded-xl bg-gray-100 dark:bg-gray-800 text-text-main dark:text-gray-400 hover:bg-primary hover:text-white dark:hover:bg-primary transition-all duration-300 hover:scale-110">
+                    <span className="material-symbols-outlined">photo_camera</span>
                   </a>
                 </div>
               </div>
             </div>
 
             {/* Right: Contact Form */}
-            <div className="bg-white dark:bg-[#1a2c32] rounded-xl border border-gray-200 dark:border-gray-700 p-8">
-              <h2 className="text-2xl font-bold text-text-main dark:text-white mb-6">
-                Gửi tin nhắn
-              </h2>
+            <div className="bg-white dark:bg-[#1a2c32] rounded-2xl border border-gray-200 dark:border-gray-700 p-8 lg:p-10 shadow-lg">
+              <div className="mb-8">
+                <h2 className="text-3xl font-bold text-text-main dark:text-white mb-2">
+                  Gửi tin nhắn
+                </h2>
+                <p className="text-text-sub dark:text-gray-400">
+                  Điền thông tin bên dưới và chúng tôi sẽ liên hệ lại với bạn sớm nhất có thể.
+                </p>
+              </div>
 
               {success && (
-                <div className="mb-6 p-4 bg-green-100 dark:bg-green-900/30 border border-green-200 dark:border-green-800 rounded-lg">
-                  <p className="text-green-800 dark:text-green-300 text-sm">
-                    Cảm ơn bạn đã liên hệ! Chúng tôi sẽ phản hồi sớm nhất có thể.
-                  </p>
+                <div className="mb-6 p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-xl">
+                  <div className="flex items-center gap-3">
+                    <span className="material-symbols-outlined text-green-600 dark:text-green-400">check_circle</span>
+                    <p className="text-green-800 dark:text-green-300 text-sm">
+                      Cảm ơn bạn đã liên hệ! Chúng tôi sẽ phản hồi sớm nhất có thể.
+                    </p>
+                  </div>
                 </div>
               )}
 
-              <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+              <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
                 <Input
                   label="Họ và tên"
                   type="text"
@@ -181,7 +204,7 @@ const Contact = () => {
                   <textarea
                     {...register('message')}
                     rows={6}
-                    className="w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#111d21] px-4 py-3 text-base text-text-main dark:text-white placeholder:text-text-sub dark:placeholder:text-gray-400 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary resize-none"
+                    className="w-full rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#111d21] px-4 py-3 text-base text-text-main dark:text-white placeholder:text-text-sub dark:placeholder:text-gray-400 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 resize-none transition-all"
                     placeholder="Nhập tin nhắn của bạn..."
                   />
                   {errors.message && (
@@ -191,7 +214,7 @@ const Contact = () => {
                   )}
                 </div>
 
-                <Button type="submit" isLoading={submitting} className="w-full">
+                <Button type="submit" isLoading={submitting} className="w-full py-3 text-base font-semibold">
                   Gửi tin nhắn
                 </Button>
               </form>
