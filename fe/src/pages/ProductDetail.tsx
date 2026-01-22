@@ -1,10 +1,9 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import Header from '@/components/common/Header'
 import Footer from '@/components/common/Footer'
 import ProductCard from '@/components/product/ProductCard'
 import ProductImageGallery from '@/components/product/ProductImageGallery'
-import ReviewList from '@/components/review/ReviewList'
 import Button from '@/components/common/Button'
 import Skeleton from '@/components/common/Skeleton'
 import { getProductDetail, getRelatedProducts } from '@/services/products.service'
@@ -37,46 +36,41 @@ const ProductDetail = () => {
   const [isAddingToCart, setIsAddingToCart] = useState(false)
 
   // Fetch product detail
-  const fetchProduct = useCallback(async () => {
-    if (!slug) {
-      setError('Product slug is required')
-      setIsLoading(false)
-      return
-    }
-
-    try {
-      setIsLoading(true)
-      setError(null)
-      const data = await getProductDetail(slug)
-      setProduct(data)
-
-      // Set default selections
-      if (data.sizes && data.sizes.length > 0) {
-        setSelectedSize(data.sizes[0])
-      }
-      if (data.colors && data.colors.length > 0) {
-        setSelectedColor(data.colors[0])
-      }
-    } catch (err: any) {
-      console.error('Error fetching product:', err)
-      if (err.message === 'Product not found' || err.response?.status === 404) {
-        setError('Sản phẩm không tồn tại')
-      } else {
-        setError('Không thể tải thông tin sản phẩm')
-      }
-    } finally {
-      setIsLoading(false)
-    }
-  }, [slug])
-
   useEffect(() => {
-    fetchProduct()
-  }, [fetchProduct])
+    const fetchProduct = async () => {
+      if (!slug) {
+        setError('Product slug is required')
+        setIsLoading(false)
+        return
+      }
 
-  // Handle review update - refresh product data để cập nhật rating
-  const handleReviewUpdate = useCallback(() => {
+      try {
+        setIsLoading(true)
+        setError(null)
+        const data = await getProductDetail(slug)
+        setProduct(data)
+
+        // Set default selections
+        if (data.sizes && data.sizes.length > 0) {
+          setSelectedSize(data.sizes[0])
+        }
+        if (data.colors && data.colors.length > 0) {
+          setSelectedColor(data.colors[0])
+        }
+      } catch (err: any) {
+        console.error('Error fetching product:', err)
+        if (err.message === 'Product not found' || err.response?.status === 404) {
+          setError('Sản phẩm không tồn tại')
+        } else {
+          setError('Không thể tải thông tin sản phẩm')
+        }
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
     fetchProduct()
-  }, [fetchProduct])
+  }, [slug])
 
   // Fetch related products
   useEffect(() => {
@@ -237,15 +231,15 @@ const ProductDetail = () => {
         <div className="w-full max-w-[1440px] mx-auto px-4 md:px-10 py-6">
           {/* Breadcrumbs */}
           <div className="flex flex-wrap gap-2 py-4 text-sm">
-            <a className="text-text-secondary-light dark:text-text-secondary-dark hover:text-primary dark:hover:text-primary transition-colors" href="#">Home</a>
-            <span className="text-text-secondary-light dark:text-text-secondary-dark">/</span>
+            <a className="text-text-sub dark:text-gray-400 hover:text-primary dark:hover:text-primary transition-colors" href="#">Home</a>
+            <span className="text-text-sub dark:text-gray-400">/</span>
             {categoryName && (
               <>
-                <a className="text-text-secondary-light dark:text-text-secondary-dark hover:text-primary dark:hover:text-primary transition-colors" href="#">{categoryName}</a>
-                <span className="text-text-secondary-light dark:text-text-secondary-dark">/</span>
+                <a className="text-text-sub dark:text-gray-400 hover:text-primary dark:hover:text-primary transition-colors" href="#">{categoryName}</a>
+                <span className="text-text-sub dark:text-gray-400">/</span>
               </>
             )}
-            <span className="text-text-primary-light dark:text-text-primary-dark font-medium">{product.name}</span>
+            <span className="text-text-main dark:text-white font-medium">{product.name}</span>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 mt-8">
@@ -260,7 +254,7 @@ const ProductDetail = () => {
                 {categoryName && (
                   <p className="text-sm text-primary font-medium mb-2">{categoryName}</p>
                 )}
-                <h1 className="text-3xl md:text-4xl lg:text-5xl font-black tracking-[-0.033em] text-text-primary-light dark:text-text-primary-dark mb-4">
+                <h1 className="text-3xl md:text-4xl lg:text-5xl font-black tracking-[-0.033em] text-text-main dark:text-white mb-4">
                   {product.name}
                 </h1>
                 {product.rating && (
@@ -279,7 +273,7 @@ const ProductDetail = () => {
                         </span>
                       ))}
                     </div>
-                    <span className="text-sm text-text-secondary-light dark:text-text-secondary-dark">
+                    <span className="text-sm text-text-sub dark:text-gray-400">
                       ({product.rating.toFixed(1)})
                     </span>
                   </div>
@@ -293,7 +287,7 @@ const ProductDetail = () => {
                 </p>
                 {product.price_before_discount &&
                   product.price_before_discount > product.price && (
-                    <p className="text-lg text-text-secondary-light dark:text-text-secondary-dark line-through">
+                    <p className="text-lg text-text-sub dark:text-gray-400 line-through">
                       {formatPrice(product.price_before_discount)}
                     </p>
                   )}
@@ -302,10 +296,10 @@ const ProductDetail = () => {
               {/* Description */}
               {product.description && (
                 <div>
-                  <h3 className="font-bold text-sm uppercase tracking-wider text-text-primary-light dark:text-text-primary-dark mb-3">
+                  <h3 className="font-bold text-sm uppercase tracking-wider text-text-main dark:text-white mb-3">
                     Mô tả sản phẩm
                   </h3>
-                  <p className="text-text-secondary-light dark:text-text-secondary-dark text-sm leading-relaxed whitespace-pre-line">
+                  <p className="text-text-sub dark:text-gray-400 text-sm leading-relaxed whitespace-pre-line">
                     {product.description}
                   </p>
                 </div>
@@ -313,7 +307,7 @@ const ProductDetail = () => {
 
               {/* Size Selector */}
               <div className="border-b border-[#e7f0f3] dark:border-gray-800 pb-6">
-                <h3 className="font-bold text-sm uppercase tracking-wider text-text-primary-light dark:text-text-primary-dark mb-4">
+                <h3 className="font-bold text-sm uppercase tracking-wider text-text-main dark:text-white mb-4">
                   Size
                 </h3>
                 <div className="flex flex-wrap gap-2">
@@ -325,7 +319,7 @@ const ProductDetail = () => {
                         className={`h-10 px-4 rounded-lg border text-sm font-bold transition-colors ${
                           selectedSize === size
                             ? 'border-primary bg-primary/10 text-primary'
-                            : 'border-gray-200 dark:border-gray-700 text-text-secondary-light dark:text-text-secondary-dark hover:border-primary hover:text-primary bg-surface-light dark:bg-surface-dark'
+                            : 'border-gray-200 dark:border-gray-700 text-text-main dark:text-white mb-4 hover:border-primary hover:text-primary bg-surface-light dark:bg-surface-dark'
                         }`}
                       >
                         {size}
@@ -337,7 +331,7 @@ const ProductDetail = () => {
 
               {/* Color Selector */}
               <div className="border-b border-[#e7f0f3] dark:border-gray-800 pb-6">
-                <h3 className="font-bold text-sm uppercase tracking-wider text-text-primary-light dark:text-text-primary-dark mb-4">
+                <h3 className="font-bold text-sm uppercase tracking-wider text-text-main dark:text-white mb-4">
                   Color
                 </h3>
                 <div className="flex flex-wrap gap-3">
@@ -364,7 +358,7 @@ const ProductDetail = () => {
 
               {/* Quantity Selector */}
               <div className="flex flex-col gap-2 border-b border-[#e7f0f3] dark:border-gray-800 pb-6">
-                <label className="font-bold text-sm uppercase tracking-wider text-text-primary-light dark:text-text-primary-dark">
+                <label className="font-bold text-sm uppercase tracking-wider text-text-main dark:text-white">
                   Số lượng
                 </label>
                 <div className="flex items-center gap-3">
@@ -372,7 +366,7 @@ const ProductDetail = () => {
                     type="button"
                     onClick={() => handleQuantityChange(-1)}
                     disabled={quantity <= 1}
-                    className="flex items-center justify-center h-10 w-10 rounded-lg border border-gray-200 dark:border-gray-700 bg-surface-light dark:bg-surface-dark text-text-primary-light dark:text-text-primary-dark hover:bg-gray-50 dark:hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    className="flex items-center justify-center h-10 w-10 rounded-lg border border-gray-200 dark:border-gray-700 bg-surface-light dark:bg-surface-dark text-text-main dark:text-white hover:bg-gray-50 dark:hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                   >
                     <span className="material-symbols-outlined text-sm">remove</span>
                   </button>
@@ -387,17 +381,17 @@ const ProductDetail = () => {
                         setQuantity(val)
                       }
                     }}
-                    className="w-20 text-center px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-surface-light dark:bg-surface-dark text-text-primary-light dark:text-text-primary-dark focus:outline-none focus:ring-2 focus:ring-primary"
+                    className="w-20 text-center px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-surface-light dark:bg-surface-dark text-text-main dark:text-white placeholder:text-text-sub dark:placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary"
                   />
                   <button
                     type="button"
                     onClick={() => handleQuantityChange(1)}
                     disabled={quantity >= product.quantity}
-                    className="flex items-center justify-center h-10 w-10 rounded-lg border border-gray-200 dark:border-gray-700 bg-surface-light dark:bg-surface-dark text-text-primary-light dark:text-text-primary-dark hover:bg-gray-50 dark:hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    className="flex items-center justify-center h-10 w-10 rounded-lg border border-gray-200 dark:border-gray-700 bg-surface-light dark:bg-surface-dark text-text-main dark:text-white hover:bg-gray-50 dark:hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                   >
                     <span className="material-symbols-outlined text-sm">add</span>
                   </button>
-                  <span className="text-sm text-text-secondary-light dark:text-text-secondary-dark">
+                  <span className="text-sm text-text-sub dark:text-gray-400">
                     Còn {product.quantity} sản phẩm
                   </span>
                 </div>
@@ -422,30 +416,21 @@ const ProductDetail = () => {
 
               {/* Product Info Badges */}
               <div className="border-t border-gray-200 dark:border-gray-700 pt-6 space-y-3">
-                <div className="flex items-center gap-2 text-sm text-text-secondary-light dark:text-text-secondary-dark">
+                <div className="flex items-center gap-2 text-sm text-text-sub dark:text-gray-400">
                   <span className="material-symbols-outlined text-lg">local_shipping</span>
                   <span>Miễn phí vận chuyển cho đơn hàng trên 500.000₫</span>
                 </div>
-                <div className="flex items-center gap-2 text-sm text-text-secondary-light dark:text-text-secondary-dark">
+                <div className="flex items-center gap-2 text-sm text-text-sub dark:text-gray-400">
                   <span className="material-symbols-outlined text-lg">assignment_return</span>
                   <span>Đổi trả miễn phí trong 7 ngày</span>
                 </div>
-                <div className="flex items-center gap-2 text-sm text-text-secondary-light dark:text-text-secondary-dark">
+                <div className="flex items-center gap-2 text-sm text-text-sub dark:text-gray-400">
                   <span className="material-symbols-outlined text-lg">verified</span>
                   <span>Chính hãng 100%</span>
                 </div>
               </div>
             </div>
           </div>
-
-          {/* Reviews Section */}
-          {product._id && (
-            <ReviewList 
-              product_id={product._id} 
-              product_name={product.name}
-              onReviewUpdate={handleReviewUpdate}
-            />
-          )}
 
           {/* Related Products */}
           {relatedProducts.length > 0 && (

@@ -4,6 +4,7 @@ import { Product } from '@/types/product.types'
 import { formatPrice } from '@/utils/formatters'
 import { ROUTES } from '@/utils/constants'
 import { useWishlist } from '@/contexts/WishlistContext'
+import { useCart } from '@/hooks/useCart'
 
 interface ProductCardProps {
   product: Product
@@ -15,7 +16,23 @@ const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
     typeof product.slug === 'string' ? product.slug : ''
   )
   const { isInWishlist, toggleWishlist } = useWishlist()
+  const { addToCart } = useCart()
   const isFavorite = product._id ? isInWishlist(product._id) : false
+
+  const handleAddToCart = async (e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    try {
+      await addToCart({
+        product_id: product._id,
+        buy_count: 1,
+        size: product.sizes?.[0] || '',
+        color: product.colors?.[0] || '',
+      })
+    } catch (error) {
+      console.error('Error adding to cart:', error)
+    }
+  }
 
   return (
     <motion.div
@@ -76,6 +93,20 @@ const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
                 SALE
               </motion.div>
             )}
+            {/* Add to cart button */}
+            <div className="absolute bottom-3 right-3 translate-y-4 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+              <motion.button
+                onClick={handleAddToCart}
+                className="flex h-10 w-10 items-center justify-center rounded-full bg-white dark:bg-gray-800 text-text-main dark:text-white shadow-md hover:bg-primary hover:text-white transition-colors"
+                aria-label="Thêm vào giỏ hàng"
+                whileHover={{ scale: 1.06 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <span className="material-symbols-outlined text-[20px]">
+                  add_shopping_cart
+                </span>
+              </motion.button>
+            </div>
           </motion.div>
           <motion.h3
             className="text-text-main dark:text-white text-lg font-bold group-hover:text-primary transition-colors"
