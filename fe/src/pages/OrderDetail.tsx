@@ -7,10 +7,12 @@ import OrderItem from '@/components/orders/OrderItem'
 import Button from '@/components/common/Button'
 import Skeleton from '@/components/common/Skeleton'
 import * as ordersService from '@/services/orders.service'
+import * as locationsService from '@/services/locations.service'
 import { ROUTES } from '@/utils/constants'
 import { formatPrice } from '@/utils/formatters'
 import { OrderStatus, type Order } from '@/types'
 import OrderTimeline from '@/components/orders/OrderTimeline'
+import AddressDisplay from '@/components/common/AddressDisplay'
 
 
 const getStatusBadgeClass = (status: OrderStatus) => {
@@ -215,7 +217,8 @@ const OrderDetail = () => {
                     <span className="font-medium">Email:</span> {order.shipping_info.email}
                   </p>
                   <p className="text-text-main dark:text-white">
-                    <span className="font-medium">Địa chỉ:</span> {order.shipping_info.address}
+                    <span className="font-medium">Địa chỉ:</span>{' '}
+                    <AddressDisplay addressString={order.shipping_info.address} />
                   </p>
                   <p className="text-text-main dark:text-white">
                     <span className="font-medium">Phương thức thanh toán:</span>{' '}

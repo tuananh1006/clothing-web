@@ -105,3 +105,48 @@ export const formatCompactNumber = (num: number): string => {
   return num.toString()
 }
 
+/**
+ * Format địa chỉ từ string format "address, ward_id, district_id, province_id"
+ * Parse và trả về các phần của địa chỉ
+ * @param addressString - Chuỗi địa chỉ cần format
+ * @returns Object chứa các phần của địa chỉ
+ */
+export const parseAddress = (addressString: string | undefined | null): {
+  address: string
+  ward_id: string
+  district_id: string
+  province_id: string
+} | null => {
+  if (!addressString) return null
+  
+  // Parse địa chỉ: format là "address, ward_id, district_id, province_id"
+  const parts = addressString.split(',').map(part => part.trim())
+  
+  // Nếu có 4 phần (address, ward_id, district_id, province_id)
+  if (parts.length >= 4) {
+    return {
+      address: parts[0],
+      ward_id: parts[1],
+      district_id: parts[2],
+      province_id: parts[3]
+    }
+  }
+  
+  // Nếu không đúng format, trả về null
+  return null
+}
+
+/**
+ * Format địa chỉ từ string format "address, ward_id, district_id, province_id"
+ * Chỉ hiển thị phần địa chỉ cụ thể, bỏ các ID (fallback)
+ * @param addressString - Chuỗi địa chỉ cần format
+ * @returns Chuỗi địa chỉ đã format (chỉ phần địa chỉ cụ thể)
+ */
+export const formatAddress = (addressString: string | undefined | null): string => {
+  const parsed = parseAddress(addressString)
+  if (parsed) {
+    return parsed.address
+  }
+  return addressString || ''
+}
+
