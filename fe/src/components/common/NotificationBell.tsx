@@ -2,13 +2,14 @@ import { useState, useEffect, useRef } from 'react'
 import { useAuth } from '@/hooks/useAuth'
 import { getNotifications, getUnreadCount, markAsRead, markAllAsRead, deleteNotification, type Notification } from '@/services/notifications.service'
 import { getSocket } from '@/services/socket.service'
+import { getToken } from '@/utils/storage'
 import { formatDistanceToNow } from 'date-fns'
 import { vi } from 'date-fns/locale'
 import { ROUTES } from '@/utils/constants'
 import { useNavigate } from 'react-router-dom'
 
 const NotificationBell = () => {
-  const { isAuthenticated, user } = useAuth()
+  const { isAuthenticated } = useAuth()
   const navigate = useNavigate()
   const [isOpen, setIsOpen] = useState(false)
   const [notifications, setNotifications] = useState<Notification[]>([])
@@ -70,7 +71,13 @@ const NotificationBell = () => {
   useEffect(() => {
     if (!isAuthenticated) return
 
-    const socket = getSocket()
+    const token = getToken()
+    if (!token) {
+      console.warn('Token not available for socket connection')
+      return
+    }
+
+    const socket = getSocket(token)
     if (!socket) {
       console.warn('Socket not available for notifications')
       return
@@ -94,13 +101,6 @@ const NotificationBell = () => {
       socket.off('notification:new', handleNewNotification)
     }
   }, [isAuthenticated])
-
-  // Reload notifications when dropdown opens (in case socket missed it)
-  useEffect(() => {
-    if (isOpen && isAuthenticated) {
-      loadNotifications()
-    }
-  }, [isOpen, isAuthenticated])
 
   // Handle mark as read
   const handleMarkAsRead = async (notificationId: string) => {
