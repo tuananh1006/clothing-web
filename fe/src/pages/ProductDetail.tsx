@@ -4,6 +4,7 @@ import Header from '@/components/common/Header'
 import Footer from '@/components/common/Footer'
 import ProductCard from '@/components/product/ProductCard'
 import ProductImageGallery from '@/components/product/ProductImageGallery'
+import ReviewList from '@/components/review/ReviewList'
 import Button from '@/components/common/Button'
 import Skeleton from '@/components/common/Skeleton'
 import { getProductDetail, getRelatedProducts } from '@/services/products.service'
@@ -72,6 +73,20 @@ const ProductDetail = () => {
     fetchProduct()
   }, [slug])
 
+  // Handle review update - refresh product data để cập nhật rating
+  const handleReviewUpdate = () => {
+    const fetchProduct = async () => {
+      if (!slug) return
+      try {
+        const data = await getProductDetail(slug)
+        setProduct(data)
+      } catch (err) {
+        console.error('Error refreshing product:', err)
+      }
+    }
+    fetchProduct()
+  }
+
   // Fetch related products
   useEffect(() => {
     const fetchRelated = async () => {
@@ -102,6 +117,13 @@ const ProductDetail = () => {
 
   const handleAddToCart = async () => {
     if (!product) return
+
+    // Kiểm tra sản phẩm hết hàng
+    const isOutOfStock = product.status === 'out_of_stock' || product.quantity === 0
+    if (isOutOfStock) {
+      showError('Sản phẩm đã hết hàng')
+      return
+    }
 
     // Check authentication
     if (!isAuthenticated) {
@@ -401,11 +423,11 @@ const ProductDetail = () => {
               <div className="flex flex-col gap-3">
                 <Button
                   onClick={handleAddToCart}
-                  disabled={product.quantity === 0 || isAddingToCart}
+                  disabled={(product.status === 'out_of_stock' || product.quantity === 0) || isAddingToCart}
                   isLoading={isAddingToCart}
                   className="w-full py-3 text-base font-bold"
                 >
-                  {product.quantity === 0 ? 'Hết hàng' : 'Thêm vào giỏ hàng'}
+                  {product.status === 'out_of_stock' || product.quantity === 0 ? 'Hết hàng' : 'Thêm vào giỏ hàng'}
                 </Button>
                 {addToCartError && (
                   <p className="text-sm text-red-500 dark:text-red-400">
@@ -431,7 +453,14 @@ const ProductDetail = () => {
               </div>
             </div>
           </div>
-
+          {/* Reviews Section */}
+          {product._id && (
+            <ReviewList 
+              product_id={product._id} 
+              product_name={product.name}
+              onReviewUpdate={handleReviewUpdate}
+            />
+          )}
           {/* Related Products */}
           {relatedProducts.length > 0 && (
             <div className="mt-16">

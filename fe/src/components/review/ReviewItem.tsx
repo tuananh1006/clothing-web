@@ -146,7 +146,7 @@ const ReviewItem = ({ review, onEdit, onDelete }: ReviewItemProps) => {
   }, [selectedImageIndex, review.images])
 
   return (
-    <div className="border-b border-gray-200 dark:border-gray-700 pb-6 mb-6 last:border-b-0 last:mb-0 last:pb-0">
+    <div className="pb-6 mb-6 last:mb-0 last:pb-0">
       <div className="flex items-start justify-between mb-3">
         <div className="flex items-start gap-3 flex-1">
           <div className="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center overflow-hidden">
