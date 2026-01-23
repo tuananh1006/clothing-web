@@ -18,10 +18,19 @@ const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
   const { isInWishlist, toggleWishlist } = useWishlist()
   const { addToCart } = useCart()
   const isFavorite = product._id ? isInWishlist(product._id) : false
+  
+  // Kiểm tra sản phẩm hết hàng
+  const isOutOfStock = product.status === 'out_of_stock' || product.quantity === 0
 
   const handleAddToCart = async (e: React.MouseEvent) => {
     e.preventDefault()
     e.stopPropagation()
+    
+    // Không cho thêm vào giỏ hàng nếu hết hàng
+    if (isOutOfStock) {
+      return
+    }
+    
     try {
       await addToCart({
         product_id: product._id,
@@ -83,7 +92,18 @@ const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
               whileHover={{ scale: 1.1 }}
               transition={{ duration: 0.5 }}
             />
-            {product.price_before_discount && product.price_before_discount > product.price && (
+            {/* Badge Hết hàng */}
+            {isOutOfStock && (
+              <motion.div
+                className="absolute top-3 left-3 bg-gray-800 dark:bg-gray-700 text-white px-3 py-1.5 rounded-md text-xs font-bold z-10"
+                initial={{ scale: 0, rotate: -10 }}
+                animate={{ scale: 1, rotate: 0 }}
+                transition={{ delay: 0.3, type: 'spring' }}
+              >
+                Hết hàng
+              </motion.div>
+            )}
+            {!isOutOfStock && product.price_before_discount && product.price_before_discount > product.price && (
               <motion.div
                 className="absolute top-3 left-3 bg-red-500 text-white px-2 py-1 rounded text-xs font-bold"
                 initial={{ scale: 0, rotate: -10 }}
@@ -93,20 +113,33 @@ const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
                 SALE
               </motion.div>
             )}
-            {/* Add to cart button */}
+            {/* Add to cart button - hiển thị nhưng disable khi hết hàng */}
             <div className="absolute bottom-3 right-3 translate-y-4 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
               <motion.button
                 onClick={handleAddToCart}
-                className="flex h-10 w-10 items-center justify-center rounded-full bg-white dark:bg-gray-800 text-text-main dark:text-white shadow-md hover:bg-primary hover:text-white transition-colors"
-                aria-label="Thêm vào giỏ hàng"
-                whileHover={{ scale: 1.06 }}
-                whileTap={{ scale: 0.95 }}
+                disabled={isOutOfStock}
+                className={`flex h-10 w-10 items-center justify-center rounded-full shadow-md transition-colors ${
+                  isOutOfStock
+                    ? 'bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400 cursor-not-allowed'
+                    : 'bg-white dark:bg-gray-800 text-text-main dark:text-white hover:bg-primary hover:text-white'
+                }`}
+                aria-label={isOutOfStock ? 'Sản phẩm đã hết hàng' : 'Thêm vào giỏ hàng'}
+                whileHover={!isOutOfStock ? { scale: 1.06 } : {}}
+                whileTap={!isOutOfStock ? { scale: 0.95 } : {}}
               >
                 <span className="material-symbols-outlined text-[20px]">
                   add_shopping_cart
                 </span>
               </motion.button>
             </div>
+            {/* Overlay mờ khi hết hàng */}
+            {isOutOfStock && (
+              <div className="absolute inset-0 bg-black/40 dark:bg-black/50 rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-sm bg-gray-800/80 dark:bg-gray-700/80 px-3 py-1.5 rounded-md">
+                  Hết hàng
+                </span>
+              </div>
+            )}
           </motion.div>
           <motion.h3
             className="text-text-main dark:text-white text-lg font-bold group-hover:text-primary transition-colors"

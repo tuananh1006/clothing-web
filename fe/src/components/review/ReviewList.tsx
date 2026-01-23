@@ -96,7 +96,7 @@ const ReviewList = ({ product_id, product_name, onReviewUpdate }: ReviewListProp
       : 0
 
   return (
-    <div className="mt-12" data-reviews-section>
+    <div className="mt-12 border-t-0 border-b-0" data-reviews-section>
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-2xl font-bold text-text-main dark:text-white">
           Đánh giá sản phẩm {product_name && `"${product_name}"`}
@@ -110,7 +110,7 @@ const ReviewList = ({ product_id, product_name, onReviewUpdate }: ReviewListProp
 
       {/* Review Form */}
       {showReviewForm && (
-        <div className="mb-8 p-6 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+        <div className="mb-8 p-6 bg-white dark:bg-gray-800 rounded-lg">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-semibold text-text-main dark:text-white">
               {editingReview ? 'Chỉnh sửa đánh giá' : 'Viết đánh giá của bạn'}
@@ -139,7 +139,7 @@ const ReviewList = ({ product_id, product_name, onReviewUpdate }: ReviewListProp
 
       {/* Rating Summary */}
       {totalReviews > 0 && (
-        <div className="mb-8 p-6 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+        <div className="mb-8 p-6 bg-white dark:bg-gray-800 rounded-lg">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Average Rating */}
             <div className="flex items-center gap-6">

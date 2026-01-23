@@ -6,6 +6,23 @@ import Cart, { CartItem } from '~/models/schemas/Cart.schema'
 class CartService {
   async addToCart(user_id: string, body: AddToCartReqBody) {
     const product_id = new ObjectId(body.product_id)
+    
+    // Kiểm tra sản phẩm có tồn tại và còn hàng không
+    const product = await databaseServices.products.findOne({ _id: product_id })
+    if (!product) {
+      throw new Error('Sản phẩm không tồn tại')
+    }
+    
+    // Kiểm tra sản phẩm hết hàng
+    if (product.status === 'out_of_stock' || product.quantity === 0) {
+      throw new Error('Sản phẩm đã hết hàng')
+    }
+    
+    // Kiểm tra số lượng có đủ không
+    if (body.buy_count > product.quantity) {
+      throw new Error(`Số lượng sản phẩm không đủ. Chỉ còn ${product.quantity} sản phẩm`)
+    }
+    
     const cart = await databaseServices.carts.findOne({ user_id: new ObjectId(user_id) })
 
     const newItem: CartItem = {

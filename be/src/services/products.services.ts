@@ -52,6 +52,9 @@ class ProductsService {
       filter.rating = { $gte: rating_filter }
     }
 
+    // Hiển thị sản phẩm active, low_stock, hoặc out_of_stock (không hiển thị inactive hoặc draft)
+    filter.status = { $in: ['active', 'low_stock', 'out_of_stock'] }
+
     const sort: any = {}
     if (sort_by) {
       sort[sort_by] = order === 'asc' ? 1 : -1
@@ -108,7 +111,10 @@ class ProductsService {
   }
 
   async getProductDetail(slug: string) {
-    const product = await databaseServices.products.findOne({ slug })
+    const product = await databaseServices.products.findOne({ 
+      slug,
+      status: { $in: ['active', 'low_stock', 'out_of_stock'] } // Cho xem sản phẩm active, low_stock, hoặc out_of_stock
+    })
     if (!product) return null
 
     // Populate category info
@@ -138,7 +144,8 @@ class ProductsService {
     const relatedProducts = await databaseServices.products
       .find({
         category: product.category,
-        slug: { $ne: slug }
+        slug: { $ne: slug },
+        status: { $in: ['active', 'low_stock', 'out_of_stock'] } // Hiển thị sản phẩm active, low_stock, hoặc out_of_stock
       })
       .limit(limit)
       .toArray()
