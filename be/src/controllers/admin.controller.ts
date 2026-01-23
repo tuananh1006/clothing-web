@@ -1,5 +1,7 @@
 import { Request, Response } from 'express'
 import adminService from '~/services/admin.services'
+import * as bannersService from '~/services/banners.services'
+import HTTP_STATUS from '~/constants/httpStatus'
 
 export const dashboardStatsController = async (req: Request, res: Response) => {
   const { start_date, end_date } = req.query
@@ -265,4 +267,75 @@ export const adminUpdateSettingsShippingController = async (req: Request, res: R
   }
   const result = await adminService.updateAdminSettingsShipping({ default_fee, free_shipping_threshold, partners })
   return res.json(result)
+}
+
+// Banner Controllers
+export const adminGetBannersController = async (req: Request, res: Response) => {
+  const { page, limit, position, is_active } = req.query
+  const result = await bannersService.getBanners({
+    page: page ? Number(page) : 1,
+    limit: limit ? Number(limit) : 20,
+    position: position as string,
+    is_active: is_active !== undefined ? is_active === 'true' : undefined
+  })
+  return res.status(HTTP_STATUS.OK).json({
+    message: 'Get banners successfully',
+    data: result
+  })
+}
+
+export const adminGetBannerDetailController = async (req: Request, res: Response) => {
+  const { id } = req.params
+  const banner = await bannersService.getBannerById(id)
+  return res.status(HTTP_STATUS.OK).json({
+    message: 'Get banner detail successfully',
+    data: banner
+  })
+}
+
+export const adminCreateBannerController = async (req: Request, res: Response) => {
+  const { title, subtitle, image_url, alt_text, cta_text, cta_link, order, position, is_active } = req.body
+  const banner = await bannersService.createBanner({
+    title,
+    subtitle,
+    image_url,
+    alt_text,
+    cta_text,
+    cta_link,
+    order,
+    position,
+    is_active
+  })
+  return res.status(HTTP_STATUS.CREATED).json({
+    message: 'Create banner successfully',
+    data: banner
+  })
+}
+
+export const adminUpdateBannerController = async (req: Request, res: Response) => {
+  const { id } = req.params
+  const { title, subtitle, image_url, alt_text, cta_text, cta_link, order, position, is_active } = req.body
+  const banner = await bannersService.updateBanner(id, {
+    title,
+    subtitle,
+    image_url,
+    alt_text,
+    cta_text,
+    cta_link,
+    order,
+    position,
+    is_active
+  })
+  return res.status(HTTP_STATUS.OK).json({
+    message: 'Update banner successfully',
+    data: banner
+  })
+}
+
+export const adminDeleteBannerController = async (req: Request, res: Response) => {
+  const { id } = req.params
+  await bannersService.deleteBanner(id)
+  return res.status(HTTP_STATUS.OK).json({
+    message: 'Delete banner successfully'
+  })
 }

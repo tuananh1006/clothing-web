@@ -66,6 +66,13 @@ export const API_ENDPOINTS = {
   CONTACT: {
     SUBMIT: '/contact/submit',
   },
+  // Chat
+  CHAT: {
+    GET_OR_CREATE: '/chat',
+    SEND_MESSAGE: '/chat/messages',
+    GET_MESSAGES: '/chat/messages',
+    CLOSE: '/chat/close',
+  },
   // Admin
   ADMIN: {
     DASHBOARD_STATS: '/admin/dashboard/stats',
@@ -90,6 +97,19 @@ export const API_ENDPOINTS = {
     SETTINGS_LOGO: '/admin/settings/logo',
     SETTINGS_PAYMENT: '/admin/settings/payment',
     SETTINGS_SHIPPING: '/admin/settings/shipping',
+    CHATS: '/admin/chats',
+    CHAT_DETAIL: (chatId: string) => `/admin/chats/${chatId}`,
+    CHAT_SEND_MESSAGE: '/admin/chats/messages',
+    CHAT_MARK_READ: '/admin/chats/mark-read',
+    CHAT_MARK_UNVIEWED: '/admin/chats/mark-unviewed',
+    CHAT_DELETE_MESSAGE: '/admin/chats/messages/delete',
+    CHAT_RESTORE_MESSAGE: '/admin/chats/messages/restore',
+    CHAT_DELETED_MESSAGES: (chatId: string) => `/admin/chats/${chatId}/deleted-messages`,
+    CHAT_CLOSE: (chatId: string) => `/admin/chats/close/${chatId}`,
+    CHAT_RESTORE: (chatId: string) => `/admin/chats/restore/${chatId}`,
+    CHAT_PERMANENTLY_DELETE: (chatId: string) => `/admin/chats/${chatId}`,
+    BANNERS: '/admin/banners',
+    BANNER_DETAIL: (id: string) => `/admin/banners/${id}`,
   },
 } as const
 
@@ -125,6 +145,8 @@ export const ROUTES = {
   ADMIN_CUSTOMERS: '/admin/customers',
   ADMIN_REVIEWS: '/admin/reviews',
   ADMIN_SETTINGS: '/admin/settings',
+  ADMIN_CHATS: '/admin/chats',
+  ADMIN_BANNERS: '/admin/banners',
 } as const
 
 // Pagination defaults

@@ -484,3 +484,432 @@ export const getOrderStatusDistribution = async (params?: {
   }
 }
 
+// Chat types
+export interface AdminChat {
+  _id: string
+  user_id: string
+  admin_id?: string
+  status: 'open' | 'closed' | 'pending'
+  viewed?: boolean // Đã xem hay chưa
+  viewed_at?: string // Thời gian admin xem lần cuối
+  message_count: number
+  unread_count?: number
+  last_message: {
+    _id: string
+    sender_id: string
+    sender_role: 'customer' | 'admin'
+    message: string
+    created_at: string
+    read?: boolean
+  } | null
+  user: {
+    _id: string
+    name: string
+    email: string
+    avatar?: string
+  } | null
+  created_at: string
+  updated_at: string
+}
+
+export interface AdminChatDetail extends AdminChat {
+  messages: Array<{
+    _id: string
+    sender_id: string
+    sender_role: 'customer' | 'admin'
+    message: string
+    created_at: string
+    read?: boolean
+  }>
+  admin?: {
+    _id: string
+    name: string
+    email: string
+    avatar?: string
+  } | null
+}
+
+/**
+ * Lấy danh sách chats cho admin
+ * Backend endpoint: GET /admin/chats
+ */
+export const getChats = async (params?: {
+  page?: number
+  limit?: number
+  status?: string
+}): Promise<{
+  chats: AdminChat[]
+  pagination: {
+    page: number
+    limit: number
+    total: number
+    total_page: number
+  }
+}> => {
+  try {
+    const response = await api.get<ApiResponse<{
+      chats: AdminChat[]
+      pagination: {
+        page: number
+        limit: number
+        total: number
+        total_page: number
+      }
+    }>>(API_ENDPOINTS.ADMIN.CHATS, {
+      params: params ? cleanParams(params) : undefined
+    })
+    return response.data.data
+  } catch (error: any) {
+    throw error
+  }
+}
+
+/**
+ * Lấy chi tiết chat cho admin
+ * Backend endpoint: GET /admin/chats/:chatId
+ */
+export const getChatDetail = async (chatId: string): Promise<AdminChatDetail> => {
+  try {
+    const response = await api.get<ApiResponse<AdminChatDetail>>(
+      API_ENDPOINTS.ADMIN.CHAT_DETAIL(chatId)
+    )
+    return response.data.data
+  } catch (error: any) {
+    throw error
+  }
+}
+
+/**
+ * Admin gửi tin nhắn
+ * Backend endpoint: POST /admin/chats/messages
+ */
+export const adminSendMessage = async (data: {
+  chat_id: string
+  message: string
+}): Promise<{
+  _id: string
+  sender_id: string
+  sender_role: 'admin'
+  message: string
+  created_at: string
+}> => {
+  try {
+    const response = await api.post<ApiResponse<{
+      _id: string
+      sender_id: string
+      sender_role: 'admin'
+      message: string
+      created_at: string
+    }>>(API_ENDPOINTS.ADMIN.CHAT_SEND_MESSAGE, data)
+    return response.data.data
+  } catch (error: any) {
+    throw error
+  }
+}
+
+/**
+ * Admin đánh dấu đã đọc
+ * Backend endpoint: POST /admin/chats/mark-read
+ */
+export const adminMarkAsRead = async (chat_id: string): Promise<void> => {
+  try {
+    await api.post(API_ENDPOINTS.ADMIN.CHAT_MARK_READ, { chat_id })
+  } catch (error: any) {
+    throw error
+  }
+}
+
+/**
+ * Admin đánh dấu chưa xem
+ * Backend endpoint: POST /admin/chats/mark-unviewed
+ */
+export const adminMarkAsUnviewed = async (chat_id: string): Promise<void> => {
+  try {
+    await api.post(API_ENDPOINTS.ADMIN.CHAT_MARK_UNVIEWED, { chat_id })
+  } catch (error: any) {
+    throw error
+  }
+}
+
+/**
+ * Admin xóa tin nhắn
+ * Backend endpoint: POST /admin/chats/messages/delete
+ */
+export const deleteMessage = async (chat_id: string, message_id: string): Promise<void> => {
+  try {
+    await api.post(API_ENDPOINTS.ADMIN.CHAT_DELETE_MESSAGE, { chat_id, message_id })
+  } catch (error: any) {
+    throw error
+  }
+}
+
+/**
+ * Admin khôi phục tin nhắn
+ * Backend endpoint: POST /admin/chats/messages/restore
+ */
+export const restoreMessage = async (chat_id: string, message_id: string): Promise<void> => {
+  try {
+    await api.post(API_ENDPOINTS.ADMIN.CHAT_RESTORE_MESSAGE, { chat_id, message_id })
+  } catch (error: any) {
+    throw error
+  }
+}
+
+/**
+ * Admin đóng chat (chuyển vào thùng rác)
+ * Backend endpoint: POST /admin/chats/close/:chatId
+ */
+export const adminCloseChat = async (chatId: string): Promise<void> => {
+  try {
+    await api.post(API_ENDPOINTS.ADMIN.CHAT_CLOSE(chatId))
+  } catch (error: any) {
+    throw error
+  }
+}
+
+/**
+ * Admin khôi phục chat từ thùng rác
+ * Backend endpoint: POST /admin/chats/restore/:chatId
+ */
+export const adminRestoreChat = async (chatId: string): Promise<void> => {
+  try {
+    await api.post(API_ENDPOINTS.ADMIN.CHAT_RESTORE(chatId))
+  } catch (error: any) {
+    throw error
+  }
+}
+
+/**
+ * Admin xóa vĩnh viễn chat
+ * Backend endpoint: DELETE /admin/chats/:chatId
+ */
+export const adminPermanentlyDeleteChat = async (chatId: string): Promise<void> => {
+  try {
+    await api.delete(API_ENDPOINTS.ADMIN.CHAT_PERMANENTLY_DELETE(chatId))
+  } catch (error: any) {
+    throw error
+  }
+}
+
+/**
+ * Admin lấy tin nhắn đã xóa
+ * Backend endpoint: GET /admin/chats/:chatId/deleted-messages
+ */
+export const getDeletedMessages = async (chat_id: string): Promise<Array<{
+  _id: string
+  sender_id: string
+  sender_role: 'customer' | 'admin'
+  message: string
+  created_at: string
+  deleted_at: string
+  deleted_by: string
+}>> => {
+  try {
+    const response = await api.get<ApiResponse<Array<{
+      _id: string
+      sender_id: string
+      sender_role: 'customer' | 'admin'
+      message: string
+      created_at: string
+      deleted_at: string
+      deleted_by: string
+    }>>>(API_ENDPOINTS.ADMIN.CHAT_DELETED_MESSAGES(chat_id))
+    return response.data.data
+  } catch (error: any) {
+    throw error
+  }
+}
+
+// Banner methods
+export const getBanners = async (params?: {
+  page?: number
+  limit?: number
+  position?: string
+  is_active?: boolean
+}): Promise<{
+  banners: Array<{
+    _id: string
+    title: string
+    subtitle?: string
+    image_url: string
+    alt_text?: string
+    cta_text?: string
+    cta_link?: string
+    order?: number
+    position: string
+    is_active?: boolean
+    created_at?: string
+    updated_at?: string
+  }>
+  pagination: {
+    page: number
+    limit: number
+    total: number
+    total_page: number
+  }
+}> => {
+  try {
+    const response = await api.get<ApiResponse<{
+      banners: Array<{
+        _id: string
+        title: string
+        subtitle?: string
+        image_url: string
+        alt_text?: string
+        cta_text?: string
+        cta_link?: string
+        order?: number
+        position: string
+        is_active?: boolean
+        created_at?: string
+        updated_at?: string
+      }>
+      pagination: {
+        page: number
+        limit: number
+        total: number
+        total_page: number
+      }
+    }>>(API_ENDPOINTS.ADMIN.BANNERS, { params: cleanParams(params || {}) })
+    return response.data.data
+  } catch (error: any) {
+    throw error
+  }
+}
+
+export const getBannerDetail = async (id: string): Promise<{
+  _id: string
+  title: string
+  subtitle?: string
+  image_url: string
+  alt_text?: string
+  cta_text?: string
+  cta_link?: string
+  order?: number
+  position: string
+  is_active?: boolean
+  created_at?: string
+  updated_at?: string
+}> => {
+  try {
+    const response = await api.get<ApiResponse<{
+      _id: string
+      title: string
+      subtitle?: string
+      image_url: string
+      alt_text?: string
+      cta_text?: string
+      cta_link?: string
+      order?: number
+      position: string
+      is_active?: boolean
+      created_at?: string
+      updated_at?: string
+    }>>(API_ENDPOINTS.ADMIN.BANNER_DETAIL(id))
+    return response.data.data
+  } catch (error: any) {
+    throw error
+  }
+}
+
+export const createBanner = async (data: {
+  title: string
+  subtitle?: string
+  image_url: string
+  alt_text?: string
+  cta_text?: string
+  cta_link?: string
+  order?: number
+  position: string
+  is_active?: boolean
+}): Promise<{
+  _id: string
+  title: string
+  subtitle?: string
+  image_url: string
+  alt_text?: string
+  cta_text?: string
+  cta_link?: string
+  order?: number
+  position: string
+  is_active?: boolean
+  created_at?: string
+  updated_at?: string
+}> => {
+  try {
+    const response = await api.post<ApiResponse<{
+      _id: string
+      title: string
+      subtitle?: string
+      image_url: string
+      alt_text?: string
+      cta_text?: string
+      cta_link?: string
+      order?: number
+      position: string
+      is_active?: boolean
+      created_at?: string
+      updated_at?: string
+    }>>(API_ENDPOINTS.ADMIN.BANNERS, data)
+    return response.data.data
+  } catch (error: any) {
+    throw error
+  }
+}
+
+export const updateBanner = async (
+  id: string,
+  data: {
+    title?: string
+    subtitle?: string
+    image_url?: string
+    alt_text?: string
+    cta_text?: string
+    cta_link?: string
+    order?: number
+    position?: string
+    is_active?: boolean
+  }
+): Promise<{
+  _id: string
+  title: string
+  subtitle?: string
+  image_url: string
+  alt_text?: string
+  cta_text?: string
+  cta_link?: string
+  order?: number
+  position: string
+  is_active?: boolean
+  created_at?: string
+  updated_at?: string
+}> => {
+  try {
+    const response = await api.put<ApiResponse<{
+      _id: string
+      title: string
+      subtitle?: string
+      image_url: string
+      alt_text?: string
+      cta_text?: string
+      cta_link?: string
+      order?: number
+      position: string
+      is_active?: boolean
+      created_at?: string
+      updated_at?: string
+    }>>(API_ENDPOINTS.ADMIN.BANNER_DETAIL(id), data)
+    return response.data.data
+  } catch (error: any) {
+    throw error
+  }
+}
+
+export const deleteBanner = async (id: string): Promise<void> => {
+  try {
+    await api.delete(API_ENDPOINTS.ADMIN.BANNER_DETAIL(id))
+  } catch (error: any) {
+    throw error
+  }
+}
+
