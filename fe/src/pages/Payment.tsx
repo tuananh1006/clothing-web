@@ -14,6 +14,7 @@ import { useToast } from '@/contexts/ToastContext'
 import * as checkoutService from '@/services/checkout.service'
 import { ROUTES } from '@/utils/constants'
 import type { ShippingAddress, PlaceOrderRequest } from '@/types/order.types'
+import type { Coupon } from '@/services/coupons.service'
 
 // Validation schema
 const paymentSchema = z.object({
@@ -33,6 +34,7 @@ const Payment = () => {
   const [shippingFee, setShippingFee] = useState(0)
   const [loading, setLoading] = useState(true)
   const [submitting, setSubmitting] = useState(false)
+  const [selectedCoupon, setSelectedCoupon] = useState<Coupon | null>(null)
 
   const {
     register,
@@ -55,6 +57,7 @@ const Payment = () => {
         // Get shipping address from sessionStorage
         const savedShippingAddress = sessionStorage.getItem('checkout_shipping_address')
         const savedShippingFee = sessionStorage.getItem('checkout_shipping_fee')
+        const savedCoupon = sessionStorage.getItem('checkout_selected_coupon')
 
         if (!savedShippingAddress) {
           // Redirect to checkout if no shipping address
@@ -64,6 +67,15 @@ const Payment = () => {
 
         setShippingAddress(JSON.parse(savedShippingAddress))
         setShippingFee(parseInt(savedShippingFee || '0', 10))
+        
+        // Load selected coupon if exists
+        if (savedCoupon) {
+          try {
+            setSelectedCoupon(JSON.parse(savedCoupon))
+          } catch (error) {
+            console.error('Failed to parse coupon:', error)
+          }
+        }
 
         // Fetch payment info
         const paymentData = await checkoutService.getPaymentInfo()
@@ -168,7 +180,8 @@ const Payment = () => {
     )
   }
 
-  const total = totalPrice + shippingFee
+  const discountAmount = selectedCoupon?.calculated_discount || 0
+  const total = totalPrice + shippingFee - discountAmount
 
   return (
     <div className="min-h-screen flex flex-col bg-background-light dark:bg-background-dark">
@@ -327,7 +340,11 @@ const Payment = () => {
                   items={items}
                   subtotal={totalPrice}
                   shippingFee={shippingFee}
+                  discountAmount={discountAmount}
                   total={total}
+                  orderValue={totalPrice}
+                  selectedCoupon={selectedCoupon}
+                  onSelectCoupon={setSelectedCoupon}
                 />
               </div>
             </div>

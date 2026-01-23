@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import { getAvailableCoupons, type Coupon } from '@/services/coupons.service'
 import { useToast } from '@/contexts/ToastContext'
-import Button from '@/components/common/Button'
 
 interface CouponSelectorProps {
   orderValue: number
