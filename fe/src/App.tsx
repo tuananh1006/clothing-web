@@ -1,4 +1,4 @@
-import { BrowserRouter, useRoutes } from 'react-router-dom'
+import { BrowserRouter, useRoutes, useLocation } from 'react-router-dom'
 import { Suspense } from 'react'
 import { AuthProvider } from '@/contexts/AuthContext'
 import { CartProvider } from '@/contexts/CartContext'
@@ -6,11 +6,24 @@ import { ThemeContextProvider } from '@/contexts/ThemeContext'
 import { ToastContextProvider } from '@/contexts/ToastContext'
 import { WishlistProvider } from '@/contexts/WishlistContext'
 import ErrorBoundary from '@/components/common/ErrorBoundary'
+import ChatBox from '@/components/chat/ChatBox'
 import { routes } from './routes'
 
 const AppRoutes = () => {
   const element = useRoutes(routes)
   return element
+}
+
+const ConditionalChatBox = () => {
+  const location = useLocation()
+  // Ẩn ChatBox ở trang admin
+  const isAdminRoute = location.pathname.startsWith('/admin')
+  
+  if (isAdminRoute) {
+    return null
+  }
+  
+  return <ChatBox />
 }
 
 function App() {
@@ -33,6 +46,7 @@ function App() {
                     }
                   >
                     <AppRoutes />
+                    <ConditionalChatBox />
                   </Suspense>
                 </WishlistProvider>
               </CartProvider>

@@ -35,6 +35,8 @@ const AdminOrders = lazy(() => import('@/pages/admin/Orders'))
 const AdminCustomers = lazy(() => import('@/pages/admin/Customers'))
 const AdminReviews = lazy(() => import('@/pages/admin/Reviews'))
 const AdminSettings = lazy(() => import('@/pages/admin/Settings'))
+const AdminChats = lazy(() => import('@/pages/admin/Chats'))
+const AdminBanners = lazy(() => import('@/pages/admin/Banners'))
 
 // Route definitions
 export const routes: RouteObject[] = [
@@ -210,6 +212,22 @@ export const routes: RouteObject[] = [
     element: (
       <AdminRoute>
         <AdminSettings />
+      </AdminRoute>
+    ),
+  },
+  {
+    path: '/admin/chats',
+    element: (
+      <AdminRoute>
+        <AdminChats />
+      </AdminRoute>
+    ),
+  },
+  {
+    path: '/admin/banners',
+    element: (
+      <AdminRoute>
+        <AdminBanners />
       </AdminRoute>
     ),
   },

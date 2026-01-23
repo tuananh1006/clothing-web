@@ -31,12 +31,30 @@ import {
   adminUpdateSettingsGeneralController,
   adminUpdateSettingsLogoController,
   adminUpdateSettingsPaymentController,
-  adminUpdateSettingsShippingController
+  adminUpdateSettingsShippingController,
+  adminGetBannersController,
+  adminGetBannerDetailController,
+  adminCreateBannerController,
+  adminUpdateBannerController,
+  adminDeleteBannerController
 } from '~/controllers/admin.controller'
 
 // Settings routes are appended after customer routes
 import { wrapRequestHandler } from '~/utils/handler'
 import { uploadLogo } from '~/middlewares/upload.middleware'
+import {
+  getAllChatsController,
+  getChatDetailController,
+  adminSendMessageController,
+  adminMarkAsReadController,
+  adminMarkAsUnviewedController,
+  deleteMessageController,
+  restoreMessageController,
+  getDeletedMessagesController,
+  adminCloseChatController,
+  adminRestoreChatController,
+  adminPermanentlyDeleteChatController
+} from '~/controllers/chat.controller'
 
 const adminRouter = Router()
 
@@ -293,3 +311,59 @@ adminRouter.put(
   requireAdmin,
   wrapRequestHandler(adminUpdateSettingsShippingController)
 )
+
+/**
+ * Description: Admin Chat Routes
+ * Path: /admin/chats
+ * Method: GET, POST
+ * Header: { Authorization: Bearer <access_token> }
+ */
+adminRouter.get('/chats', accessTokenValidator, requireAdmin, wrapRequestHandler(getAllChatsController))
+adminRouter.get('/chats/:chatId', accessTokenValidator, requireAdmin, wrapRequestHandler(getChatDetailController))
+adminRouter.post('/chats/messages', accessTokenValidator, requireAdmin, wrapRequestHandler(adminSendMessageController))
+adminRouter.post('/chats/mark-read', accessTokenValidator, requireAdmin, wrapRequestHandler(adminMarkAsReadController))
+adminRouter.post('/chats/mark-unviewed', accessTokenValidator, requireAdmin, wrapRequestHandler(adminMarkAsUnviewedController))
+adminRouter.post('/chats/messages/delete', accessTokenValidator, requireAdmin, wrapRequestHandler(deleteMessageController))
+adminRouter.post('/chats/messages/restore', accessTokenValidator, requireAdmin, wrapRequestHandler(restoreMessageController))
+adminRouter.post('/chats/close/:chatId', accessTokenValidator, requireAdmin, wrapRequestHandler(adminCloseChatController))
+adminRouter.post('/chats/restore/:chatId', accessTokenValidator, requireAdmin, wrapRequestHandler(adminRestoreChatController))
+adminRouter.get('/chats/:chatId/deleted-messages', accessTokenValidator, requireAdmin, wrapRequestHandler(getDeletedMessagesController))
+adminRouter.delete('/chats/:chatId', accessTokenValidator, requireAdmin, wrapRequestHandler(adminPermanentlyDeleteChatController))
+
+/**
+ * Description: Admin - List banners
+ * Path: /banners
+ * Method: GET
+ * Query: { page?, limit?, position?, is_active? }
+ */
+adminRouter.get('/banners', accessTokenValidator, requireAdmin, wrapRequestHandler(adminGetBannersController))
+
+/**
+ * Description: Admin - Get banner detail
+ * Path: /banners/:id
+ * Method: GET
+ */
+adminRouter.get('/banners/:id', accessTokenValidator, requireAdmin, wrapRequestHandler(adminGetBannerDetailController))
+
+/**
+ * Description: Admin - Create banner
+ * Path: /banners
+ * Method: POST
+ * Body: { title, subtitle?, image_url, alt_text?, cta_text?, cta_link?, order?, position, is_active? }
+ */
+adminRouter.post('/banners', accessTokenValidator, requireAdmin, wrapRequestHandler(adminCreateBannerController))
+
+/**
+ * Description: Admin - Update banner
+ * Path: /banners/:id
+ * Method: PUT
+ * Body: { title?, subtitle?, image_url?, alt_text?, cta_text?, cta_link?, order?, position?, is_active? }
+ */
+adminRouter.put('/banners/:id', accessTokenValidator, requireAdmin, wrapRequestHandler(adminUpdateBannerController))
+
+/**
+ * Description: Admin - Delete banner
+ * Path: /banners/:id
+ * Method: DELETE
+ */
+adminRouter.delete('/banners/:id', accessTokenValidator, requireAdmin, wrapRequestHandler(adminDeleteBannerController))

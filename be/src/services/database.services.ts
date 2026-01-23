@@ -9,6 +9,7 @@ import Order from '~/models/schemas/Order.schema'
 import Banner from '~/models/schemas/Banner.schema'
 import Review from '~/models/schemas/Review.schema'
 import Wishlist from '~/models/schemas/Wishlist.schema'
+import Chat from '~/models/schemas/Chat.schema'
 config({ quiet: true }) // tuỳ version dotenv
 
 // Connection URL
@@ -81,6 +82,11 @@ class DatabaseService {
   // Wishlists collection
   get wishlists(): Collection<Wishlist> {
     return this.db.collection(process.env.DB_WISHLISTS_COLLECTION || 'wishlists')
+  }
+
+  // Chats collection
+  get chats(): Collection<Chat> {
+    return this.db.collection(process.env.DB_CHATS_COLLECTION || 'chats')
   }
 }
 export default new DatabaseService()

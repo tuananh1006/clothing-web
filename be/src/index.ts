@@ -12,15 +12,20 @@ import adminRouter from './routes/admin.routes'
 import contactRouter from './routes/contact.routes'
 import reviewsRouter from './routes/reviews.routes'
 import wishlistRouter from './routes/wishlist.routes'
+import chatRouter from './routes/chat.routes'
+import chatServices from './services/chat.services'
 import databaseServices from './services/database.services'
 import { defaultErrorHandler } from './middlewares/errors.middleware'
 import { initializeIndexes } from './utils/db-indexes'
 import { config } from 'dotenv'
 import path from 'path'
 import { buildOpenAPISpec } from './utils/openapi'
+import { createServer } from 'http'
+import { initializeSocket } from './socket/socket.server'
 
 const PORT = Number(process.env.PORT) || 5000
 const app = express()
+const httpServer = createServer(app)
 
 // CORS configuration
 const allowedOrigins: string[] = [
@@ -95,6 +100,7 @@ app.use('/api/v1/admin', adminRouter)
 app.use('/api/v1/contact', contactRouter)
 app.use('/api/v1/reviews', reviewsRouter)
 app.use('/api/v1/wishlists', wishlistRouter)
+app.use('/api/v1/chat', chatRouter)
 
 // Debug: Log all registered routes
 if (process.env.NODE_ENV !== 'production') {
@@ -143,6 +149,29 @@ app.get('/', (req, res) => {
 // Error handler must be registered last
 app.use(defaultErrorHandler)
 
-app.listen(PORT, () => {
+// Initialize Socket.IO
+const io = initializeSocket(httpServer)
+
+// Cleanup inactive chats every 1 minute
+setInterval(async () => {
+  try {
+    await chatServices.cleanupInactiveChats()
+  } catch (error) {
+    console.error('Error cleaning up inactive chats:', error)
+  }
+}, 60 * 1000) // Chạy mỗi 1 phút
+
+// Xóa vĩnh viễn tin nhắn đã xóa quá 30 ngày (chạy mỗi ngày)
+setInterval(async () => {
+  try {
+    await chatServices.permanentlyDeleteOldMessages()
+  } catch (error) {
+    console.error('Error permanently deleting old messages:', error)
+  }
+}, 24 * 60 * 60 * 1000) // Chạy mỗi 24 giờ
+
+httpServer.listen(PORT, () => {
   console.log(`Server is running at http://localhost:${PORT}`)
+  console.log(`Socket.IO server initialized`)
+  console.log(`Chat cleanup job started (runs every 1 minute)`)
 })

@@ -47,6 +47,8 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
     { path: ROUTES.ADMIN_PRODUCTS, icon: 'shopping_bag', label: 'Sản phẩm' },
     { path: ROUTES.ADMIN_ORDERS, icon: 'receipt_long', label: 'Đơn hàng' },
     { path: ROUTES.ADMIN_CUSTOMERS, icon: 'group', label: 'Khách hàng' },
+    { path: ROUTES.ADMIN_CHATS, icon: 'chat', label: 'Chat' },
+    { path: ROUTES.ADMIN_BANNERS, icon: 'image', label: 'Banner' },
     { path: ROUTES.ADMIN_REVIEWS, icon: 'rate_review', label: 'Đánh giá' },
     { path: ROUTES.ADMIN_SETTINGS, icon: 'settings', label: 'Cài đặt' },
   ]
