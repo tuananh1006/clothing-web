@@ -36,7 +36,12 @@ import {
   adminGetBannerDetailController,
   adminCreateBannerController,
   adminUpdateBannerController,
-  adminDeleteBannerController
+  adminDeleteBannerController,
+  adminGetCouponsController,
+  adminGetCouponDetailController,
+  adminCreateCouponController,
+  adminUpdateCouponController,
+  adminDeleteCouponController
 } from '~/controllers/admin.controller'
 
 // Settings routes are appended after customer routes
@@ -367,3 +372,41 @@ adminRouter.put('/banners/:id', accessTokenValidator, requireAdmin, wrapRequestH
  * Method: DELETE
  */
 adminRouter.delete('/banners/:id', accessTokenValidator, requireAdmin, wrapRequestHandler(adminDeleteBannerController))
+
+/**
+ * Description: Admin - List coupons
+ * Path: /coupons
+ * Method: GET
+ * Query: { page?, limit?, code?, is_active? }
+ */
+adminRouter.get('/coupons', accessTokenValidator, requireAdmin, wrapRequestHandler(adminGetCouponsController))
+
+/**
+ * Description: Admin - Get coupon detail
+ * Path: /coupons/:id
+ * Method: GET
+ */
+adminRouter.get('/coupons/:id', accessTokenValidator, requireAdmin, wrapRequestHandler(adminGetCouponDetailController))
+
+/**
+ * Description: Admin - Create coupon
+ * Path: /coupons
+ * Method: POST
+ * Body: { code, name?, description?, discount_type, discount_value, min_order_value?, max_discount?, usage_limit?, valid_from, valid_until, is_active?, applicable_to?, categories?, products? }
+ */
+adminRouter.post('/coupons', accessTokenValidator, requireAdmin, wrapRequestHandler(adminCreateCouponController))
+
+/**
+ * Description: Admin - Update coupon
+ * Path: /coupons/:id
+ * Method: PUT
+ * Body: { code?, name?, description?, discount_type?, discount_value?, min_order_value?, max_discount?, usage_limit?, valid_from?, valid_until?, is_active?, applicable_to?, categories?, products? }
+ */
+adminRouter.put('/coupons/:id', accessTokenValidator, requireAdmin, wrapRequestHandler(adminUpdateCouponController))
+
+/**
+ * Description: Admin - Delete coupon
+ * Path: /coupons/:id
+ * Method: DELETE
+ */
+adminRouter.delete('/coupons/:id', accessTokenValidator, requireAdmin, wrapRequestHandler(adminDeleteCouponController))

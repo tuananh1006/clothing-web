@@ -913,3 +913,254 @@ export const deleteBanner = async (id: string): Promise<void> => {
   }
 }
 
+// Coupon methods
+export const getCoupons = async (params?: {
+  page?: number
+  limit?: number
+  code?: string
+  is_active?: boolean
+}): Promise<{
+  coupons: Array<{
+    _id: string
+    code: string
+    name?: string
+    description?: string
+    discount_type: 'percentage' | 'fixed_amount'
+    discount_value: number
+    min_order_value?: number
+    max_discount?: number
+    usage_limit?: number
+    used_count?: number
+    valid_from: string
+    valid_until: string
+    is_active?: boolean
+    applicable_to?: 'all' | 'specific_categories' | 'specific_products'
+    categories?: string[]
+    products?: string[]
+    created_at?: string
+    updated_at?: string
+  }>
+  pagination: {
+    page: number
+    limit: number
+    total: number
+    total_page: number
+  }
+}> => {
+  try {
+    const response = await api.get<ApiResponse<{
+      coupons: Array<{
+        _id: string
+        code: string
+        name?: string
+        description?: string
+        discount_type: 'percentage' | 'fixed_amount'
+        discount_value: number
+        min_order_value?: number
+        max_discount?: number
+        usage_limit?: number
+        used_count?: number
+        valid_from: string
+        valid_until: string
+        is_active?: boolean
+        applicable_to?: 'all' | 'specific_categories' | 'specific_products'
+        categories?: string[]
+        products?: string[]
+        created_at?: string
+        updated_at?: string
+      }>
+      pagination: {
+        page: number
+        limit: number
+        total: number
+        total_page: number
+      }
+    }>>(API_ENDPOINTS.ADMIN.COUPONS, { params: cleanParams(params || {}) })
+    return response.data.data
+  } catch (error: any) {
+    throw error
+  }
+}
+
+export const getCouponDetail = async (id: string): Promise<{
+  _id: string
+  code: string
+  name?: string
+  description?: string
+  discount_type: 'percentage' | 'fixed_amount'
+  discount_value: number
+  min_order_value?: number
+  max_discount?: number
+  usage_limit?: number
+  used_count?: number
+  valid_from: string
+  valid_until: string
+  is_active?: boolean
+  applicable_to?: 'all' | 'specific_categories' | 'specific_products'
+  categories?: string[]
+  products?: string[]
+  created_at?: string
+  updated_at?: string
+}> => {
+  try {
+    const response = await api.get<ApiResponse<{
+      _id: string
+      code: string
+      name?: string
+      description?: string
+      discount_type: 'percentage' | 'fixed_amount'
+      discount_value: number
+      min_order_value?: number
+      max_discount?: number
+      usage_limit?: number
+      used_count?: number
+      valid_from: string
+      valid_until: string
+      is_active?: boolean
+      applicable_to?: 'all' | 'specific_categories' | 'specific_products'
+      categories?: string[]
+      products?: string[]
+      created_at?: string
+      updated_at?: string
+    }>>(API_ENDPOINTS.ADMIN.COUPON_DETAIL(id))
+    return response.data.data
+  } catch (error: any) {
+    throw error
+  }
+}
+
+export const createCoupon = async (data: {
+  code: string
+  name?: string
+  description?: string
+  discount_type: 'percentage' | 'fixed_amount'
+  discount_value: number
+  min_order_value?: number
+  max_discount?: number
+  usage_limit?: number
+  valid_from: string
+  valid_until: string
+  is_active?: boolean
+  applicable_to?: 'all' | 'specific_categories' | 'specific_products'
+  categories?: string[]
+  products?: string[]
+}): Promise<{
+  _id: string
+  code: string
+  name?: string
+  description?: string
+  discount_type: 'percentage' | 'fixed_amount'
+  discount_value: number
+  min_order_value?: number
+  max_discount?: number
+  usage_limit?: number
+  used_count?: number
+  valid_from: string
+  valid_until: string
+  is_active?: boolean
+  applicable_to?: 'all' | 'specific_categories' | 'specific_products'
+  categories?: string[]
+  products?: string[]
+  created_at?: string
+  updated_at?: string
+}> => {
+  try {
+    const response = await api.post<ApiResponse<{
+      _id: string
+      code: string
+      name?: string
+      description?: string
+      discount_type: 'percentage' | 'fixed_amount'
+      discount_value: number
+      min_order_value?: number
+      max_discount?: number
+      usage_limit?: number
+      used_count?: number
+      valid_from: string
+      valid_until: string
+      is_active?: boolean
+      applicable_to?: 'all' | 'specific_categories' | 'specific_products'
+      categories?: string[]
+      products?: string[]
+      created_at?: string
+      updated_at?: string
+    }>>(API_ENDPOINTS.ADMIN.COUPONS, data)
+    return response.data.data
+  } catch (error: any) {
+    throw error
+  }
+}
+
+export const updateCoupon = async (
+  id: string,
+  data: {
+    code?: string
+    name?: string
+    description?: string
+    discount_type?: 'percentage' | 'fixed_amount'
+    discount_value?: number
+    min_order_value?: number
+    max_discount?: number
+    usage_limit?: number
+    valid_from?: string
+    valid_until?: string
+    is_active?: boolean
+    applicable_to?: 'all' | 'specific_categories' | 'specific_products'
+    categories?: string[]
+    products?: string[]
+  }
+): Promise<{
+  _id: string
+  code: string
+  name?: string
+  description?: string
+  discount_type: 'percentage' | 'fixed_amount'
+  discount_value: number
+  min_order_value?: number
+  max_discount?: number
+  usage_limit?: number
+  used_count?: number
+  valid_from: string
+  valid_until: string
+  is_active?: boolean
+  applicable_to?: 'all' | 'specific_categories' | 'specific_products'
+  categories?: string[]
+  products?: string[]
+  created_at?: string
+  updated_at?: string
+}> => {
+  try {
+    const response = await api.put<ApiResponse<{
+      _id: string
+      code: string
+      name?: string
+      description?: string
+      discount_type: 'percentage' | 'fixed_amount'
+      discount_value: number
+      min_order_value?: number
+      max_discount?: number
+      usage_limit?: number
+      used_count?: number
+      valid_from: string
+      valid_until: string
+      is_active?: boolean
+      applicable_to?: 'all' | 'specific_categories' | 'specific_products'
+      categories?: string[]
+      products?: string[]
+      created_at?: string
+      updated_at?: string
+    }>>(API_ENDPOINTS.ADMIN.COUPON_DETAIL(id), data)
+    return response.data.data
+  } catch (error: any) {
+    throw error
+  }
+}
+
+export const deleteCoupon = async (id: string): Promise<void> => {
+  try {
+    await api.delete(API_ENDPOINTS.ADMIN.COUPON_DETAIL(id))
+  } catch (error: any) {
+    throw error
+  }
+}
+

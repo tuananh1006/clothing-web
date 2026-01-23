@@ -7,6 +7,7 @@ import Product from '~/models/schemas/Product.schema'
 import Cart from '~/models/schemas/Cart.schema'
 import Order from '~/models/schemas/Order.schema'
 import Banner from '~/models/schemas/Banner.schema'
+import Coupon from '~/models/schemas/Coupon.schema'
 import Review from '~/models/schemas/Review.schema'
 import Wishlist from '~/models/schemas/Wishlist.schema'
 import Chat from '~/models/schemas/Chat.schema'
@@ -72,6 +73,11 @@ class DatabaseService {
   // Banners collection
   get banners(): Collection<Banner> {
     return this.db.collection(process.env.DB_BANNERS_COLLECTION || 'banners')
+  }
+
+  // Coupons collection
+  get coupons(): Collection<Coupon> {
+    return this.db.collection(process.env.DB_COUPONS_COLLECTION || 'coupons')
   }
 
   // Reviews collection

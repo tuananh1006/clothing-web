@@ -150,6 +150,35 @@ export const accessTokenValidator = validate(
   })
 )
 
+/**
+ * Optional access token validator - không bắt buộc token, nhưng nếu có thì validate
+ */
+export const optionalAccessTokenValidator = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const authHeader = req.headers.authorization
+    if (authHeader && authHeader.startsWith('Bearer ')) {
+      const access_token = authHeader.split(' ')[1]
+      if (access_token) {
+        const decodedVerifyToken = await verifyToken({
+          token: access_token,
+          secretOrPublicKey: process.env.JWT_SECRET
+        })
+        // Kiểm tra user status sau khi verify token
+        if (decodedVerifyToken.userId) {
+          const user = await databaseServices.users.findOne({ _id: new ObjectId(decodedVerifyToken.userId) })
+          if (user && user.verify !== UserVerifyStatus.Banned) {
+            req.decoded_authorization = decodedVerifyToken
+          }
+        }
+      }
+    }
+    next()
+  } catch (error) {
+    // Nếu token không hợp lệ, bỏ qua (không throw error)
+    next()
+  }
+}
+
 export const refreshTokenValidator = validate(
   checkSchema(
     {
