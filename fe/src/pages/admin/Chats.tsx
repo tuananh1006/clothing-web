@@ -2,8 +2,6 @@ import { useState, useEffect, useRef } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import AdminLayout from '@/components/admin/AdminLayout'
 import Button from '@/components/common/Button'
-import Input from '@/components/common/Input'
-import Select from '@/components/common/Select'
 import Pagination from '@/components/common/Pagination'
 import Modal from '@/components/common/Modal'
 import Spinner from '@/components/common/Spinner'
@@ -24,7 +22,12 @@ const AdminChats = () => {
 
   const [chats, setChats] = useState<adminService.AdminChat[]>([])
   const [selectedChat, setSelectedChat] = useState<adminService.AdminChatDetail | null>(null)
-  const [pagination, setPagination] = useState({
+  const [pagination, setPagination] = useState<{
+    page: number
+    limit: number
+    total: number
+    total_page: number
+  }>({
     page: 1,
     limit: PAGINATION.DEFAULT_LIMIT,
     total_page: 1,

@@ -30,9 +30,15 @@ const AdminBanners = () => {
   const { showSuccess, showError } = useToast()
 
   const [banners, setBanners] = useState<Banner[]>([])
-  const [pagination, setPagination] = useState({
+  const [pagination, setPagination] = useState<{
+    page: number
+    limit: number
+    total: number
+    total_page: number
+  }>({
     page: 1,
     limit: PAGINATION.DEFAULT_LIMIT,
+    total: 0,
     total_page: 1,
   })
   const [isLoading, setIsLoading] = useState(true)
@@ -329,7 +335,7 @@ const AdminBanners = () => {
 
         {/* Table */}
         <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
-          <DataTable columns={columns} data={banners} isLoading={isLoading} />
+          <DataTable columns={columns} data={banners} loading={isLoading} />
         </div>
 
         {/* Pagination */}
