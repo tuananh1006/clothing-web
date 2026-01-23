@@ -11,6 +11,7 @@ import Coupon from '~/models/schemas/Coupon.schema'
 import Review from '~/models/schemas/Review.schema'
 import Wishlist from '~/models/schemas/Wishlist.schema'
 import Chat from '~/models/schemas/Chat.schema'
+import Notification from '~/models/schemas/Notification.schema'
 config({ quiet: true }) // tuỳ version dotenv
 
 // Connection URL
@@ -93,6 +94,11 @@ class DatabaseService {
   // Chats collection
   get chats(): Collection<Chat> {
     return this.db.collection(process.env.DB_CHATS_COLLECTION || 'chats')
+  }
+
+  // Notifications collection
+  get notifications(): Collection<Notification> {
+    return this.db.collection(process.env.DB_NOTIFICATIONS_COLLECTION || 'notifications')
   }
 }
 export default new DatabaseService()

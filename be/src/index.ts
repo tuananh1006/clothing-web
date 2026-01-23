@@ -14,6 +14,7 @@ import contactRouter from './routes/contact.routes'
 import reviewsRouter from './routes/reviews.routes'
 import wishlistRouter from './routes/wishlist.routes'
 import chatRouter from './routes/chat.routes'
+import notificationsRouter from './routes/notifications.routes'
 import chatServices from './services/chat.services'
 import databaseServices from './services/database.services'
 import { defaultErrorHandler } from './middlewares/errors.middleware'
@@ -103,6 +104,7 @@ app.use('/api/v1/contact', contactRouter)
 app.use('/api/v1/reviews', reviewsRouter)
 app.use('/api/v1/wishlists', wishlistRouter)
 app.use('/api/v1/chat', chatRouter)
+app.use('/api/v1/notifications', notificationsRouter)
 
 // Debug: Log all registered routes
 if (process.env.NODE_ENV !== 'production') {

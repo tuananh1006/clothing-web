@@ -2,6 +2,8 @@ import { ObjectId } from 'mongodb'
 import databaseServices from './database.services'
 import Coupon, { DiscountType, ApplicableTo } from '~/models/schemas/Coupon.schema'
 import HTTP_STATUS from '~/constants/httpStatus'
+import { createNotificationForAllUsers } from './notifications.services'
+import { NotificationTypeEnum } from '~/models/schemas/Notification.schema'
 
 /**
  * Tạo coupon mới
@@ -51,6 +53,30 @@ export const createCoupon = async (couponData: {
 
   const result = await databaseServices.coupons.insertOne(coupon)
   const insertedCoupon = await databaseServices.coupons.findOne({ _id: result.insertedId })
+
+  // Tạo notification cho tất cả users khi có coupon mới (chỉ khi coupon active)
+  if (insertedCoupon && insertedCoupon.is_active) {
+    try {
+      const discountText =
+        insertedCoupon.discount_type === DiscountType.Percentage
+          ? `${insertedCoupon.discount_value}%`
+          : `${insertedCoupon.discount_value.toLocaleString('vi-VN')}₫`
+
+      await createNotificationForAllUsers({
+        type: NotificationTypeEnum.NewCoupon,
+        title: 'Mã giảm giá mới',
+        message: `Mã giảm giá ${insertedCoupon.code} - Giảm ${discountText} đã được phát hành!`,
+        data: {
+          coupon_id: insertedCoupon._id?.toString(),
+          coupon_code: insertedCoupon.code
+        }
+      })
+    } catch (error) {
+      console.error('Error creating notification for new coupon:', error)
+      // Không throw error để không ảnh hưởng đến việc tạo coupon
+    }
+  }
+
   return insertedCoupon
 }
 

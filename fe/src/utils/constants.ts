@@ -73,6 +73,14 @@ export const API_ENDPOINTS = {
     GET_MESSAGES: '/chat/messages',
     CLOSE: '/chat/close',
   },
+  // Notifications
+  NOTIFICATIONS: {
+    LIST: '/notifications',
+    UNREAD_COUNT: '/notifications/unread-count',
+    MARK_READ: (id: string) => `/notifications/${id}/read`,
+    MARK_ALL_READ: '/notifications/mark-all-read',
+    DELETE: (id: string) => `/notifications/${id}`,
+  },
   // Admin
   ADMIN: {
     DASHBOARD_STATS: '/admin/dashboard/stats',

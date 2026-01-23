@@ -1,6 +1,8 @@
 import databaseServices from './database.services'
 import { OrderStatus } from '~/models/schemas/Order.schema'
 import { ObjectId } from 'mongodb'
+import { createNotification } from './notifications.services'
+import { NotificationTypeEnum } from '~/models/schemas/Notification.schema'
 
 function startOfDay(d: Date) {
   return new Date(d.getFullYear(), d.getMonth(), d.getDate())
@@ -380,6 +382,23 @@ class AdminService {
       [OrderStatus.Shipping]: 'Đang giao',
       [OrderStatus.Completed]: 'Hoàn thành',
       [OrderStatus.Cancelled]: 'Đã hủy'
+    }
+
+    // Tạo notification cho customer
+    try {
+      await createNotification({
+        user_id: order.user_id.toString(),
+        type: NotificationTypeEnum.OrderStatusUpdate,
+        title: 'Cập nhật trạng thái đơn hàng',
+        message: `Đơn hàng ${order.order_code} của bạn đã được cập nhật trạng thái thành "${statusLabels[status]}"`,
+        data: {
+          order_id: id,
+          order_code: order.order_code
+        }
+      })
+    } catch (error) {
+      console.error('Error creating notification:', error)
+      // Không throw error để không ảnh hưởng đến việc update order
     }
 
     return {
@@ -1124,6 +1143,23 @@ class AdminService {
     const _id = new ObjectId(id)
     const verify = status === 'inactive' ? 2 : 1 // Banned : Verified
     await databaseServices.users.updateOne({ _id }, { $set: { verify, updatedAt: new Date() } })
+    
+    // Tạo notification cho customer khi tài khoản bị khóa
+    if (status === 'inactive') {
+      try {
+        await createNotification({
+          user_id: id,
+          type: NotificationTypeEnum.AccountBanned,
+          title: 'Tài khoản bị khóa',
+          message: 'Tài khoản của bạn đã bị khóa bởi quản trị viên. Vui lòng liên hệ hỗ trợ để được giải quyết.',
+          data: {}
+        })
+      } catch (error) {
+        console.error('Error creating notification for banned account:', error)
+        // Không throw error để không ảnh hưởng đến việc khóa tài khoản
+      }
+    }
+    
     return { message: status === 'inactive' ? 'Đã khóa tài khoản khách hàng' : 'Đã mở khóa tài khoản khách hàng' }
   }
 
