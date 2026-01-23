@@ -7,22 +7,68 @@ const SizeGuide = () => {
   const [activeTab, setActiveTab] = useState<'how-to-measure' | 'tops' | 'bottoms' | 'fit-guide'>('how-to-measure')
   const [unit, setUnit] = useState<'cm' | 'inch'>('cm')
 
-  // Bảng size Áo (Tops) - từ UI gốc
-  const topsSizeChart = [
+  // Bảng size Áo (Tops) - từ UI gốc (giá trị gốc là cm)
+  const topsSizeChartBase = [
     { size: 'S', chest: '88 - 92', shoulder: '42', length: '68', height: '160 - 165' },
     { size: 'M', chest: '93 - 97', shoulder: '44', length: '70', height: '165 - 170' },
     { size: 'L', chest: '98 - 102', shoulder: '46', length: '72', height: '170 - 175' },
     { size: 'XL', chest: '103 - 108', shoulder: '48', length: '74', height: '175 - 180' },
   ]
 
-  // Bảng size Quần (Bottoms) - từ UI gốc
-  const bottomsSizeChart = [
+  // Bảng size Quần (Bottoms) - từ UI gốc (giá trị gốc là cm)
+  const bottomsSizeChartBase = [
     { size: '28', waist: '70 - 72', hips: '88', thigh: '54', length: '98' },
     { size: '29', waist: '73 - 75', hips: '90', thigh: '56', length: '99' },
     { size: '30', waist: '76 - 78', hips: '92', thigh: '58', length: '100' },
     { size: '31', waist: '79 - 81', hips: '94', thigh: '60', length: '101' },
     { size: '32', waist: '82 - 84', hips: '96', thigh: '62', length: '102' },
   ]
+
+  // Hàm chuyển đổi cm sang inch (1 cm = 0.393701 inch)
+  const cmToInch = (cm: number): number => {
+    return Math.round((cm * 0.393701) * 10) / 10 // Làm tròn 1 chữ số thập phân
+  }
+
+  // Hàm format giá trị (xử lý cả range như "88 - 92" hoặc single value)
+  const formatValue = (value: string, targetUnit: 'cm' | 'inch'): string => {
+    if (targetUnit === 'cm') {
+      return value // Giữ nguyên giá trị cm
+    }
+
+    // Chuyển đổi sang inch
+    if (value.includes(' - ')) {
+      // Xử lý range như "88 - 92"
+      const [min, max] = value.split(' - ').map((v) => parseFloat(v.trim()))
+      if (!isNaN(min) && !isNaN(max)) {
+        return `${cmToInch(min)} - ${cmToInch(max)}`
+      }
+    } else {
+      // Xử lý single value
+      const num = parseFloat(value)
+      if (!isNaN(num)) {
+        return cmToInch(num).toString()
+      }
+    }
+
+    return value // Trả về giá trị gốc nếu không parse được
+  }
+
+  // Tạo bảng size đã chuyển đổi
+  const topsSizeChart = topsSizeChartBase.map((row) => ({
+    size: row.size,
+    chest: formatValue(row.chest, unit),
+    shoulder: formatValue(row.shoulder, unit),
+    length: formatValue(row.length, unit),
+    height: formatValue(row.height, unit),
+  }))
+
+  const bottomsSizeChart = bottomsSizeChartBase.map((row) => ({
+    size: row.size,
+    waist: formatValue(row.waist, unit),
+    hips: formatValue(row.hips, unit),
+    thigh: formatValue(row.thigh, unit),
+    length: formatValue(row.length, unit),
+  }))
 
   return (
     <div className="min-h-screen flex flex-col bg-background-light dark:bg-background-dark">
@@ -61,9 +107,6 @@ const SizeGuide = () => {
                   Tìm kiếm sự vừa vặn hoàn hảo cho trang phục của bạn cùng YORI. Tham khảo các thông số chi tiết dưới đây.
                 </p>
               </div>
-              <button className="flex cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-6 bg-primary text-white hover:bg-opacity-90 transition-all text-sm font-bold leading-normal tracking-[0.015em] shadow-sm">
-                <span className="truncate">Liên hệ hỗ trợ</span>
-              </button>
             </div>
 
             {/* Tabs */}
@@ -234,9 +277,27 @@ const SizeGuide = () => {
             {/* Section 3: Bottoms Size Chart */}
             {activeTab === 'bottoms' && (
               <section className="px-4 py-6 scroll-mt-32" id="bottoms">
-                <h2 className="text-text-main dark:text-white text-[22px] font-bold leading-tight tracking-[-0.015em] pb-4">
-                  3. Bảng size Quần (Bottoms)
-                </h2>
+                <div className="flex justify-between items-center pb-4">
+                  <h2 className="text-text-main dark:text-white text-[22px] font-bold leading-tight tracking-[-0.015em]">
+                    3. Bảng size Quần (Bottoms)
+                  </h2>
+                  <div className="flex items-center gap-2 text-sm font-medium">
+                    <span className={unit === 'cm' ? 'text-primary' : 'text-[#4e8597]'}>CM</span>
+                    <button
+                      onClick={() => setUnit(unit === 'cm' ? 'inch' : 'cm')}
+                      className={`w-8 h-4 rounded-full relative cursor-pointer transition-colors ${
+                        unit === 'cm' ? 'bg-primary' : 'bg-[#d0e1e7]'
+                      }`}
+                    >
+                      <div
+                        className={`absolute top-0.5 w-3 h-3 bg-white rounded-full shadow-sm transition-transform ${
+                          unit === 'cm' ? 'left-1' : 'left-4'
+                        }`}
+                      />
+                    </button>
+                    <span className={unit === 'inch' ? 'text-primary' : 'text-[#4e8597]'}>INCH</span>
+                  </div>
+                </div>
                 <div className="overflow-hidden rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
                   <div className="overflow-x-auto">
                     <table className="w-full text-sm text-left border-collapse">

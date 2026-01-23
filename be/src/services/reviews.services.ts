@@ -4,6 +4,8 @@ import Review, { ReviewStatus } from '~/models/schemas/Review.schema'
 import { CreateReviewReqBody, UpdateReviewReqBody } from '~/models/requests/review.requests'
 import productsServices from './products.services'
 import { OrderStatus } from '~/models/schemas/Order.schema'
+import { createNotification } from './notifications.services'
+import { NotificationTypeEnum } from '~/models/schemas/Notification.schema'
 
 class ReviewsService {
   /**
@@ -423,6 +425,28 @@ class ReviewsService {
 
     // Update product rating nếu status thay đổi
     await this.updateProductRating(review.product_id.toString())
+
+    // Tạo notification cho customer khi review bị từ chối
+    if (status === ReviewStatus.Rejected) {
+      try {
+        const product = await databaseServices.products.findOne({ _id: review.product_id })
+        
+        await createNotification({
+          user_id: review.user_id.toString(),
+          type: NotificationTypeEnum.ReviewRejected,
+          title: 'Đánh giá bị từ chối',
+          message: `Đánh giá của bạn cho sản phẩm "${product?.name || 'N/A'}" đã bị từ chối bởi quản trị viên.`,
+          data: {
+            review_id: review_id,
+            product_id: review.product_id.toString(),
+            product_name: product?.name
+          }
+        })
+      } catch (error) {
+        console.error('Error creating notification for rejected review:', error)
+        // Không throw error để không ảnh hưởng đến việc moderate review
+      }
+    }
 
     return true
   }

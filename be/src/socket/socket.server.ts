@@ -6,6 +6,9 @@ import databaseServices from '~/services/database.services'
 import chatServices from '~/services/chat.services'
 import { UserRole, UserVerifyStatus } from '~/constants/enums'
 
+// Export io instance để có thể dùng ở nơi khác
+let ioInstance: SocketIOServer | null = null
+
 interface SocketAuth {
   userId: string
   role: string
@@ -24,6 +27,9 @@ export const initializeSocket = (httpServer: HTTPServer) => {
     },
     transports: ['websocket', 'polling'],
   })
+
+  // Store io instance
+  ioInstance = io
 
   // Authentication middleware
   io.use(async (socket: Socket, next) => {
@@ -207,4 +213,7 @@ export const emitToUser = (io: SocketIOServer, userId: string, event: string, da
 export const emitToAdmins = (io: SocketIOServer, event: string, data: any) => {
   io.to('admin').emit(event, data)
 }
+
+// Export io instance getter
+export const getIOInstance = () => ioInstance
 

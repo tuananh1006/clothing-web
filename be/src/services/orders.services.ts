@@ -3,6 +3,8 @@ import databaseServices from './database.services'
 import Order, { OrderItem, OrderStatus } from '~/models/schemas/Order.schema'
 import cartServices from './cart.services'
 import { PlaceOrderReqBody } from '~/models/requests/order.requests'
+import { createNotification } from './notifications.services'
+import { NotificationTypeEnum } from '~/models/schemas/Notification.schema'
 
 class OrdersService {
   async createOrder(user_id: string, body: PlaceOrderReqBody) {
@@ -58,6 +60,23 @@ class OrdersService {
       { user_id: new ObjectId(user_id) },
       { $set: { items: [], updated_at: new Date() } }
     )
+
+    // Tạo notification cho customer khi đặt hàng thành công
+    try {
+      await createNotification({
+        user_id,
+        type: NotificationTypeEnum.OrderPlaced,
+        title: 'Đặt hàng thành công',
+        message: `Đơn hàng ${order_code} của bạn đã được đặt thành công. Chúng tôi sẽ xử lý đơn hàng trong thời gian sớm nhất.`,
+        data: {
+          order_id: result.insertedId.toString(),
+          order_code
+        }
+      })
+    } catch (error) {
+      console.error('Error creating notification for order placed:', error)
+      // Không throw error để không ảnh hưởng đến việc tạo order
+    }
 
     return {
       order_id: result.insertedId.toString(),
@@ -296,6 +315,23 @@ class OrdersService {
 
     if (result.modifiedCount === 0) {
       throw new Error('Failed to cancel order')
+    }
+
+    // Tạo notification cho customer khi hủy đơn hàng
+    try {
+      await createNotification({
+        user_id: user_id,
+        type: NotificationTypeEnum.OrderCancelled,
+        title: 'Đơn hàng đã được hủy',
+        message: `Đơn hàng ${order.order_code} của bạn đã được hủy thành công.`,
+        data: {
+          order_id,
+          order_code: order.order_code
+        }
+      })
+    } catch (error) {
+      console.error('Error creating notification for order cancelled:', error)
+      // Không throw error để không ảnh hưởng đến việc hủy order
     }
 
     return {

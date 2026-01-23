@@ -6,6 +6,7 @@ import { useAuth } from '@/hooks/useAuth'
 import { useCart } from '@/hooks/useCart'
 import { useTheme } from '@/contexts/ThemeContext'
 import { UserRole } from '@/types'
+import NotificationBell from './NotificationBell'
 
 const Header = () => {
   const { isAuthenticated, user, logout } = useAuth()
@@ -137,6 +138,9 @@ const Header = () => {
         >
           <span className="material-symbols-outlined">search</span>
         </motion.button>
+
+        {/* Notifications */}
+        <NotificationBell />
 
         {/* User Menu */}
         <div className="relative" ref={userMenuRef}>
