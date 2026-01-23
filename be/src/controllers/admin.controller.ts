@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import adminService from '~/services/admin.services'
 import * as bannersService from '~/services/banners.services'
+import * as couponsService from '~/services/coupons.services'
 import HTTP_STATUS from '~/constants/httpStatus'
 
 export const dashboardStatsController = async (req: Request, res: Response) => {
@@ -337,5 +338,116 @@ export const adminDeleteBannerController = async (req: Request, res: Response) =
   await bannersService.deleteBanner(id)
   return res.status(HTTP_STATUS.OK).json({
     message: 'Delete banner successfully'
+  })
+}
+
+// Coupon Controllers
+export const adminGetCouponsController = async (req: Request, res: Response) => {
+  const { page, limit, code, is_active } = req.query
+  const result = await couponsService.getCoupons({
+    page: page ? Number(page) : 1,
+    limit: limit ? Number(limit) : 20,
+    code: code as string,
+    is_active: is_active !== undefined ? is_active === 'true' : undefined
+  })
+  return res.status(HTTP_STATUS.OK).json({
+    message: 'Get coupons successfully',
+    data: result
+  })
+}
+
+export const adminGetCouponDetailController = async (req: Request, res: Response) => {
+  const { id } = req.params
+  const coupon = await couponsService.getCouponById(id)
+  return res.status(HTTP_STATUS.OK).json({
+    message: 'Get coupon detail successfully',
+    data: coupon
+  })
+}
+
+export const adminCreateCouponController = async (req: Request, res: Response) => {
+  const {
+    code,
+    name,
+    description,
+    discount_type,
+    discount_value,
+    min_order_value,
+    max_discount,
+    usage_limit,
+    valid_from,
+    valid_until,
+    is_active,
+    applicable_to,
+    categories,
+    products
+  } = req.body
+  const coupon = await couponsService.createCoupon({
+    code,
+    name,
+    description,
+    discount_type,
+    discount_value,
+    min_order_value,
+    max_discount,
+    usage_limit,
+    valid_from,
+    valid_until,
+    is_active,
+    applicable_to,
+    categories,
+    products
+  })
+  return res.status(HTTP_STATUS.CREATED).json({
+    message: 'Create coupon successfully',
+    data: coupon
+  })
+}
+
+export const adminUpdateCouponController = async (req: Request, res: Response) => {
+  const { id } = req.params
+  const {
+    code,
+    name,
+    description,
+    discount_type,
+    discount_value,
+    min_order_value,
+    max_discount,
+    usage_limit,
+    valid_from,
+    valid_until,
+    is_active,
+    applicable_to,
+    categories,
+    products
+  } = req.body
+  const coupon = await couponsService.updateCoupon(id, {
+    code,
+    name,
+    description,
+    discount_type,
+    discount_value,
+    min_order_value,
+    max_discount,
+    usage_limit,
+    valid_from,
+    valid_until,
+    is_active,
+    applicable_to,
+    categories,
+    products
+  })
+  return res.status(HTTP_STATUS.OK).json({
+    message: 'Update coupon successfully',
+    data: coupon
+  })
+}
+
+export const adminDeleteCouponController = async (req: Request, res: Response) => {
+  const { id } = req.params
+  await couponsService.deleteCoupon(id)
+  return res.status(HTTP_STATUS.OK).json({
+    message: 'Delete coupon successfully'
   })
 }

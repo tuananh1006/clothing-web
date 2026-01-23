@@ -16,6 +16,7 @@ import { useToast } from '@/contexts/ToastContext'
 import * as checkoutService from '@/services/checkout.service'
 import { ROUTES } from '@/utils/constants'
 import type { ShippingAddress } from '@/types/order.types'
+import type { Coupon } from '@/services/coupons.service'
 
 // Validation schema
 const checkoutSchema = z.object({
@@ -41,6 +42,7 @@ const Checkout = () => {
   const [loading, setLoading] = useState(true)
   const [submitting, setSubmitting] = useState(false)
   const [shippingFee, setShippingFee] = useState(0)
+  const [selectedCoupon, setSelectedCoupon] = useState<Coupon | null>(null)
 
   const {
     register,
@@ -143,6 +145,12 @@ const Checkout = () => {
       }
       sessionStorage.setItem('checkout_shipping_address', JSON.stringify(shippingAddress))
       sessionStorage.setItem('checkout_shipping_fee', shippingFee.toString())
+      // Store selected coupon
+      if (selectedCoupon) {
+        sessionStorage.setItem('checkout_selected_coupon', JSON.stringify(selectedCoupon))
+      } else {
+        sessionStorage.removeItem('checkout_selected_coupon')
+      }
 
       // Navigate to payment page
       navigate(ROUTES.CHECKOUT_PAYMENT)
@@ -278,7 +286,11 @@ const Checkout = () => {
                   items={items}
                   subtotal={totalPrice}
                   shippingFee={shippingFee}
-                  total={total}
+                  discountAmount={selectedCoupon?.calculated_discount || 0}
+                  total={total - (selectedCoupon?.calculated_discount || 0)}
+                  orderValue={totalPrice}
+                  selectedCoupon={selectedCoupon}
+                  onSelectCoupon={setSelectedCoupon}
                 />
               </div>
             </div>

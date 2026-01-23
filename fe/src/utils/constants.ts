@@ -110,6 +110,13 @@ export const API_ENDPOINTS = {
     CHAT_PERMANENTLY_DELETE: (chatId: string) => `/admin/chats/${chatId}`,
     BANNERS: '/admin/banners',
     BANNER_DETAIL: (id: string) => `/admin/banners/${id}`,
+    COUPONS: '/admin/coupons',
+    COUPON_DETAIL: (id: string) => `/admin/coupons/${id}`,
+  },
+  COUPONS: {
+    VALIDATE: '/coupons/validate',
+    BY_CODE: '/coupons/code',
+    AVAILABLE: '/coupons/available',
   },
 } as const
 
@@ -147,6 +154,7 @@ export const ROUTES = {
   ADMIN_SETTINGS: '/admin/settings',
   ADMIN_CHATS: '/admin/chats',
   ADMIN_BANNERS: '/admin/banners',
+  ADMIN_COUPONS: '/admin/coupons',
 } as const
 
 // Pagination defaults

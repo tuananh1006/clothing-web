@@ -4,6 +4,7 @@ import usersRouter from './routes/users.routes'
 import categoriesRouter from './routes/categories.routes'
 import productsRouter from './routes/products.routes'
 import bannersRouter from './routes/banners.routes'
+import couponsRouter from './routes/coupons.routes'
 import cartRouter from './routes/cart.routes'
 import locationsRouter from './routes/locations.routes'
 import checkoutRouter from './routes/checkout.routes'
@@ -92,6 +93,7 @@ app.use('/api/v1/users', usersRouter)
 app.use('/api/v1/categories', categoriesRouter)
 app.use('/api/v1/products', productsRouter)
 app.use('/api/v1/banners', bannersRouter)
+app.use('/api/v1/coupons', couponsRouter)
 app.use('/api/v1/cart', cartRouter)
 app.use('/api/v1/locations', locationsRouter)
 app.use('/api/v1/checkout', checkoutRouter)

@@ -1,5 +1,8 @@
+import { useState } from 'react'
 import { formatPrice } from '@/utils/formatters'
 import type { CartItemResponse } from '@/services/cart.service'
+import type { Coupon } from '@/services/coupons.service'
+import CouponModal from './CouponModal'
 
 interface OrderSummaryProps {
   items: CartItemResponse[]
@@ -8,6 +11,9 @@ interface OrderSummaryProps {
   discountAmount?: number
   total: number
   showItems?: boolean
+  orderValue: number
+  selectedCoupon?: Coupon | null
+  onSelectCoupon: (coupon: Coupon | null) => void
 }
 
 const OrderSummary = ({
@@ -17,7 +23,11 @@ const OrderSummary = ({
   discountAmount = 0,
   total,
   showItems = true,
+  orderValue,
+  selectedCoupon,
+  onSelectCoupon,
 }: OrderSummaryProps) => {
+  const [isCouponModalOpen, setIsCouponModalOpen] = useState(false)
   return (
     <div className="bg-white dark:bg-[#1a2c32] rounded-xl border border-gray-200 dark:border-gray-700 p-6">
       <h2 className="text-xl font-bold text-text-main dark:text-white mb-6">
@@ -63,6 +73,44 @@ const OrderSummary = ({
         </div>
       )}
 
+      {/* Coupon Section */}
+      <div className="border-t border-gray-200 dark:border-gray-700 pt-6">
+        <div className="flex items-center justify-between mb-3">
+          <span className="text-sm font-medium text-text-main dark:text-white">Mã giảm giá</span>
+          <button
+            type="button"
+            onClick={() => setIsCouponModalOpen(true)}
+            className="text-sm font-medium text-primary hover:text-primary/80 transition-colors flex items-center gap-1"
+          >
+            <span className="material-symbols-outlined text-base">local_offer</span>
+            {selectedCoupon ? 'Đổi mã' : 'Áp dụng mã'}
+          </button>
+        </div>
+        {selectedCoupon && (
+          <div className="p-3 bg-primary/10 dark:bg-primary/20 rounded-lg border border-primary/30">
+            <div className="flex items-center justify-between">
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-text-main dark:text-white">
+                  <span className="text-primary font-bold">{selectedCoupon.code}</span>
+                </p>
+                {selectedCoupon.calculated_discount && selectedCoupon.calculated_discount > 0 && (
+                  <p className="text-xs text-text-sub dark:text-gray-400 mt-1">
+                    Giảm: <span className="font-bold text-primary">-{formatPrice(selectedCoupon.calculated_discount)}</span>
+                  </p>
+                )}
+              </div>
+              <button
+                type="button"
+                onClick={() => onSelectCoupon(null)}
+                className="text-sm text-red-500 hover:text-red-600 font-medium ml-2"
+              >
+                Hủy
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+
       {/* Summary */}
       <div className="space-y-3 border-t border-gray-200 dark:border-gray-700 pt-6">
         <div className="flex justify-between text-base">
@@ -82,6 +130,15 @@ const OrderSummary = ({
           </div>
         )}
       </div>
+
+      {/* Coupon Modal */}
+      <CouponModal
+        isOpen={isCouponModalOpen}
+        onClose={() => setIsCouponModalOpen(false)}
+        orderValue={orderValue}
+        selectedCoupon={selectedCoupon}
+        onSelectCoupon={onSelectCoupon}
+      />
 
       {/* Total */}
       <div className="mt-6 flex items-center justify-between border-t border-gray-200 dark:border-gray-700 pt-6">
